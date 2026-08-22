@@ -1,0 +1,64 @@
+# qwerty_instrument configuration
+#
+# Copy this file to %USERPROFILE%\.qwerty_instrument\config.toml and edit.
+# Any field you omit falls back to the built-in default, and a malformed
+# field is dropped with a warning at startup rather than crashing the app.
+
+[audio]
+sample_rate = 48000
+block_size = 256          # try 128 or 64 for lower latency if your device supports it
+device_index = 0           # set from Settings > Audio, or leave unset for system default
+use_wasapi_exclusive = false
+
+[keyboard]
+base_note = 48              # C3 -- start of the bottom-row/home-row block
+block2_offset = 12          # semitones above base_note where the top-row/number-row block starts
+sustain_mode = "hold"       # "hold" (hold Space to sustain) or "toggle" (tap to latch)
+base_velocity = 0.85
+humanize_amount = 0.04      # +/- random velocity variation, subtle by default
+
+# Override individual key -> MIDI note assignments here, e.g.:
+# [keyboard.note_overrides]
+# Z = 45
+
+# Override control-key bindings here, e.g.:
+# [keyboard.control_overrides]
+# ESCAPE = "panic"
+
+[knob]
+mode = "pitch_bend"         # pitch_bend | expression | filter_cutoff | vibrato_depth | drive | delay_feedback | modulation | custom_macro
+bend_step_cents = 25.0
+max_bend_cents = 200.0      # +/- 2 semitones
+expression_step = 0.08
+spring_return = true
+return_delay_s = 0.16
+return_duration_s = 0.22
+short_press_max_s = 0.5
+
+[instruments]
+default = "synth_lead"
+cycle_order = ["synth_lead", "electric_piano", "guitar_lead"]
+
+[instruments.polyphony]
+synth_lead = 16
+electric_piano = 16
+guitar_lead = 6
+
+[practice]
+default_speed_percent = 100
+timing_window_perfect_ms = 40
+timing_window_good_ms = 90
+timing_window_late_ms = 150
+count_in_bars = 1
+metronome_volume = 0.5
+
+[ui]
+note_label_mode = "qwerty_and_note"  # qwerty_only | note_only | qwerty_and_note
+theme = "dark"
+
+[paths]
+songs_dir = "songs"
+presets_dir = "presets"
+exports_dir = "exports"
+recordings_dir = "recordings"
+sessions_db = "sessions/practice_sessions.sqlite3"

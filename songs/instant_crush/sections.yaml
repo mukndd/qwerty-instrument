@@ -1,0 +1,31 @@
+# Section boundaries for Instant Crush -- see NOTES_STATUS.md.
+#
+# EVERY start_beat/end_beat value below is an ARBITRARY PLACEHOLDER, not a
+# verified measurement of the actual recording. They exist so the practice
+# engine (section looping, speed control, practice-sheet export) has real
+# structure to operate on before real data is imported -- treat the
+# numbers themselves as "to be corrected", not "approximately right".
+#
+# The one piece of real information here is the user-provided approximate
+# timestamp for the lead/electric-guitar section (~3:18 into the song).
+# `lead_guitar.start_beat` below is computed from that timestamp using the
+# placeholder 120 BPM in song.yaml (198s * 120/60 = 396 beats) purely so
+# it's in the right ballpark -- it will shift once the real tempo is known.
+
+sections:
+  - id: chorus
+    name: "Chorus"
+    # PLACEHOLDER -- no verified timestamp for where the chorus starts.
+    start_beat: 32
+    end_beat: 96
+    difficulty: medium
+    loop_default: true
+
+  - id: lead_guitar
+    name: "Lead / Electric Guitar (~3:18)"
+    # Derived from the user-provided ~3:18 marker at the placeholder tempo.
+    # Re-derive once real tempo_events are imported.
+    start_beat: 396
+    end_beat: 428
+    difficulty: hard
+    loop_default: false

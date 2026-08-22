@@ -1,0 +1,19 @@
+{
+  "name": "Electric Keys",
+  "instrument": "electric_piano",
+  "description": "Classic-leaning electric piano: bright tine attack, natural decay-while-held, gentle tremolo.",
+  "params": {
+    "attack": 0.002,
+    "decay_tau": 2.2,
+    "sustain_floor": 0.08,
+    "release": 0.35,
+    "tine_ratio": 6.7,
+    "tine_decay": 0.09,
+    "tremolo_rate": 4.5,
+    "tremolo_depth": 0.12,
+    "cutoff": 5200.0,
+    "resonance": 0.05,
+    "chorus_mix": 0.25,
+    "master_gain": 0.6
+  }
+}

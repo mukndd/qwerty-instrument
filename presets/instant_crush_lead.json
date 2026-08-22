@@ -1,0 +1,24 @@
+{
+  "name": "Instant Crush Lead",
+  "instrument": "guitar_lead",
+  "description": "Inspired-by approximation for the ~3:18 lead/electric-guitar material -- NOT a claim of reproducing Daft Punk's actual guitar tone/rig (spec section 43/44). Aims for melodic, polished, expressive -- not metal-distorted. Chain: pluck source -> compression -> mild saturation -> chorus -> stereo delay -> reverb; the F75 knob's expression macro sweeps brightness/drive/delay together.",
+  "params": {
+    "damping": 0.32,
+    "sustain_decay": 0.985,
+    "release_time": 0.4,
+    "pick_noise_color": 0.45,
+    "drive": 0.22,
+    "compressor_threshold_db": -18.0,
+    "compressor_ratio": 3.5,
+    "chorus_mix": 0.32,
+    "delay_enabled": true,
+    "delay_seconds": 0.36,
+    "delay_feedback": 0.34,
+    "delay_mix": 0.24,
+    "reverb_enabled": true,
+    "reverb_mix": 0.26,
+    "reverb_decay": 0.55,
+    "master_gain": 0.6,
+    "expression": 0.35
+  }
+}

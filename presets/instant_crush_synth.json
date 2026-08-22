@@ -1,0 +1,27 @@
+{
+  "name": "Instant Crush Synth",
+  "instrument": "synth_lead",
+  "description": "Inspired-by approximation for the chorus's bright synth material -- NOT a claim of reproducing Daft Punk's actual studio patch/hardware chain (spec section 43). Punchy detuned saw, quick attack, moderate filter movement.",
+  "params": {
+    "waveform": "saw",
+    "osc_count": 2,
+    "detune_cents": 10.0,
+    "attack": 0.004,
+    "decay": 0.1,
+    "sustain": 0.65,
+    "release": 0.15,
+    "cutoff": 4200.0,
+    "resonance": 0.3,
+    "filter_env_amount": 0.55,
+    "drive": 0.1,
+    "chorus_mix": 0.28,
+    "delay_enabled": true,
+    "delay_seconds": 0.24,
+    "delay_feedback": 0.25,
+    "delay_mix": 0.18,
+    "reverb_enabled": true,
+    "reverb_mix": 0.16,
+    "reverb_decay": 0.45,
+    "master_gain": 0.55
+  }
+}

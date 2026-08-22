@@ -1,0 +1,49 @@
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+build/
+dist/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# logs
+logs/
+*.log
+
+# user data / recordings / sessions
+recordings/
+sessions/
+user_data/
+*.sqlite3
+
+# local config (contains machine-specific device choices)
+config.local.toml
+
+# copyrighted / user-provided local audio & MIDI references
+reference_audio/
+*.wav
+*.mp3
+*.flac
+!presets/**/*.wav
+songs/**/reference/*
+songs/**/*.mid
+!songs/**/fixtures/*.mid
+
+# user-provided VST files / sample libraries
+vst/
+soundfonts/
+*.sf2
+*.vst3
+
+# exports are regenerated, not tracked
+exports/*
+!exports/.gitkeep
+
+# OS / editor
+.vscode/
+.idea/
+Thumbs.db
+.DS_Store

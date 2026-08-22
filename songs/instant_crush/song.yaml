@@ -1,0 +1,48 @@
+# Daft Punk -- "Instant Crush" (feat. Julian Casablancas)
+#
+# STATUS: infrastructure only. No note-level transcription has been
+# verified for this song. Do not treat tempo_events, section boundaries,
+# or (absent) note data as accurate -- they are structural placeholders
+# so the practice engine has something to load, pending a real import.
+#
+# To add verified data:
+#   1. Obtain a MIDI file or your own transcription LEGALLY (this project
+#      does not ship or download any copyrighted audio/MIDI).
+#   2. Run: .venv\Scripts\python.exe tools\import_midi.py <path-to-midi>
+#   3. Follow the prompts to inspect tracks/tempo and write notes.json.
+#   4. Correct tempo_events and section start_beat/end_beat below to match
+#      what the MIDI file actually reports.
+#
+# See songs/instant_crush/NOTES_STATUS.md for a full breakdown of what is
+# and isn't verified right now.
+
+title: "Instant Crush"
+artist: "Daft Punk feat. Julian Casablancas"
+time_signature: [4, 4]
+
+# PLACEHOLDER tempo -- not verified against any source. 120 BPM is a
+# generic default, not a claim about this song's actual tempo. Replace
+# once a real MIDI/reference file is imported.
+tempo_events:
+  - beat: 0
+    bpm: 120.0
+
+notes_disclaimer: >
+  No verified note transcription has been imported for Instant Crush yet.
+  Section boundaries below are structural placeholders derived from the
+  placeholder 120 BPM tempo and the user-provided approximate timestamps
+  (chorus early in the song; lead/electric-guitar material around ~3:18).
+  They have NOT been verified against the actual recording or a legitimate
+  MIDI file. Use tools/import_midi.py to import real data, then correct
+  tempo_events and songs/instant_crush/sections.yaml to match.
+
+knob_actions: []
+  # Once the lead-guitar section's real start_beat is known, add e.g.:
+  # - beat: <verified lead-guitar section start_beat>
+  #   action: "mode_lead_guitar"
+
+instrument_changes: []
+  # - beat: 0
+  #   instrument: "synth_lead"
+  # - beat: <verified lead-guitar section start_beat>
+  #   instrument: "guitar_lead"

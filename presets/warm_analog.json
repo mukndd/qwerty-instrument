@@ -1,0 +1,27 @@
+{
+  "name": "Warm Analog",
+  "instrument": "synth_lead",
+  "description": "Two detuned saw oscillators, gentle low-pass, soft chorus. A general-purpose warm lead/pad.",
+  "params": {
+    "waveform": "saw",
+    "osc_count": 2,
+    "detune_cents": 7.0,
+    "attack": 0.015,
+    "decay": 0.18,
+    "sustain": 0.7,
+    "release": 0.3,
+    "cutoff": 2600.0,
+    "resonance": 0.15,
+    "filter_env_amount": 0.35,
+    "drive": 0.05,
+    "chorus_mix": 0.3,
+    "delay_enabled": true,
+    "delay_seconds": 0.32,
+    "delay_feedback": 0.22,
+    "delay_mix": 0.15,
+    "reverb_enabled": true,
+    "reverb_mix": 0.2,
+    "reverb_decay": 0.5,
+    "master_gain": 0.55
+  }
+}
