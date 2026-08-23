@@ -151,8 +151,8 @@ class MainWindow(QMainWindow):
         self.mode_combo.currentTextChanged.connect(self._on_mode_selected)
         mode_layout.addWidget(self.mode_combo)
         self.autoplay_layer_combo = QComboBox()
-        self.autoplay_layer_combo.addItems(["Chords", "Bass", "Chords + Bass"])
-        self.autoplay_layer_combo.setCurrentText("Chords + Bass")
+        self.autoplay_layer_combo.addItems(["Chords", "Bass", "Melody", "Chords + Bass", "Chords + Melody", "Bass + Melody", "Full Chorus"])
+        self.autoplay_layer_combo.setCurrentText("Full Chorus")
         self.autoplay_layer_combo.currentTextChanged.connect(self._on_autoplay_layer_selected)
         mode_layout.addWidget(self.autoplay_layer_combo)
         reload_preset_btn = QPushButton("Reload Preset")
@@ -252,6 +252,7 @@ class MainWindow(QMainWindow):
         song = load_song(self._songs_root / song_id)
         self.trainer = SongTrainer(song, self.app.mapping, self.app.engine.submit)
         self.trainer.on_note_result = self._on_note_result
+        self._on_autoplay_layer_selected(self.autoplay_layer_combo.currentText())  # sync to combo, not the class default
         self.app.load_trainer(self.trainer)
         self.section_combo.clear()
         for s in song.sections:
@@ -269,7 +270,15 @@ class MainWindow(QMainWindow):
             self.trainer.set_mode(PracticeMode(mode_text.lower()))
 
     def _on_autoplay_layer_selected(self, text: str) -> None:
-        layers = {"Chords": ["chords"], "Bass": ["bass"], "Chords + Bass": ["chords", "bass"]}.get(text, ["chords", "bass"])
+        layers = {
+            "Chords": ["chords"],
+            "Bass": ["bass"],
+            "Melody": ["melody"],
+            "Chords + Bass": ["chords", "bass"],
+            "Chords + Melody": ["chords", "melody"],
+            "Bass + Melody": ["bass", "melody"],
+            "Full Chorus": ["chords", "bass", "melody"],
+        }.get(text, ["chords", "bass", "melody"])
         if self.trainer:
             self.trainer.set_autoplay_layers(layers)
 
@@ -349,12 +358,18 @@ class MainWindow(QMainWindow):
             self.timeline.update_upcoming(self.trainer.upcoming_notes())
             is_autoplay = self.trainer.mode == PracticeMode.AUTOPLAY
             if is_autoplay:
-                mapped_keys = set()
-                for note in self.trainer.autoplay_sounding_notes:
-                    found = self.app.mapping.find_key_for_note(note)
-                    if found:
-                        mapped_keys.add(found[0])
-                self.keyboard_widget.set_state(held=mapped_keys)
+                # Melody = strong highlight (the key you'd personally press),
+                # chords = medium, bass = dim/secondary -- see spec: "what key
+                # would I personally press for the melody?" is the main signal.
+                def mapped(layer: str) -> set[str]:
+                    keys = set()
+                    for note in self.trainer.autoplay_sounding_by_layer.get(layer, ()):
+                        found = self.app.mapping.find_key_for_note(note)
+                        if found:
+                            keys.add(found[0])
+                    return keys
+
+                self.keyboard_widget.set_state(held=mapped("melody"), next_keys=mapped("chords"), secondary=mapped("bass"))
 
         self.capture_btn.setText(f"Capture: {'ON' if self.app.keyboard.capture_enabled else 'OFF'}")
         self.lead_guitar_banner.setVisible(getattr(self.app, "_lead_guitar_mode", False))

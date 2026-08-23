@@ -22,6 +22,7 @@ dependencies = [
 
 [project.optional-dependencies]
 vst = ["pedalboard>=0.9"]
+reference = ["soundfile>=0.12"]
 dev = ["pytest>=8.0"]
 
 [tool.setuptools.packages.find]

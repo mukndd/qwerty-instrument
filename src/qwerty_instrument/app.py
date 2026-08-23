@@ -12,6 +12,7 @@ import sys
 from pathlib import Path
 
 from . import config as config_mod
+from .audio.bass import BassSynth
 from .audio.engine import AudioConfig, AudioEngine
 from .audio.guitar import GuitarLead
 from .audio.synth import ElectricPiano, SynthLead
@@ -54,6 +55,9 @@ class Application:
         self.engine.register_instrument(SynthLead(audio_cfg["sample_rate"], audio_cfg["block_size"], polyphony=poly["synth_lead"]))
         self.engine.register_instrument(ElectricPiano(audio_cfg["sample_rate"], audio_cfg["block_size"], polyphony=poly["electric_piano"]))
         self.engine.register_instrument(GuitarLead(audio_cfg["sample_rate"], audio_cfg["block_size"], polyphony=poly["guitar_lead"]))
+        # bass_synth: autoplay layer-routing target only, not part of the
+        # manual QWERTY instrument-cycle list -- see docs/ARCHITECTURE.md.
+        self.engine.register_instrument(BassSynth(audio_cfg["sample_rate"], audio_cfg["block_size"], polyphony=poly.get("bass_synth", 6)))
         self.engine.set_active_instrument(self.cfg["instruments"]["default"])
 
         knob_cfg = self.cfg["knob"]

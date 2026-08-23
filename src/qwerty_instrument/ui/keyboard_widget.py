@@ -43,6 +43,7 @@ COLOR_KEY_FREE = QColor("#222226")
 COLOR_HELD = QColor("#4caf7d")
 COLOR_NEXT = QColor("#e0b84c")
 COLOR_WRONG = QColor("#d9534f")
+COLOR_SECONDARY = QColor("#3d6b52")  # dimmer/darker than COLOR_HELD -- autoplay bass/background layers
 COLOR_TEXT = QColor("#dcdce0")
 COLOR_BORDER = QColor("#3a3a42")
 
@@ -54,16 +55,25 @@ class KeyboardWidget(QWidget):
         self.held_keys: set[str] = set()
         self.next_keys: set[str] = set()
         self.wrong_keys: set[str] = set()
+        self.secondary_keys: set[str] = set()  # dim/background highlight (e.g. autoplay bass/chords under a melody)
         self.note_labels: dict[str, str] = {}  # key_id -> label to show under the key letter
         self.label_mode = "qwerty_and_note"  # qwerty_only | note_only | qwerty_and_note
 
-    def set_state(self, held: set[str] | None = None, next_keys: set[str] | None = None, wrong: set[str] | None = None) -> None:
+    def set_state(
+        self,
+        held: set[str] | None = None,
+        next_keys: set[str] | None = None,
+        wrong: set[str] | None = None,
+        secondary: set[str] | None = None,
+    ) -> None:
         if held is not None:
             self.held_keys = held
         if next_keys is not None:
             self.next_keys = next_keys
         if wrong is not None:
             self.wrong_keys = wrong
+        if secondary is not None:
+            self.secondary_keys = secondary
         self.update()
 
     def flash_wrong(self, key_id: str) -> None:
@@ -105,6 +115,8 @@ class KeyboardWidget(QWidget):
             fill = COLOR_HELD
         elif key_id in self.next_keys:
             fill = COLOR_NEXT
+        elif key_id in self.secondary_keys:
+            fill = COLOR_SECONDARY
         elif key_id in _NOTE_KEYS:
             fill = COLOR_KEY_NOTE
         elif key_id in _FREE_KEYS:

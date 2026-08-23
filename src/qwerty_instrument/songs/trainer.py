@@ -90,6 +90,19 @@ class SongTrainer:
         self._autoplay_queue: list[NoteEvent | ChordEvent] = []
         self._autoplay_active: list[tuple[NoteEvent | ChordEvent, float, list[int], list[str]]] = []
         self.autoplay_sounding_notes: set[int] = set()  # for UI key-highlighting via find_key_for_note()
+        self.autoplay_sounding_by_layer: dict[str, set[int]] = {}  # for layer-differentiated UI highlighting
+
+        # Which instrument each song layer sounds through -- lets chords,
+        # bass, and melody play through different backends simultaneously
+        # (AudioEngine routes on MusicEvent.metadata["target_instrument"];
+        # NOTE_OFF carries the same value, so ownership stays correct --
+        # see docs/ARCHITECTURE.md).
+        self.layer_routes: dict[str, str] = {
+            "chords": "synth_lead",
+            "bass": "bass_synth",
+            "melody": "synth_lead",
+            "lead_guitar": "guitar_lead",
+        }
 
         self.on_note_result: Callable[[NoteResult], None] | None = None
         self.on_section_looped: Callable[[], None] | None = None
@@ -111,6 +124,9 @@ class SongTrainer:
 
     def set_autoplay_layers(self, layers: list[str]) -> None:
         self.autoplay_layers = list(layers)
+
+    def set_layer_routes(self, routes: dict[str, str]) -> None:
+        self.layer_routes.update(routes)
 
     def set_mode(self, mode: PracticeMode) -> None:
         if self.mode == PracticeMode.AUTOPLAY and mode != PracticeMode.AUTOPLAY:
@@ -201,7 +217,7 @@ class SongTrainer:
         for entry in self._autoplay_active:
             event, end_beat, notes, key_ids = entry
             if beat >= end_beat:
-                self._emit_autoplay_off(notes, key_ids)
+                self._emit_autoplay_off(event.layer, notes, key_ids)
             else:
                 still_active.append(entry)
         self._autoplay_active = still_active
@@ -210,27 +226,49 @@ class SongTrainer:
             event = self._autoplay_queue.pop(0)
             notes = list(event.notes) if isinstance(event, ChordEvent) else [event.note]
             velocity = event.velocity if isinstance(event, NoteEvent) else 0.75
+            target_instrument = self.layer_routes.get(event.layer)
             ts = time.perf_counter_ns()
             key_ids = [f"autoplay_{event.layer}_{event.beat}_{n}" for n in notes]
+            layer_set = self.autoplay_sounding_by_layer.setdefault(event.layer, set())
             for n, key_id in zip(notes, key_ids):
                 self.event_sink(
-                    MusicEvent(type=EventType.NOTE_ON, note=n, velocity=velocity, timestamp_ns=ts, source=Source.SONG_PLAYBACK, metadata={"key_id": key_id})
+                    MusicEvent(
+                        type=EventType.NOTE_ON,
+                        note=n,
+                        velocity=velocity,
+                        timestamp_ns=ts,
+                        source=Source.SONG_PLAYBACK,
+                        metadata={"key_id": key_id, "target_instrument": target_instrument, "layer": event.layer},
+                    )
                 )
                 self.autoplay_sounding_notes.add(n)
+                layer_set.add(n)
             self._autoplay_active.append((event, event.beat + event.duration_beats, notes, key_ids))
 
-    def _emit_autoplay_off(self, notes: list[int], key_ids: list[str]) -> None:
+    def _emit_autoplay_off(self, layer: str, notes: list[int], key_ids: list[str]) -> None:
+        target_instrument = self.layer_routes.get(layer)
         ts = time.perf_counter_ns()
+        layer_set = self.autoplay_sounding_by_layer.setdefault(layer, set())
         for n, key_id in zip(notes, key_ids):
-            self.event_sink(MusicEvent(type=EventType.NOTE_OFF, note=n, timestamp_ns=ts, source=Source.SONG_PLAYBACK, metadata={"key_id": key_id}))
+            self.event_sink(
+                MusicEvent(
+                    type=EventType.NOTE_OFF,
+                    note=n,
+                    timestamp_ns=ts,
+                    source=Source.SONG_PLAYBACK,
+                    metadata={"key_id": key_id, "target_instrument": target_instrument, "layer": layer},
+                )
+            )
             self.autoplay_sounding_notes.discard(n)
+            layer_set.discard(n)
 
     def _stop_autoplay_notes(self) -> None:
         for event, end_beat, notes, key_ids in self._autoplay_active:
-            self._emit_autoplay_off(notes, key_ids)
+            self._emit_autoplay_off(event.layer, notes, key_ids)
         self._autoplay_active = []
         self._autoplay_queue = []
         self.autoplay_sounding_notes = set()
+        self.autoplay_sounding_by_layer = {}
 
     def _check_for_misses(self, current_beat: float) -> None:
         late_beats = self.timing_windows.late_ms / 1000.0 * (self.clock.tempo_map.bpm_at_beat(current_beat) / 60.0)
@@ -322,6 +360,7 @@ class SongTrainer:
 
         self._pending_events.remove(target)
         notes = target.notes if isinstance(target, ChordEvent) else [target.note]
+        target_instrument = self.layer_routes.get(target.layer)
         for n in notes:
             self.event_sink(
                 MusicEvent(
@@ -330,12 +369,12 @@ class SongTrainer:
                     velocity=0.85,
                     timestamp_ns=ts_ns,
                     source=Source.ASSIST_ENGINE,
-                    metadata={"key_id": f"assist_{key_id}_{n}"},
+                    metadata={"key_id": f"assist_{key_id}_{n}", "target_instrument": target_instrument},
                 )
             )
         self._active_song_voices[hash(key_id)] = key_id
         self._assist_active_notes = getattr(self, "_assist_active_notes", {})
-        self._assist_active_notes[key_id] = notes
+        self._assist_active_notes[key_id] = (notes, target_instrument)
 
         if self.on_note_result and isinstance(target, NoteEvent):
             result = self.scoring.judge_hit(target, self._beat_to_wall_time_s(target.beat), target.note, ts_ns / 1e9)
@@ -343,10 +382,17 @@ class SongTrainer:
         return True
 
     def _release_assist_voice(self, key_id: str) -> None:
-        notes = getattr(self, "_assist_active_notes", {}).pop(key_id, None)
-        if not notes:
+        entry = getattr(self, "_assist_active_notes", {}).pop(key_id, None)
+        if not entry:
             return
+        notes, target_instrument = entry
         for n in notes:
             self.event_sink(
-                MusicEvent(type=EventType.NOTE_OFF, note=n, timestamp_ns=time.perf_counter_ns(), source=Source.ASSIST_ENGINE, metadata={"key_id": f"assist_{key_id}_{n}"})
+                MusicEvent(
+                    type=EventType.NOTE_OFF,
+                    note=n,
+                    timestamp_ns=time.perf_counter_ns(),
+                    source=Source.ASSIST_ENGINE,
+                    metadata={"key_id": f"assist_{key_id}_{n}", "target_instrument": target_instrument},
+                )
             )

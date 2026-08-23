@@ -1,0 +1,17 @@
+{
+  "name": "Instant Crush Bass",
+  "instrument": "bass_synth",
+  "description": "Warm, rounded, low-pass filtered sub+harmonic bass for the chorus benchmark -- deliberately distinct from the chord synth (spec: bass must not just be the chord synth playing a low note). No chorus/delay/reverb/stereo spread. Inspired-by approximation, not a claim of reproducing the actual recorded bass tone/performance.",
+  "params": {
+    "sub_level": 0.75,
+    "harmonic_level": 0.22,
+    "attack": 0.008,
+    "decay": 0.05,
+    "sustain": 0.85,
+    "release": 0.12,
+    "cutoff": 460.0,
+    "resonance": 0.05,
+    "filter_env_amount": 0.06,
+    "master_gain": 0.62
+  }
+}

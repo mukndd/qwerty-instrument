@@ -257,7 +257,14 @@ class AudioEngine:
 
     def _process_event(self, event: MusicEvent) -> None:
         et = event.type
-        active_name = self.active_instrument_name
+        # NOTE_ON/OFF/PITCH_BEND/EXPRESSION may target a specific instrument
+        # via metadata["target_instrument"] (used by autoplay layer routing:
+        # chords/bass/melody/lead_guitar can each sound through a different
+        # backend simultaneously) instead of "whatever is currently active".
+        # Manual QWERTY events never set this, so active_instrument_name
+        # keeps working exactly as before for them.
+        target = event.metadata.get("target_instrument") if event.metadata else None
+        active_name = target if (target and target in self.instruments) else self.active_instrument_name
         if et == EventType.NOTE_ON:
             if active_name and active_name in self.instruments:
                 self.instruments[active_name].note_on(event)

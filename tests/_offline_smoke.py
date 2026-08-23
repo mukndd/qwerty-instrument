@@ -12,6 +12,7 @@ import time
 import numpy as np
 
 from qwerty_instrument.audio.effects import Limiter
+from qwerty_instrument.audio.bass import BassSynth
 from qwerty_instrument.audio.guitar import GuitarLead
 from qwerty_instrument.audio.synth import ElectricPiano, SynthLead
 from qwerty_instrument.music.events import EventType, MusicEvent, Source
@@ -49,6 +50,7 @@ def main() -> int:
         (SynthLead, "SynthLead", [60, 64, 67]),
         (ElectricPiano, "ElectricPiano", [60, 64, 67]),
         (GuitarLead, "GuitarLead", [40, 45, 50]),
+        (BassSynth, "BassSynth", [29, 34, 41]),
     ]:
         inst = cls(SR, BLOCK)
         print(f"\n--- {name}: single note on/hold/off ---")

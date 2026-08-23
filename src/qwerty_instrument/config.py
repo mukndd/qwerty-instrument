@@ -57,7 +57,7 @@ DEFAULT_CONFIG: dict[str, Any] = {
     "instruments": {
         "default": "synth_lead",
         "cycle_order": ["synth_lead", "electric_piano", "guitar_lead"],
-        "polyphony": {"synth_lead": 16, "electric_piano": 16, "guitar_lead": 6},
+        "polyphony": {"synth_lead": 16, "electric_piano": 16, "guitar_lead": 6, "bass_synth": 6},
     },
     "practice": {
         "default_speed_percent": 100,

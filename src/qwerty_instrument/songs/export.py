@@ -115,6 +115,42 @@ def export_keymap_txt(mapping: KeyboardMapping) -> str:
     return "\n".join(lines)
 
 
+def generate_event_dump(song: Song, section_id: str) -> str:
+    """Precise onset/offset listing in beats, per bar, per layer -- for
+    inspecting exactly when every event starts, how long it lasts, and
+    where silence occurs (spec: articulation/timing debugging, not a GUI
+    editor). One line per event, grouped by bar within each layer.
+    """
+    section = song.section_by_id(section_id)
+    if section is None:
+        return f"No such section: {section_id!r}"
+
+    beats_per_bar = song.tempo_map.time_signature[0]
+    lines = [f"EVENT DUMP -- {song.title} / {section.name}", f"beats {section.start_beat:.2f}-{section.end_beat:.2f}, {beats_per_bar}/{song.tempo_map.time_signature[1]}", ""]
+
+    layers = sorted({e.layer for e in section.notes})
+    if not layers:
+        return "\n".join(lines) + "(no events in this section)\n"
+
+    for layer in layers:
+        lines.append(f"=== {layer.upper()} ===")
+        events = sorted((e for e in section.notes if e.layer == layer), key=lambda e: e.beat)
+        current_bar = None
+        for e in events:
+            bar = int(e.beat // beats_per_bar) + 1
+            if bar != current_bar:
+                lines.append(f"\nBAR {bar}")
+                current_bar = bar
+            on = e.beat
+            off = e.beat + e.duration_beats
+            label = e.name if isinstance(e, ChordEvent) else str(e.note)
+            pitches = ",".join(str(n) for n in e.notes) if isinstance(e, ChordEvent) else str(e.note)
+            lines.append(f"  {on:6.3f}  ON   {label:18s} [{pitches}]")
+            lines.append(f"  {off:6.3f}  OFF  {label}")
+        lines.append("")
+    return "\n".join(lines)
+
+
 def write_all_exports(song: Song, mapping: KeyboardMapping, exports_dir: Path, speed_percent: float = 100.0, filename_stem: str | None = None) -> dict[str, Path]:
     exports_dir = Path(exports_dir)
     exports_dir.mkdir(parents=True, exist_ok=True)
