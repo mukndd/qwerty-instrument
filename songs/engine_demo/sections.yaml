@@ -1,0 +1,7 @@
+sections:
+  - id: loop
+    name: "Loop"
+    start_beat: 0
+    end_beat: 16
+    difficulty: easy
+    loop_default: true

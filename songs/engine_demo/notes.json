@@ -1,0 +1,30 @@
+{
+  "_status": "Technical demo content for testing the engine (mixer/routing/Autoplay/Guided/Assist/Real). Not a transcription of any real song.",
+  "notes": [
+    {"beat": 0.0,  "duration_beats": 3.75, "note": 36, "velocity": 0.75, "layer": "bass", "section": "loop", "verification": "placeholder"},
+    {"beat": 4.0,  "duration_beats": 3.75, "note": 33, "velocity": 0.75, "layer": "bass", "section": "loop", "verification": "placeholder"},
+    {"beat": 8.0,  "duration_beats": 3.75, "note": 29, "velocity": 0.75, "layer": "bass", "section": "loop", "verification": "placeholder"},
+    {"beat": 12.0, "duration_beats": 3.75, "note": 31, "velocity": 0.75, "layer": "bass", "section": "loop", "verification": "placeholder"},
+
+    {"beat": 0.0,  "duration_beats": 1.5, "note": 67, "velocity": 0.85, "layer": "melody", "section": "loop", "verification": "placeholder"},
+    {"beat": 2.0,  "duration_beats": 1.0, "note": 64, "velocity": 0.8,  "layer": "melody", "section": "loop", "verification": "placeholder"},
+    {"beat": 3.0,  "duration_beats": 1.0, "note": 60, "velocity": 0.8,  "layer": "melody", "section": "loop", "verification": "placeholder"},
+
+    {"beat": 4.0,  "duration_beats": 1.5, "note": 69, "velocity": 0.85, "layer": "melody", "section": "loop", "verification": "placeholder"},
+    {"beat": 6.0,  "duration_beats": 1.0, "note": 72, "velocity": 0.9,  "layer": "melody", "section": "loop", "verification": "placeholder"},
+    {"beat": 7.0,  "duration_beats": 1.0, "note": 69, "velocity": 0.8,  "layer": "melody", "section": "loop", "verification": "placeholder"},
+
+    {"beat": 8.0,  "duration_beats": 1.5, "note": 65, "velocity": 0.85, "layer": "melody", "section": "loop", "verification": "placeholder"},
+    {"beat": 10.0, "duration_beats": 1.0, "note": 69, "velocity": 0.8,  "layer": "melody", "section": "loop", "verification": "placeholder"},
+    {"beat": 11.0, "duration_beats": 1.0, "note": 72, "velocity": 0.85, "layer": "melody", "section": "loop", "verification": "placeholder"},
+
+    {"beat": 12.0, "duration_beats": 2.0, "note": 67, "velocity": 0.85, "layer": "melody", "section": "loop", "verification": "placeholder"},
+    {"beat": 14.5, "duration_beats": 1.5, "note": 62, "velocity": 0.75, "layer": "melody", "section": "loop", "verification": "placeholder"}
+  ],
+  "chords": [
+    {"beat": 0.0,  "duration_beats": 3.75, "name": "C major",  "notes": [48, 52, 55], "layer": "chords", "section": "loop", "verification": "placeholder"},
+    {"beat": 4.0,  "duration_beats": 3.75, "name": "A minor",  "notes": [45, 48, 52], "layer": "chords", "section": "loop", "verification": "placeholder"},
+    {"beat": 8.0,  "duration_beats": 3.75, "name": "F major",  "notes": [41, 45, 48], "layer": "chords", "section": "loop", "verification": "placeholder"},
+    {"beat": 12.0, "duration_beats": 3.75, "name": "G major",  "notes": [43, 47, 50], "layer": "chords", "section": "loop", "verification": "placeholder"}
+  ]
+}

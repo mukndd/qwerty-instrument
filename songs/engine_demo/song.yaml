@@ -1,0 +1,22 @@
+# TECHNICAL DEMO SONG -- not Instant Crush, not any real song. Exists purely
+# so Autoplay/Guided/Assist/Real and the chords+bass+melody mixer can be
+# tested through the actual UI without waiting on real reference-derived
+# Instant Crush data (see songs/instant_crush/NOTES_STATUS.md for why that's
+# currently empty). An original 4-bar C-Am-F-G loop, chosen for being
+# simple and pleasant, nothing more.
+
+title: "Engine Demo (C-Am-F-G loop)"
+artist: "Technical test content -- not a real song"
+time_signature: [4, 4]
+
+tempo_events:
+  - beat: 0
+    bpm: 100.0
+
+notes_disclaimer: >
+  This is a technical demo song for testing the instrument engine (mixer,
+  layer routing, Autoplay/Guided/Assist/Real, keyboard highlighting) --
+  it is original test content, not a transcription of any real song.
+
+knob_actions: []
+instrument_changes: []
