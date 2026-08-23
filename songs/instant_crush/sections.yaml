@@ -15,16 +15,19 @@
 sections:
   - id: chorus
     name: "Chorus"
-    # PLACEHOLDER -- no verified timestamp for where the chorus starts.
-    start_beat: 32
-    end_beat: 96
+    # 8-bar (32-beat) Autoplay development-reference loop @ 110 BPM. Matches
+    # songs/instant_crush/notes.json's chords+bass skeleton. Still an
+    # APPROXIMATE / REFERENCE SKELETON, not a verified section boundary.
+    start_beat: 0
+    end_beat: 32
     difficulty: medium
     loop_default: true
 
   - id: lead_guitar
     name: "Lead / Electric Guitar (~3:18)"
     # Derived from the user-provided ~3:18 marker at the placeholder tempo.
-    # Re-derive once real tempo_events are imported.
+    # Re-derive once real tempo_events are imported. Not touched by the
+    # chorus-autoplay work -- still fully unverified.
     start_beat: 396
     end_beat: 428
     difficulty: hard

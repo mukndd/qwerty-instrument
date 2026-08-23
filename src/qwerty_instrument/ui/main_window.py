@@ -83,6 +83,12 @@ class MainWindow(QMainWindow):
         self.lead_guitar_banner.hide()
         root.addWidget(self.lead_guitar_banner)
 
+        self.autoplay_banner = QLabel("AUTOPLAY -- APPROXIMATE REFERENCE (not a verified transcription)")
+        self.autoplay_banner.setAlignment(Qt.AlignCenter)
+        self.autoplay_banner.setStyleSheet("background-color:#3f5f7a; color:white; font-size:16px; font-weight:bold; padding:5px;")
+        self.autoplay_banner.hide()
+        root.addWidget(self.autoplay_banner)
+
         self.timeline = TimelineWidget()
         root.addWidget(self.timeline)
 
@@ -115,6 +121,13 @@ class MainWindow(QMainWindow):
         self.song_combo.currentTextChanged.connect(self._on_song_selected)
         bar.addWidget(self.song_combo)
 
+        bar.addWidget(QLabel("Preset:"))
+        self.preset_combo = QComboBox()
+        self._preset_paths: dict[str, Path] = {}
+        self._reload_presets_list()
+        self.preset_combo.currentTextChanged.connect(self._on_preset_selected)
+        bar.addWidget(self.preset_combo)
+
         bar.addStretch(1)
 
         self.capture_btn = QPushButton("Capture: ON")
@@ -134,9 +147,17 @@ class MainWindow(QMainWindow):
         mode_group = QGroupBox("Mode")
         mode_layout = QVBoxLayout(mode_group)
         self.mode_combo = QComboBox()
-        self.mode_combo.addItems(["Real", "Guided", "Assist"])
+        self.mode_combo.addItems(["Real", "Guided", "Assist", "Autoplay"])
         self.mode_combo.currentTextChanged.connect(self._on_mode_selected)
         mode_layout.addWidget(self.mode_combo)
+        self.autoplay_layer_combo = QComboBox()
+        self.autoplay_layer_combo.addItems(["Chords", "Bass", "Chords + Bass"])
+        self.autoplay_layer_combo.setCurrentText("Chords + Bass")
+        self.autoplay_layer_combo.currentTextChanged.connect(self._on_autoplay_layer_selected)
+        mode_layout.addWidget(self.autoplay_layer_combo)
+        reload_preset_btn = QPushButton("Reload Preset")
+        reload_preset_btn.clicked.connect(lambda: self._on_preset_selected(self.preset_combo.currentText()))
+        mode_layout.addWidget(reload_preset_btn)
         layout.addWidget(mode_group)
 
         section_group = QGroupBox("Section")
@@ -247,6 +268,35 @@ class MainWindow(QMainWindow):
         if self.trainer:
             self.trainer.set_mode(PracticeMode(mode_text.lower()))
 
+    def _on_autoplay_layer_selected(self, text: str) -> None:
+        layers = {"Chords": ["chords"], "Bass": ["bass"], "Chords + Bass": ["chords", "bass"]}.get(text, ["chords", "bass"])
+        if self.trainer:
+            self.trainer.set_autoplay_layers(layers)
+
+    def _reload_presets_list(self) -> None:
+        from ..audio.presets import load_preset
+
+        self.preset_combo.clear()
+        self._preset_paths.clear()
+        for p in sorted(Path("presets").glob("*.json")):
+            preset = load_preset(p)
+            if preset:
+                self.preset_combo.addItem(preset.name)
+                self._preset_paths[preset.name] = p
+
+    def _on_preset_selected(self, name: str) -> None:
+        from ..audio.presets import apply_preset, load_preset
+
+        path = self._preset_paths.get(name)
+        if not path:
+            return
+        preset = load_preset(path)  # reload from disk every time -- fast iteration on the JSON file
+        if not preset:
+            return
+        backend = self.app.engine.instruments.get(preset.instrument)
+        if backend:
+            apply_preset(backend, preset)
+
     def _on_loop_toggled(self, checked: bool) -> None:
         if self.trainer:
             self.trainer.loop_enabled = checked
@@ -261,8 +311,15 @@ class MainWindow(QMainWindow):
             self.trainer.set_speed_percent(value)
 
     def _start_practice(self) -> None:
-        if self.trainer:
-            self.trainer.start()
+        if not self.trainer:
+            return
+        if self.trainer.mode == PracticeMode.AUTOPLAY and self.song_combo.currentText() == "instant_crush":
+            # Ensure the tuned Instant Crush patch is actually applied, not
+            # just sitting unused in presets/instant_crush_synth.json.
+            if "Instant Crush Synth" in self._preset_paths:
+                self.preset_combo.setCurrentText("Instant Crush Synth")
+                self._on_preset_selected("Instant Crush Synth")
+        self.trainer.start()
 
     def _stop_practice(self) -> None:
         if self.trainer:
@@ -286,12 +343,22 @@ class MainWindow(QMainWindow):
 
     def _tick(self) -> None:
         self._drain_feedback()
+        is_autoplay = False
         if self.trainer:
             self.trainer.tick()
             self.timeline.update_upcoming(self.trainer.upcoming_notes())
+            is_autoplay = self.trainer.mode == PracticeMode.AUTOPLAY
+            if is_autoplay:
+                mapped_keys = set()
+                for note in self.trainer.autoplay_sounding_notes:
+                    found = self.app.mapping.find_key_for_note(note)
+                    if found:
+                        mapped_keys.add(found[0])
+                self.keyboard_widget.set_state(held=mapped_keys)
 
         self.capture_btn.setText(f"Capture: {'ON' if self.app.keyboard.capture_enabled else 'OFF'}")
         self.lead_guitar_banner.setVisible(getattr(self.app, "_lead_guitar_mode", False))
+        self.autoplay_banner.setVisible(is_autoplay)
 
         self.mode_status.setText(f"MODE: {self.mode_combo.currentText().upper()}")
         self.instrument_status.setText(f"INSTRUMENT: {self.app.engine.active_instrument_name}")

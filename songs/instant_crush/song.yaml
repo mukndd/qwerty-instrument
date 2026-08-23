@@ -20,21 +20,22 @@ title: "Instant Crush"
 artist: "Daft Punk feat. Julian Casablancas"
 time_signature: [4, 4]
 
-# PLACEHOLDER tempo -- not verified against any source. 120 BPM is a
-# generic default, not a claim about this song's actual tempo. Replace
-# once a real MIDI/reference file is imported.
+# Working reference tempo: 110 BPM. Sourced from external song-metadata/
+# reference research, NOT measured against this project's own audio or a
+# verified MIDI file -- may be replaced once timing is checked against a
+# user-supplied local reference recording. Better than the old 120 BPM
+# generic placeholder, but still not "verified" in the notes.json sense.
 tempo_events:
   - beat: 0
-    bpm: 120.0
+    bpm: 110.0
 
 notes_disclaimer: >
-  No verified note transcription has been imported for Instant Crush yet.
-  Section boundaries below are structural placeholders derived from the
-  placeholder 120 BPM tempo and the user-provided approximate timestamps
-  (chorus early in the song; lead/electric-guitar material around ~3:18).
-  They have NOT been verified against the actual recording or a legitimate
-  MIDI file. Use tools/import_midi.py to import real data, then correct
-  tempo_events and songs/instant_crush/sections.yaml to match.
+  The chorus section now has an APPROXIMATE / REFERENCE SKELETON chord+bass
+  progression (songs/instant_crush/notes.json) for the Autoplay development
+  benchmark -- it is a harmony/bass approximation from documented chord
+  changes, NOT a verified melody transcription, and should not be treated
+  as ground truth. The lead/electric-guitar section (~3:18) remains fully
+  unverified placeholder. Use tools/import_midi.py to import real data.
 
 knob_actions: []
   # Once the lead-guitar section's real start_beat is known, add e.g.:

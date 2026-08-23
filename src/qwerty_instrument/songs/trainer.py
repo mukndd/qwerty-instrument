@@ -30,6 +30,7 @@ class PracticeMode(Enum):
     REAL = "real"
     GUIDED = "guided"
     ASSIST = "assist"
+    AUTOPLAY = "autoplay"
 
 
 class AssistStyle(Enum):
@@ -83,6 +84,13 @@ class SongTrainer:
         self._pending_events: list[NoteEvent | ChordEvent] = []  # not yet judged, sorted by beat
         self._active_song_voices: dict[int, str] = {}  # note -> key_id used for the emitted event
 
+        # Autoplay (spec: song data -> scheduler -> MusicEvent -> existing
+        # AudioEngine/instrument/FX -- same path QWERTY playing uses).
+        self.autoplay_layers: list[str] = ["chords", "bass"]
+        self._autoplay_queue: list[NoteEvent | ChordEvent] = []
+        self._autoplay_active: list[tuple[NoteEvent | ChordEvent, float, list[int], list[str]]] = []
+        self.autoplay_sounding_notes: set[int] = set()  # for UI key-highlighting via find_key_for_note()
+
         self.on_note_result: Callable[[NoteResult], None] | None = None
         self.on_section_looped: Callable[[], None] | None = None
 
@@ -101,7 +109,12 @@ class SongTrainer:
     def set_speed_percent(self, percent: float) -> None:
         self.clock.set_speed_percent(percent)
 
+    def set_autoplay_layers(self, layers: list[str]) -> None:
+        self.autoplay_layers = list(layers)
+
     def set_mode(self, mode: PracticeMode) -> None:
+        if self.mode == PracticeMode.AUTOPLAY and mode != PracticeMode.AUTOPLAY:
+            self._stop_autoplay_notes()  # changing mode must stop outstanding autoplay voices
         self.mode = mode
 
     # ---- transport --------------------------------------------------------------
@@ -109,19 +122,28 @@ class SongTrainer:
     def start(self, from_beat: float | None = None) -> None:
         if self.current_section is None:
             return
+        self._stop_autoplay_notes()  # defensive: never leave a previous run's voices dangling
         self._start_beat = self.current_section.start_beat if from_beat is None else from_beat
         self._start_perf_time = time.perf_counter()
         self._last_metronome_beat_int = int(self._start_beat) - 1
-        self._pending_events = sorted(
-            (e for e in self.current_section.notes if e.layer == self._active_layer and e.beat >= self._start_beat),
-            key=lambda e: e.beat,
-        )
+
+        if self.mode == PracticeMode.AUTOPLAY:
+            self._autoplay_queue = sorted(
+                (e for e in self.current_section.notes if e.layer in self.autoplay_layers and e.beat >= self._start_beat),
+                key=lambda e: e.beat,
+            )
+        else:
+            self._pending_events = sorted(
+                (e for e in self.current_section.notes if e.layer == self._active_layer and e.beat >= self._start_beat),
+                key=lambda e: e.beat,
+            )
         self.playing = True
         self.event_sink(MusicEvent(type=EventType.TRANSPORT_START, timestamp_ns=time.perf_counter_ns(), source=Source.SONG_PLAYBACK))
 
     def stop(self) -> None:
         if self.playing:
             self.event_sink(MusicEvent(type=EventType.TRANSPORT_STOP, timestamp_ns=time.perf_counter_ns(), source=Source.SONG_PLAYBACK))
+        self._stop_autoplay_notes()
         self.playing = False
         self._start_perf_time = None
 
@@ -149,6 +171,17 @@ class SongTrainer:
                 self._last_metronome_beat_int = beat_int
                 self._emit_metronome_click()
 
+        if self.mode == PracticeMode.AUTOPLAY:
+            self._tick_autoplay(beat)
+            if beat >= self.current_section.end_beat:
+                if self.loop_enabled:
+                    if self.on_section_looped:
+                        self.on_section_looped()
+                    self.start(from_beat=self.current_section.start_beat)  # start() clears/rebuilds cleanly, no stuck notes
+                else:
+                    self.stop()
+            return
+
         if beat >= self.current_section.end_beat:
             if self.loop_enabled:
                 if self.on_section_looped:
@@ -160,6 +193,44 @@ class SongTrainer:
 
         if self.mode != PracticeMode.ASSIST:
             self._check_for_misses(beat)
+
+    # ---- Autoplay: song data -> scheduler -> MusicEvent -> existing engine ----
+
+    def _tick_autoplay(self, beat: float) -> None:
+        still_active = []
+        for entry in self._autoplay_active:
+            event, end_beat, notes, key_ids = entry
+            if beat >= end_beat:
+                self._emit_autoplay_off(notes, key_ids)
+            else:
+                still_active.append(entry)
+        self._autoplay_active = still_active
+
+        while self._autoplay_queue and self._autoplay_queue[0].beat <= beat:
+            event = self._autoplay_queue.pop(0)
+            notes = list(event.notes) if isinstance(event, ChordEvent) else [event.note]
+            velocity = event.velocity if isinstance(event, NoteEvent) else 0.75
+            ts = time.perf_counter_ns()
+            key_ids = [f"autoplay_{event.layer}_{event.beat}_{n}" for n in notes]
+            for n, key_id in zip(notes, key_ids):
+                self.event_sink(
+                    MusicEvent(type=EventType.NOTE_ON, note=n, velocity=velocity, timestamp_ns=ts, source=Source.SONG_PLAYBACK, metadata={"key_id": key_id})
+                )
+                self.autoplay_sounding_notes.add(n)
+            self._autoplay_active.append((event, event.beat + event.duration_beats, notes, key_ids))
+
+    def _emit_autoplay_off(self, notes: list[int], key_ids: list[str]) -> None:
+        ts = time.perf_counter_ns()
+        for n, key_id in zip(notes, key_ids):
+            self.event_sink(MusicEvent(type=EventType.NOTE_OFF, note=n, timestamp_ns=ts, source=Source.SONG_PLAYBACK, metadata={"key_id": key_id}))
+            self.autoplay_sounding_notes.discard(n)
+
+    def _stop_autoplay_notes(self) -> None:
+        for event, end_beat, notes, key_ids in self._autoplay_active:
+            self._emit_autoplay_off(notes, key_ids)
+        self._autoplay_active = []
+        self._autoplay_queue = []
+        self.autoplay_sounding_notes = set()
 
     def _check_for_misses(self, current_beat: float) -> None:
         late_beats = self.timing_windows.late_ms / 1000.0 * (self.clock.tempo_map.bpm_at_beat(current_beat) / 60.0)
