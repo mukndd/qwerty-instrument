@@ -1,0 +1,250 @@
+[
+  {
+    "start_seconds": 209.769,
+    "end_seconds": 210.303,
+    "root_pitch_class": "A#",
+    "quality": "min",
+    "confidence": 0.302,
+    "source_stem": "full_mix"
+  },
+  {
+    "start_seconds": 210.303,
+    "end_seconds": 210.86,
+    "root_pitch_class": "A#",
+    "quality": "maj",
+    "confidence": 0.298,
+    "source_stem": "full_mix"
+  },
+  {
+    "start_seconds": 210.86,
+    "end_seconds": 211.394,
+    "root_pitch_class": "A#",
+    "quality": "min",
+    "confidence": 0.209,
+    "source_stem": "full_mix"
+  },
+  {
+    "start_seconds": 211.394,
+    "end_seconds": 211.952,
+    "root_pitch_class": "F#",
+    "quality": "min",
+    "confidence": 0.209,
+    "source_stem": "full_mix"
+  },
+  {
+    "start_seconds": 211.952,
+    "end_seconds": 212.486,
+    "root_pitch_class": "F#",
+    "quality": "maj",
+    "confidence": 0.443,
+    "source_stem": "full_mix"
+  },
+  {
+    "start_seconds": 212.486,
+    "end_seconds": 213.02,
+    "root_pitch_class": "F#",
+    "quality": "maj",
+    "confidence": 0.233,
+    "source_stem": "full_mix"
+  },
+  {
+    "start_seconds": 213.02,
+    "end_seconds": 213.577,
+    "root_pitch_class": "F#",
+    "quality": "maj",
+    "confidence": 0.257,
+    "source_stem": "full_mix"
+  },
+  {
+    "start_seconds": 213.577,
+    "end_seconds": 214.134,
+    "root_pitch_class": "D#",
+    "quality": "min",
+    "confidence": 0.206,
+    "source_stem": "full_mix"
+  },
+  {
+    "start_seconds": 214.134,
+    "end_seconds": 214.668,
+    "root_pitch_class": "D#",
+    "quality": "min",
+    "confidence": 0.386,
+    "source_stem": "full_mix"
+  },
+  {
+    "start_seconds": 214.668,
+    "end_seconds": 215.203,
+    "root_pitch_class": "D#",
+    "quality": "min",
+    "confidence": 0.376,
+    "source_stem": "full_mix"
+  },
+  {
+    "start_seconds": 215.203,
+    "end_seconds": 215.76,
+    "root_pitch_class": "D#",
+    "quality": "min",
+    "confidence": 0.331,
+    "source_stem": "full_mix"
+  },
+  {
+    "start_seconds": 215.76,
+    "end_seconds": 216.317,
+    "root_pitch_class": "G#",
+    "quality": "maj",
+    "confidence": 0.355,
+    "source_stem": "full_mix"
+  },
+  {
+    "start_seconds": 216.317,
+    "end_seconds": 216.851,
+    "root_pitch_class": "G#",
+    "quality": "maj",
+    "confidence": 0.389,
+    "source_stem": "full_mix"
+  },
+  {
+    "start_seconds": 216.851,
+    "end_seconds": 217.385,
+    "root_pitch_class": "G#",
+    "quality": "maj",
+    "confidence": 0.41,
+    "source_stem": "full_mix"
+  },
+  {
+    "start_seconds": 217.385,
+    "end_seconds": 217.942,
+    "root_pitch_class": "F",
+    "quality": "min",
+    "confidence": 0.449,
+    "source_stem": "full_mix"
+  },
+  {
+    "start_seconds": 217.942,
+    "end_seconds": 218.5,
+    "root_pitch_class": "C#",
+    "quality": "maj",
+    "confidence": 0.323,
+    "source_stem": "full_mix"
+  },
+  {
+    "start_seconds": 218.5,
+    "end_seconds": 219.034,
+    "root_pitch_class": "A#",
+    "quality": "min",
+    "confidence": 0.338,
+    "source_stem": "full_mix"
+  },
+  {
+    "start_seconds": 219.034,
+    "end_seconds": 219.591,
+    "root_pitch_class": "A#",
+    "quality": "min",
+    "confidence": 0.325,
+    "source_stem": "full_mix"
+  },
+  {
+    "start_seconds": 219.591,
+    "end_seconds": 220.125,
+    "root_pitch_class": "A#",
+    "quality": "maj",
+    "confidence": 0.205,
+    "source_stem": "full_mix"
+  },
+  {
+    "start_seconds": 220.125,
+    "end_seconds": 220.682,
+    "root_pitch_class": "D",
+    "quality": "maj",
+    "confidence": 0.332,
+    "source_stem": "full_mix"
+  },
+  {
+    "start_seconds": 220.682,
+    "end_seconds": 221.217,
+    "root_pitch_class": "F#",
+    "quality": "maj",
+    "confidence": 0.486,
+    "source_stem": "full_mix"
+  },
+  {
+    "start_seconds": 221.217,
+    "end_seconds": 221.751,
+    "root_pitch_class": "D#",
+    "quality": "min",
+    "confidence": 0.217,
+    "source_stem": "full_mix"
+  },
+  {
+    "start_seconds": 221.751,
+    "end_seconds": 222.331,
+    "root_pitch_class": "F#",
+    "quality": "min",
+    "confidence": 0.181,
+    "source_stem": "full_mix"
+  },
+  {
+    "start_seconds": 222.331,
+    "end_seconds": 222.865,
+    "root_pitch_class": "D#",
+    "quality": "min",
+    "confidence": 0.237,
+    "source_stem": "full_mix"
+  },
+  {
+    "start_seconds": 222.865,
+    "end_seconds": 223.399,
+    "root_pitch_class": "D#",
+    "quality": "min",
+    "confidence": 0.366,
+    "source_stem": "full_mix"
+  },
+  {
+    "start_seconds": 223.399,
+    "end_seconds": 223.933,
+    "root_pitch_class": "D#",
+    "quality": "min",
+    "confidence": 0.317,
+    "source_stem": "full_mix"
+  },
+  {
+    "start_seconds": 223.933,
+    "end_seconds": 224.491,
+    "root_pitch_class": "D#",
+    "quality": "maj",
+    "confidence": 0.421,
+    "source_stem": "full_mix"
+  },
+  {
+    "start_seconds": 224.491,
+    "end_seconds": 225.048,
+    "root_pitch_class": "G#",
+    "quality": "maj",
+    "confidence": 0.326,
+    "source_stem": "full_mix"
+  },
+  {
+    "start_seconds": 225.048,
+    "end_seconds": 225.582,
+    "root_pitch_class": "G#",
+    "quality": "maj",
+    "confidence": 0.307,
+    "source_stem": "full_mix"
+  },
+  {
+    "start_seconds": 225.582,
+    "end_seconds": 226.116,
+    "root_pitch_class": "G#",
+    "quality": "maj",
+    "confidence": 0.288,
+    "source_stem": "full_mix"
+  },
+  {
+    "start_seconds": 226.116,
+    "end_seconds": 226.673,
+    "root_pitch_class": "C#",
+    "quality": "maj",
+    "confidence": 0.43,
+    "source_stem": "full_mix"
+  }
+]

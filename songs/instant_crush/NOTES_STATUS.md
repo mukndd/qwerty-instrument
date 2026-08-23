@@ -1,58 +1,78 @@
 # Instant Crush -- data verification status
 
 This file exists so it's never ambiguous what is and isn't real in this
-song profile.
+song profile. **Accuracy pass v3** rebuilt this from scratch around a real
+local reference recording -- read this before trusting anything below.
 
-## What's real
+## What's real (measured from the local reference recording)
 
-- The song exists as a loadable profile (`song.yaml`, `sections.yaml`)
-  with two sections matching the priorities in the project brief:
-  **Chorus** and **Lead / Electric Guitar (~3:18)**.
-- The Real/Guided/Assist/Autoplay practice engine, section looping, speed
-  control, and practice-sheet exporter all work against this profile today.
-- `~3:18` for the lead-guitar section is the timestamp you provided;
-  everything else in `sections.yaml` is a placeholder computed from it.
-- `tempo_events` uses 110 BPM, sourced from external song-metadata
-  research (not measured against this project's own audio -- see
-  `song.yaml`'s comment).
+- **Tempo**: 112.35 BPM, measured via two independent librosa methods
+  (beat-tracking + tempogram) that agreed within 1 BPM. Replaces the
+  earlier 110/120 BPM guesses. See
+  `reference_analysis/beat_grid.json`.
+- **Chorus section timing**: 209.77s-227.23s, found via chroma
+  self-similarity (0.999 match score -- the most self-repeating 32-beat
+  window in the song). This is a heuristic ("chorus-like" = "repeats"),
+  not a human-confirmed structural label. See `reference_analysis/sections.json`.
+- **Lead-guitar section**: still the user-provided ~3:18 approximate
+  timestamp, recomputed at the corrected tempo; its end has been trimmed
+  to where the measured chorus candidate begins (an inference, not a
+  verified boundary).
 
 ## What's NOT real (yet)
 
-- **Chorus chords/bass/melody** (`notes.json`): an APPROXIMATE / REFERENCE
-  SKELETON -- chords follow a documented chord-change sequence, the melody
-  is an original musically-defensible sketch (not a transcription of the
-  actual vocal line), and the bass follows the chord roots/inversions.
-  Every event is explicitly `"verification": "placeholder"`, never
-  `"verified"`. This is a development benchmark for Autoplay/Guided/
-  Assist/Real, not a claim of matching the real recording note-for-note.
-- **Lead-guitar section**: still fully unverified, no notes.json content
-  at all (untouched by the chorus accuracy pass).
-- **Section boundaries**: `start_beat`/`end_beat` in `sections.yaml` are
-  still placeholders, not verified timestamps (the chorus's 32-beat/8-bar
-  length is a development-benchmark choice, not a measured section length).
+- **Melody, chords, bass content**: none. A full-mix analysis pass ran
+  (`tools/analyze_reference.py`, no stem separation available -- Demucs/
+  torch is a multi-GB dependency chain not installed in this environment)
+  and produced candidate pitch/chord data, but confidence was too low to
+  teach as fact:
+  - melody: 43 candidates, mean confidence **0.01** (essentially noise --
+    pyin found almost nothing it considered clearly voiced/pitched in the
+    full mix)
+  - bass: 69 candidates, mean confidence **0.06**, max **0.21**
+  - harmony (chroma template matching): 31 candidates, mean confidence
+    **0.32**
+  
+  See `reference_analysis/reports/analysis_report.txt` and
+  `reference_analysis/candidates/*.json` for the raw numbers.
+- **A previous pass's invented chord/melody data has been archived**
+  (`archive/notes_v2_synthetic_reference.json`) and is **not loaded** as
+  canonical data anymore. It was built from a documented chord-change
+  sequence and an original melodic sketch -- not the actual recording --
+  and user feedback was that it sounded like a different song. It will
+  not be resurrected as canonical/learnable content.
 
-Nothing here was invented to "fill in" a transcription -- the project
-explicitly refuses to teach notes that haven't been verified. See
-`tools/reference_inspect.py` if you want to calibrate timing against a
-legally-obtained local reference file (never committed -- see
-`.gitignore`).
+Nothing here was invented to "fill in" a transcription. The canonical
+`notes.json` is honestly empty for the chorus right now. `SongTrainer.has_playable_data()`
+gates Autoplay/Guided/Assist/Real so the app tells you "REFERENCE
+TRANSCRIPTION NOT READY" rather than silently playing/teaching nothing,
+or worse, silently teaching a guess.
 
 ## How to add real data
 
-1. Obtain a MIDI file or your own transcription **legally** (purchase,
-   license, or your own manual transcription by ear). This project does
-   not download, scrape, or bundle copyrighted audio or MIDI.
-2. Run the importer:
-   ```
-   .venv\Scripts\python.exe tools\import_midi.py path\to\your_file.mid
-   ```
-   It will show you every track, channel, instrument, and tempo event in
-   the file, let you pick which track(s) to use for melody/chords/bass/
-   lead guitar, and can write a `notes.json` into this directory.
-3. Correct `tempo_events` in `song.yaml` and `start_beat`/`end_beat` in
-   `sections.yaml` to match what the MIDI file actually reports (the
-   importer prints the real tempo and duration to help with this).
-4. Re-run the practice-sheet exporter; it will now include the real notes
-   instead of an empty/placeholder section.
+**Path A -- MIDI import (preferred if you have/can make one):**
+```
+.venv\Scripts\python.exe tools\import_midi.py path\to\your_file.mid
+```
 
-See `docs/ADDING_SONGS.md` for the full song data format.
+**Path B -- improve the reference-analysis pipeline:**
+1. The biggest lever is stem separation (isolating vocals/bass before
+   pitch-tracking) -- not attempted here due to the Demucs/torch dependency
+   size. If you can install it locally: separate `instant_crush.mp3`,
+   re-run `tools/analyze_reference.py` pointed at the vocal/bass stems
+   instead of the full mix, and confidence should improve substantially.
+2. Or manually correct/hand-edit the low-confidence candidates in
+   `reference_analysis/candidates/*.json` by ear, using
+   `tools/reference_inspect.py --start SS --end EE --onsets` to check
+   timing against the actual audio.
+3. Once you're confident in some events, promote them:
+   ```
+   .venv\Scripts\python.exe tools\build_reference_song.py --section chorus --min-confidence 0.6
+   ```
+   This only writes events that clear the threshold, marked
+   `"verification": "reference_derived"` (never `"verified"`) with their
+   confidence and exact-seconds timing preserved.
+
+See `docs/ADDING_SONGS.md` for the full song data format, and
+`docs/ARCHITECTURE.md` for how reference-derived timing (seconds) and the
+beat grid coexist.

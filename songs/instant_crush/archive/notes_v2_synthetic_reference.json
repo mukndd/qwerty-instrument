@@ -1,0 +1,423 @@
+{
+  "_archived_reason": "V2 pass invented this chord/bass/melody data from a documented chord-change sequence + an original melodic sketch, NOT from the actual recording. User feedback: it sounded like a different song in tune/melody/phrasing. Archived (accuracy pass v3) in favor of songs/instant_crush/reference_analysis/ -- real audio measurement -- once that reaches usable confidence. Kept for history only; NEVER load this as canonical/learnable data again.",
+  "_status": "APPROXIMATE / REFERENCE SKELETON -- a development benchmark for Autoplay/Guided/Assist/Real, derived from a documented chord-change sequence plus a musically-defensible original melodic sketch. NOT a verified transcription of the actual recording. verification is intentionally 'placeholder' throughout, never 'verified'.",
+  "_v2_changes": "Accuracy pass v2: revoiced chords down ~1 octave (root now oct2, was oct3-4 compact triads); removed the 0.5-beat full-chord pickup stabs that read as a pluck/tick -- each bar's main chord now ends 0.25 beat early (a real rest) and transition chords get 1.5 beats instead of 0.5 so they read as a harmonic color shift, not a stab; added small rests to the bass; added a new 'melody' layer with varied durations/rests/syncopation instead of a flat chord chart. Chords/bass/melody now route to distinct instruments via SongTrainer.layer_routes (chords+melody -> synth_lead/Instant Crush Synth, bass -> bass_synth/Instant Crush Bass).",
+  "_bars": "8 bars @ 110 BPM, 4/4 (beats 0-32), matching Bbm | Bbm->Ab | Gb | Gb->Fm | Ebm | Ebm->Bbm(1st inv) | Ab(1st inv) | Fm. 'notes' = bass (plain NoteEvents) + melody; 'chords' = chords layer.",
+  "notes": [
+    {
+      "beat": 0.0,
+      "duration_beats": 3.75,
+      "note": 34,
+      "velocity": 0.75,
+      "layer": "bass",
+      "section": "chorus",
+      "verification": "placeholder"
+    },
+    {
+      "beat": 4.0,
+      "duration_beats": 3.75,
+      "note": 32,
+      "velocity": 0.75,
+      "layer": "bass",
+      "section": "chorus",
+      "verification": "placeholder"
+    },
+    {
+      "beat": 8.0,
+      "duration_beats": 3.75,
+      "note": 30,
+      "velocity": 0.75,
+      "layer": "bass",
+      "section": "chorus",
+      "verification": "placeholder"
+    },
+    {
+      "beat": 12.0,
+      "duration_beats": 3.75,
+      "note": 29,
+      "velocity": 0.75,
+      "layer": "bass",
+      "section": "chorus",
+      "verification": "placeholder"
+    },
+    {
+      "beat": 16.0,
+      "duration_beats": 3.75,
+      "note": 27,
+      "velocity": 0.75,
+      "layer": "bass",
+      "section": "chorus",
+      "verification": "placeholder"
+    },
+    {
+      "beat": 20.0,
+      "duration_beats": 3.75,
+      "note": 37,
+      "velocity": 0.75,
+      "layer": "bass",
+      "section": "chorus",
+      "verification": "placeholder"
+    },
+    {
+      "beat": 24.0,
+      "duration_beats": 3.75,
+      "note": 36,
+      "velocity": 0.75,
+      "layer": "bass",
+      "section": "chorus",
+      "verification": "placeholder"
+    },
+    {
+      "beat": 28.0,
+      "duration_beats": 3.75,
+      "note": 29,
+      "velocity": 0.75,
+      "layer": "bass",
+      "section": "chorus",
+      "verification": "placeholder"
+    },
+    {
+      "beat": 0.0,
+      "duration_beats": 1.5,
+      "note": 65,
+      "velocity": 0.85,
+      "layer": "melody",
+      "section": "chorus",
+      "verification": "placeholder"
+    },
+    {
+      "beat": 2.0,
+      "duration_beats": 1.0,
+      "note": 73,
+      "velocity": 0.9,
+      "layer": "melody",
+      "section": "chorus",
+      "verification": "placeholder"
+    },
+    {
+      "beat": 3.0,
+      "duration_beats": 1.0,
+      "note": 70,
+      "velocity": 0.8,
+      "layer": "melody",
+      "section": "chorus",
+      "verification": "placeholder"
+    },
+    {
+      "beat": 4.0,
+      "duration_beats": 1.5,
+      "note": 65,
+      "velocity": 0.8,
+      "layer": "melody",
+      "section": "chorus",
+      "verification": "placeholder"
+    },
+    {
+      "beat": 6.0,
+      "duration_beats": 1.0,
+      "note": 68,
+      "velocity": 0.85,
+      "layer": "melody",
+      "section": "chorus",
+      "verification": "placeholder"
+    },
+    {
+      "beat": 7.0,
+      "duration_beats": 1.0,
+      "note": 75,
+      "velocity": 0.9,
+      "layer": "melody",
+      "section": "chorus",
+      "verification": "placeholder"
+    },
+    {
+      "beat": 8.0,
+      "duration_beats": 1.5,
+      "note": 73,
+      "velocity": 0.85,
+      "layer": "melody",
+      "section": "chorus",
+      "verification": "placeholder"
+    },
+    {
+      "beat": 10.0,
+      "duration_beats": 1.0,
+      "note": 70,
+      "velocity": 0.8,
+      "layer": "melody",
+      "section": "chorus",
+      "verification": "placeholder"
+    },
+    {
+      "beat": 11.0,
+      "duration_beats": 1.0,
+      "note": 66,
+      "velocity": 0.75,
+      "layer": "melody",
+      "section": "chorus",
+      "verification": "placeholder"
+    },
+    {
+      "beat": 12.0,
+      "duration_beats": 1.5,
+      "note": 73,
+      "velocity": 0.8,
+      "layer": "melody",
+      "section": "chorus",
+      "verification": "placeholder"
+    },
+    {
+      "beat": 14.0,
+      "duration_beats": 1.0,
+      "note": 72,
+      "velocity": 0.85,
+      "layer": "melody",
+      "section": "chorus",
+      "verification": "placeholder"
+    },
+    {
+      "beat": 15.0,
+      "duration_beats": 1.0,
+      "note": 68,
+      "velocity": 0.9,
+      "layer": "melody",
+      "section": "chorus",
+      "verification": "placeholder"
+    },
+    {
+      "beat": 16.0,
+      "duration_beats": 1.5,
+      "note": 66,
+      "velocity": 0.85,
+      "layer": "melody",
+      "section": "chorus",
+      "verification": "placeholder"
+    },
+    {
+      "beat": 18.0,
+      "duration_beats": 1.0,
+      "note": 70,
+      "velocity": 0.9,
+      "layer": "melody",
+      "section": "chorus",
+      "verification": "placeholder"
+    },
+    {
+      "beat": 19.0,
+      "duration_beats": 1.0,
+      "note": 75,
+      "velocity": 0.85,
+      "layer": "melody",
+      "section": "chorus",
+      "verification": "placeholder"
+    },
+    {
+      "beat": 20.0,
+      "duration_beats": 1.5,
+      "note": 70,
+      "velocity": 0.8,
+      "layer": "melody",
+      "section": "chorus",
+      "verification": "placeholder"
+    },
+    {
+      "beat": 22.0,
+      "duration_beats": 1.0,
+      "note": 66,
+      "velocity": 0.8,
+      "layer": "melody",
+      "section": "chorus",
+      "verification": "placeholder"
+    },
+    {
+      "beat": 23.0,
+      "duration_beats": 1.0,
+      "note": 65,
+      "velocity": 0.85,
+      "layer": "melody",
+      "section": "chorus",
+      "verification": "placeholder"
+    },
+    {
+      "beat": 24.0,
+      "duration_beats": 2.0,
+      "note": 75,
+      "velocity": 0.9,
+      "layer": "melody",
+      "section": "chorus",
+      "verification": "placeholder"
+    },
+    {
+      "beat": 26.5,
+      "duration_beats": 1.5,
+      "note": 72,
+      "velocity": 0.8,
+      "layer": "melody",
+      "section": "chorus",
+      "verification": "placeholder"
+    },
+    {
+      "beat": 28.0,
+      "duration_beats": 1.5,
+      "note": 68,
+      "velocity": 0.8,
+      "layer": "melody",
+      "section": "chorus",
+      "verification": "placeholder"
+    },
+    {
+      "beat": 30.0,
+      "duration_beats": 2.0,
+      "note": 65,
+      "velocity": 0.75,
+      "layer": "melody",
+      "section": "chorus",
+      "verification": "placeholder"
+    }
+  ],
+  "chords": [
+    {
+      "beat": 0.0,
+      "duration_beats": 3.75,
+      "name": "Bb minor",
+      "notes": [
+        46,
+        49,
+        53
+      ],
+      "layer": "chords",
+      "section": "chorus",
+      "verification": "placeholder"
+    },
+    {
+      "beat": 4.0,
+      "duration_beats": 2.5,
+      "name": "Bb minor",
+      "notes": [
+        46,
+        49,
+        53
+      ],
+      "layer": "chords",
+      "section": "chorus",
+      "verification": "placeholder"
+    },
+    {
+      "beat": 6.5,
+      "duration_beats": 1.5,
+      "name": "Ab major",
+      "notes": [
+        44,
+        48,
+        51
+      ],
+      "layer": "chords",
+      "section": "chorus",
+      "verification": "placeholder"
+    },
+    {
+      "beat": 8.0,
+      "duration_beats": 3.75,
+      "name": "Gb major",
+      "notes": [
+        42,
+        46,
+        49
+      ],
+      "layer": "chords",
+      "section": "chorus",
+      "verification": "placeholder"
+    },
+    {
+      "beat": 12.0,
+      "duration_beats": 2.5,
+      "name": "Gb major",
+      "notes": [
+        42,
+        46,
+        49
+      ],
+      "layer": "chords",
+      "section": "chorus",
+      "verification": "placeholder"
+    },
+    {
+      "beat": 14.5,
+      "duration_beats": 1.5,
+      "name": "F minor",
+      "notes": [
+        41,
+        44,
+        48
+      ],
+      "layer": "chords",
+      "section": "chorus",
+      "verification": "placeholder"
+    },
+    {
+      "beat": 16.0,
+      "duration_beats": 3.75,
+      "name": "Eb minor",
+      "notes": [
+        39,
+        42,
+        46
+      ],
+      "layer": "chords",
+      "section": "chorus",
+      "verification": "placeholder"
+    },
+    {
+      "beat": 20.0,
+      "duration_beats": 2.5,
+      "name": "Eb minor",
+      "notes": [
+        39,
+        42,
+        46
+      ],
+      "layer": "chords",
+      "section": "chorus",
+      "verification": "placeholder"
+    },
+    {
+      "beat": 22.5,
+      "duration_beats": 1.5,
+      "name": "Bb minor 1st inv",
+      "notes": [
+        49,
+        53,
+        58
+      ],
+      "layer": "chords",
+      "section": "chorus",
+      "verification": "placeholder"
+    },
+    {
+      "beat": 24.0,
+      "duration_beats": 3.75,
+      "name": "Ab major 1st inv",
+      "notes": [
+        48,
+        51,
+        56
+      ],
+      "layer": "chords",
+      "section": "chorus",
+      "verification": "placeholder"
+    },
+    {
+      "beat": 28.0,
+      "duration_beats": 3.75,
+      "name": "F minor",
+      "notes": [
+        41,
+        44,
+        48
+      ],
+      "layer": "chords",
+      "section": "chorus",
+      "verification": "placeholder"
+    }
+  ]
+}

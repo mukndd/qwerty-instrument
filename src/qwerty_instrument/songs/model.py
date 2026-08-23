@@ -18,13 +18,20 @@ class NoteVerification(Enum):
     """Provenance of a note's pitch/timing data.
 
     VERIFIED means it came from a user-supplied MIDI/reference file via
-    tools/import_midi.py. PLACEHOLDER means the section exists in the song
-    structure but no verified transcription has been imported yet -- the
-    trainer and UI must show this distinction, never silently teach a
-    guessed note as if it were confirmed (spec section 13/57).
+    tools/import_midi.py -- a symbolic source, exact by construction.
+    REFERENCE_DERIVED means it was algorithmically extracted from a local
+    audio reference recording (tools/analyze_reference.py) -- real audio
+    evidence, but pitch/onset detection is inherently uncertain, so these
+    events also carry a `confidence` value and must never be silently
+    promoted to VERIFIED just because software produced them.
+    PLACEHOLDER means the section exists in the song structure but no
+    transcription (of either kind) exists yet -- the trainer and UI must
+    show this distinction, never silently teach a guessed/derived note as
+    if it were confirmed (spec section 13/57).
     """
 
     VERIFIED = "verified"
+    REFERENCE_DERIVED = "reference_derived"
     PLACEHOLDER = "placeholder"
 
 
@@ -36,6 +43,16 @@ class NoteEvent:
     velocity: float = 0.9
     layer: str = "melody"  # melody | chords | bass | lead_guitar (song-defined, not fixed)
     verification: NoteVerification = NoteVerification.PLACEHOLDER
+    # Optional high-precision timing from a real audio reference (seconds,
+    # relative to the song's start). When present, autoplay prefers this
+    # over the beat/duration_beats grid at 100% speed (scaled proportionally
+    # at other speeds) -- see music/timing.py and docs/ARCHITECTURE.md.
+    # None means "beat-only", preserving backward compatibility with every
+    # existing hand-authored/MIDI-imported song file.
+    start_seconds: float | None = None
+    duration_seconds: float | None = None
+    confidence: float | None = None  # 0..1, set for REFERENCE_DERIVED events
+    source: str | None = None  # e.g. "local_reference_audio"
 
 
 @dataclass(slots=True)
@@ -46,6 +63,10 @@ class ChordEvent:
     notes: list[int]
     layer: str = "chords"
     verification: NoteVerification = NoteVerification.PLACEHOLDER
+    start_seconds: float | None = None
+    duration_seconds: float | None = None
+    confidence: float | None = None
+    source: str | None = None
 
 
 @dataclass(slots=True)

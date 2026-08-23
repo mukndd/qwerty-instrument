@@ -32,6 +32,14 @@ songs/**/reference/*
 songs/**/*.mid
 !songs/**/fixtures/*.mid
 
+# reference-analysis output: JSON/text metadata (no audio) may be tracked
+# for transparency/reproducibility, but any generated audio/stems/clips
+# never are -- *.wav/*.mp3/*.flac above already catch these, stated
+# explicitly here too since this is exactly where they'd land:
+songs/**/reference_analysis/stems/
+songs/**/reference_analysis/**/*.wav
+renders/
+
 # user-provided VST files / sample libraries
 vst/
 soundfonts/

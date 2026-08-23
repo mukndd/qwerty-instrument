@@ -1,0 +1,44 @@
+INSTANT CRUSH -- REFERENCE ANALYSIS REPORT
+============================================================
+Source: instant_crush.mp3 (never committed)
+Duration: 340.66s (5.68 min)
+
+TEMPO
+  beat_track method: 112.35 BPM
+  tempogram method:  112.35 BPM
+  methods agree (within 1 BPM): True
+  confidence: high
+  beats detected: 579
+
+ONSETS
+  1264 onsets detected across the full track
+
+CHORUS SECTION CANDIDATE
+{
+  "found": true,
+  "similarity_score": 0.9992,
+  "confidence": "medium",
+  "start_seconds": 209.769,
+  "end_seconds": 227.23,
+  "window_beats": 32,
+  "note": "heuristic repeated-section detection, not verified -- confirm by ear with tools/reference_inspect.py"
+}
+
+MELODY CANDIDATE (full-mix pyin -- LOW CONFIDENCE, see limitations)
+  43 note candidates, mean confidence 0.01
+
+BASS CANDIDATE (full-mix pyin, low band -- LOW CONFIDENCE)
+  69 note candidates, mean confidence 0.061
+
+HARMONY CANDIDATE (chroma template matching -- LOW-MEDIUM CONFIDENCE)
+  31 chord candidates, mean confidence 0.321
+
+LIMITATIONS
+  - No stem separation was performed (Demucs/torch not installed in
+    this environment -- documented, not silently skipped).
+  - Melody/bass/harmony analysis runs on the FULL MIX. Full-mix pitch
+    tracking is contaminated by every other instrument playing
+    simultaneously and should be treated as a rough starting point
+    for manual correction, not a reliable transcription.
+  - Chorus section detection is a repeated-chroma heuristic, not a
+    verified structural analysis -- confirm by ear.

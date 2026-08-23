@@ -119,6 +119,10 @@ def _distribute_events(entries: list[dict], sections: dict[str, Section], is_cho
             if target is None:
                 continue
             verification = NoteVerification(e.get("verification", "placeholder"))
+            start_seconds = float(e["start_seconds"]) if "start_seconds" in e and e["start_seconds"] is not None else None
+            duration_seconds = float(e["duration_seconds"]) if "duration_seconds" in e and e["duration_seconds"] is not None else None
+            confidence = float(e["confidence"]) if "confidence" in e and e["confidence"] is not None else None
+            source = e.get("source")
             if is_chord:
                 target.notes.append(
                     ChordEvent(
@@ -128,6 +132,10 @@ def _distribute_events(entries: list[dict], sections: dict[str, Section], is_cho
                         notes=list(e["notes"]),
                         layer=e.get("layer", "chords"),
                         verification=verification,
+                        start_seconds=start_seconds,
+                        duration_seconds=duration_seconds,
+                        confidence=confidence,
+                        source=source,
                     )
                 )
             else:
@@ -139,6 +147,10 @@ def _distribute_events(entries: list[dict], sections: dict[str, Section], is_cho
                         velocity=float(e.get("velocity", 0.9)),
                         layer=e.get("layer", "melody"),
                         verification=verification,
+                        start_seconds=start_seconds,
+                        duration_seconds=duration_seconds,
+                        confidence=confidence,
+                        source=source,
                     )
                 )
         except (KeyError, ValueError, TypeError) as exc:

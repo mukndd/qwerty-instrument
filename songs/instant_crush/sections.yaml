@@ -1,34 +1,35 @@
 # Section boundaries for Instant Crush -- see NOTES_STATUS.md.
 #
-# EVERY start_beat/end_beat value below is an ARBITRARY PLACEHOLDER, not a
-# verified measurement of the actual recording. They exist so the practice
-# engine (section looping, speed control, practice-sheet export) has real
-# structure to operate on before real data is imported -- treat the
-# numbers themselves as "to be corrected", not "approximately right".
+# `chorus` below is now derived from a MEASURED chroma-self-similarity
+# candidate against the local reference recording (similarity score 0.999
+# -- see songs/instant_crush/reference_analysis/sections.json), not an
+# arbitrary guess. This is still a heuristic ("the most self-repeating
+# 32-beat window in the song"), not a human-confirmed structural label --
+# confirm by ear with tools/reference_inspect.py --start 209.77 --end 227.23
+# before fully trusting it.
 #
-# The one piece of real information here is the user-provided approximate
-# timestamp for the lead/electric-guitar section (~3:18 into the song).
-# `lead_guitar.start_beat` below is computed from that timestamp using the
-# placeholder 120 BPM in song.yaml (198s * 120/60 = 396 beats) purely so
-# it's in the right ballpark -- it will shift once the real tempo is known.
+# `lead_guitar` remains the user-provided ~3:18 approximate timestamp,
+# recomputed at the now-measured 112.35 BPM (was computed against the old
+# 120 BPM guess). Its end_beat has been trimmed to where the measured
+# chorus candidate begins (they overlapped before the trim) -- this is an
+# INFERENCE (solo ends where the next chorus starts), not a verified
+# boundary; still needs confirmation by ear.
 
 sections:
   - id: chorus
     name: "Chorus"
-    # 8-bar (32-beat) Autoplay development-reference loop @ 110 BPM. Matches
-    # songs/instant_crush/notes.json's chords+bass skeleton. Still an
-    # APPROXIMATE / REFERENCE SKELETON, not a verified section boundary.
-    start_beat: 0
-    end_beat: 32
+    # Measured chroma-repeat candidate: 209.77s-227.23s at 112.35 BPM.
+    start_beat: 392.79
+    end_beat: 425.49
     difficulty: medium
     loop_default: true
 
   - id: lead_guitar
     name: "Lead / Electric Guitar (~3:18)"
-    # Derived from the user-provided ~3:18 marker at the placeholder tempo.
-    # Re-derive once real tempo_events are imported. Not touched by the
-    # chorus-autoplay work -- still fully unverified.
-    start_beat: 396
-    end_beat: 428
+    # ~198s (user-provided) at the measured 112.35 BPM. end_beat trimmed to
+    # the measured chorus candidate's start (392.79) rather than an
+    # arbitrary +32-beat placeholder -- both boundaries still unverified.
+    start_beat: 370.75
+    end_beat: 392.79
     difficulty: hard
     loop_default: false

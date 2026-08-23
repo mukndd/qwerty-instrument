@@ -322,12 +322,32 @@ class MainWindow(QMainWindow):
     def _start_practice(self) -> None:
         if not self.trainer:
             return
+
+        check_layers = self.trainer.autoplay_layers if self.trainer.mode == PracticeMode.AUTOPLAY else None
+        if not self.trainer.has_playable_data(check_layers):
+            QMessageBox.warning(
+                self,
+                "Reference transcription not ready",
+                "REFERENCE TRANSCRIPTION NOT READY\n\n"
+                "This section has no note data for the selected layer(s) yet -- "
+                "nothing invented is being played or taught in its place.\n\n"
+                "See songs/instant_crush/NOTES_STATUS.md and "
+                "songs/instant_crush/reference_analysis/reports/analysis_report.txt "
+                "for what was measured/attempted and why.",
+            )
+            return
+
         if self.trainer.mode == PracticeMode.AUTOPLAY and self.song_combo.currentText() == "instant_crush":
-            # Ensure the tuned Instant Crush patch is actually applied, not
-            # just sitting unused in presets/instant_crush_synth.json.
+            # Ensure every tuned Instant Crush patch is actually applied, not
+            # just sitting unused in presets/*.json. The dropdown only shows
+            # the last one selected, but both instruments' presets are
+            # applied to their respective backends -- this is not a manual
+            # active-instrument change (see _on_preset_selected).
+            for preset_name in ("Instant Crush Synth", "Instant Crush Bass"):
+                if preset_name in self._preset_paths:
+                    self._on_preset_selected(preset_name)
             if "Instant Crush Synth" in self._preset_paths:
                 self.preset_combo.setCurrentText("Instant Crush Synth")
-                self._on_preset_selected("Instant Crush Synth")
         self.trainer.start()
 
     def _stop_practice(self) -> None:

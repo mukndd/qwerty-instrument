@@ -9,9 +9,10 @@ import pytest
 
 from qwerty_instrument.music.events import EventType, MusicEvent, Source
 from qwerty_instrument.music.mapping import KeyboardMapping
-from qwerty_instrument.music.timing import TempoMap
+from qwerty_instrument.music.timing import TempoEvent, TempoMap
 from qwerty_instrument.songs.loader import load_song
-from qwerty_instrument.songs.model import ChordEvent, NoteEvent, Section, Song
+from qwerty_instrument.songs.midi_import import notes_to_json_entries
+from qwerty_instrument.songs.model import ChordEvent, NoteEvent, NoteVerification, Section, Song
 from qwerty_instrument.songs.trainer import PracticeMode, SongTrainer
 
 
@@ -141,34 +142,61 @@ def test_speed_scaling_affects_current_beat():
     assert beat_half_speed == pytest.approx(beat_full_speed / 2, rel=0.05)
 
 
-def test_instant_crush_tempo_loads_as_110_bpm():
+def test_instant_crush_tempo_loads_as_measured_112_35_bpm():
+    """Accuracy pass v3: replaced the 110/120 BPM guesses with a value
+    actually measured from the local reference recording (librosa
+    beat-tracking + tempogram cross-check, both methods agreed -- see
+    songs/instant_crush/reference_analysis/beat_grid.json)."""
     song = load_song(Path("songs/instant_crush"))
-    assert song.tempo_map.bpm_at_beat(0) == 110.0
+    assert song.tempo_map.bpm_at_beat(0) == 112.35
 
 
-def test_instant_crush_chorus_has_chords_bass_melody_marked_placeholder():
+def test_instant_crush_chorus_has_no_synthetic_placeholder_content():
+    """Accuracy pass v3: the previous pass's invented chord/melody data was
+    archived, not left in canonical playback data (spec: 'no hand-written
+    Claude melody should remain in canonical playback data')."""
     song = load_song(Path("songs/instant_crush"))
     chorus = song.section_by_id("chorus")
     assert chorus is not None
-    layers = {e.layer for e in chorus.notes}
-    assert layers == {"chords", "bass", "melody"}
-    assert all(e.verification.value == "placeholder" for e in chorus.notes)
+    assert chorus.notes == []  # honestly empty, not filled with a guess
+
+
+def test_instant_crush_has_playable_data_is_false_until_reference_derived_data_exists():
+    song = load_song(Path("songs/instant_crush"))
+    trainer = SongTrainer(song, KeyboardMapping(), lambda e: None)
+    trainer.load_section("chorus")
+    assert trainer.has_playable_data() is False
+    assert trainer.has_playable_data(["chords", "bass", "melody"]) is False
+
+
+def make_song_with_melody():
+    section = Section(id="verse", name="Verse", start_beat=0, end_beat=8, difficulty="easy", loop_default=True)
+    section.notes = [
+        NoteEvent(beat=0.0, duration_beats=1.5, note=65, velocity=0.85, layer="melody"),
+        NoteEvent(beat=2.0, duration_beats=1.0, note=73, velocity=0.9, layer="melody"),  # gap 1.5-2.0 = a real rest
+        NoteEvent(beat=3.0, duration_beats=1.0, note=70, velocity=0.8, layer="melody"),
+    ]
+    return Song(title="Synthetic Melody Test", artist="?", tempo_map=TempoMap(events=None), sections=[section])
 
 
 def test_no_voice_sounds_during_an_authored_rest():
-    """Instant Crush melody bar 1 has a rest at beat 1.5-2.0 (note ends 1.5, next starts 2.0)."""
-    song = load_song(Path("songs/instant_crush"))
-    real_trainer = SongTrainer(song, KeyboardMapping(), lambda e: None)
-    real_trainer.load_section("chorus")
-    real_trainer.set_mode(PracticeMode.AUTOPLAY)
-    real_trainer.set_autoplay_layers(["melody"])
-    real_trainer.start()
-    real_trainer._tick_autoplay(0.0)  # F4 starts, duration 1.5 -> ends at beat 1.5
-    assert real_trainer.autoplay_sounding_notes == {65}
-    real_trainer._tick_autoplay(1.7)  # inside the authored rest (1.5-2.0)
-    assert real_trainer.autoplay_sounding_notes == set()  # nothing sounding during the rest
-    real_trainer._tick_autoplay(2.0)  # next melody note (Db5=73) begins
-    assert real_trainer.autoplay_sounding_notes == {73}
+    """A synthetic melody with an explicit gap between notes: nothing
+    should sound during the rest, not "sustained until the next note" --
+    this was the actual root cause of the earlier "notes persist too
+    long" complaint, and is a property of the scheduler, not of any one
+    song's data (see accuracy pass v2's audit in git history)."""
+    song = make_song_with_melody()
+    trainer = SongTrainer(song, KeyboardMapping(), lambda e: None)
+    trainer.load_section("verse")
+    trainer.set_mode(PracticeMode.AUTOPLAY)
+    trainer.set_autoplay_layers(["melody"])
+    trainer.start()
+    trainer._tick_autoplay(0.0)  # F4 starts, duration 1.5 -> ends at beat 1.5
+    assert trainer.autoplay_sounding_notes == {65}
+    trainer._tick_autoplay(1.7)  # inside the authored rest (1.5-2.0)
+    assert trainer.autoplay_sounding_notes == set()  # nothing sounding during the rest
+    trainer._tick_autoplay(2.0)  # next melody note begins
+    assert trainer.autoplay_sounding_notes == {73}
 
 
 def test_overlapping_layers_remain_independently_active():
@@ -220,11 +248,21 @@ def test_note_off_routes_back_to_the_same_backend_as_note_on():
     assert bass._owned == {}  # released on bass_synth specifically
 
 
+def make_song_full_chorus():
+    section = Section(id="verse", name="Verse", start_beat=0, end_beat=8, difficulty="easy", loop_default=True)
+    section.notes = [
+        NoteEvent(beat=0.0, duration_beats=4.0, note=34, velocity=0.75, layer="bass"),
+        NoteEvent(beat=0.0, duration_beats=1.5, note=65, velocity=0.85, layer="melody"),
+        ChordEvent(beat=0.0, duration_beats=4.0, name="Test", notes=[46, 49, 53], layer="chords"),
+    ]
+    return Song(title="Synthetic Full-Chorus Test", artist="?", tempo_map=TempoMap(events=None), sections=[section])
+
+
 def test_full_chorus_schedules_all_three_layers_simultaneously():
-    song = load_song(Path("songs/instant_crush"))
+    song = make_song_full_chorus()
     events = []
     trainer = SongTrainer(song, KeyboardMapping(), events.append)
-    trainer.load_section("chorus")
+    trainer.load_section("verse")
     trainer.set_mode(PracticeMode.AUTOPLAY)
     trainer.set_autoplay_layers(["chords", "bass", "melody"])
     trainer.start()
@@ -258,22 +296,27 @@ def test_loop_survives_multiple_iterations_without_stuck_notes():
 
 
 def test_guided_mode_melody_layer_is_populated():
-    song = load_song(Path("songs/instant_crush"))
+    """Once real melody data exists for a section (here: a synthetic
+    fixture, standing in for a future reference_derived/verified melody --
+    Instant Crush itself has none promoted yet, see
+    test_instant_crush_has_playable_data_is_false_until_reference_derived_data_exists),
+    Guided mode must actually surface it."""
+    song = make_song_with_melody()
     trainer = SongTrainer(song, KeyboardMapping(), lambda e: None)
-    trainer.load_section("chorus")  # defaults to layer="melody"
+    trainer.load_section("verse")  # defaults to layer="melody"
     trainer.set_mode(PracticeMode.GUIDED)
     trainer.start()
     upcoming = trainer.upcoming_notes(count=3)
     assert len(upcoming) == 3
-    assert upcoming[0].event.note == 65  # first melody note, F4
+    assert upcoming[0].event.note == 65
     assert upcoming[0].key_hint is not None  # find_key_for_note() resolved a real key
 
 
 def test_assist_mode_press_triggers_next_authored_melody_note():
-    song = load_song(Path("songs/instant_crush"))
+    song = make_song_with_melody()
     events = []
     trainer = SongTrainer(song, KeyboardMapping(), events.append)
-    trainer.load_section("chorus")  # layer="melody"
+    trainer.load_section("verse")  # layer="melody"
     trainer.set_mode(PracticeMode.ASSIST)
     trainer.assist_strict = False
     trainer.start()
@@ -287,11 +330,109 @@ def test_assist_mode_press_triggers_next_authored_melody_note():
 
 
 def test_real_mode_scores_correct_melody_pitch():
-    song = load_song(Path("songs/instant_crush"))
+    song = make_song_with_melody()
     trainer = SongTrainer(song, KeyboardMapping(), lambda e: None)
-    trainer.load_section("chorus")  # layer="melody"
+    trainer.load_section("verse")  # layer="melody"
     trainer.set_mode(PracticeMode.REAL)
     trainer.start()
     result = trainer.judge_played_note(65, trainer._beat_to_wall_time_s(0.0) * 1e9)
     assert result is not None
     assert result.judgement.value in ("perfect", "good")
+
+
+def make_song_with_reference_timing():
+    """A NoteEvent with start_seconds/duration_seconds set (as
+    tools/build_reference_song.py would produce) alongside its beat/
+    duration_beats -- exact-seconds timing should be preferred when present."""
+    section = Section(id="verse", name="Verse", start_beat=0, end_beat=8, difficulty="easy", loop_default=True)
+    section.notes = [
+        NoteEvent(
+            beat=0.0,  # a crude quantized beat estimate
+            duration_beats=1.0,
+            note=65,
+            layer="melody",
+            verification=NoteVerification.REFERENCE_DERIVED,
+            start_seconds=0.421,  # the actual measured onset -- deliberately not beat-aligned
+            duration_seconds=0.340,
+            confidence=0.82,
+            source="local_reference_audio",
+        ),
+    ]
+    return Song(title="Reference Timing Test", artist="?", tempo_map=TempoMap(events=[TempoEvent(beat=0.0, bpm=120.0)]), sections=[section])
+
+
+def test_exact_seconds_timing_is_preferred_over_the_beat_grid():
+    song = make_song_with_reference_timing()
+    trainer = SongTrainer(song, KeyboardMapping(), lambda e: None)
+    trainer.load_section("verse")
+    trainer.set_mode(PracticeMode.AUTOPLAY)
+    trainer.set_autoplay_layers(["melody"])
+    trainer.start()
+
+    # At 120 BPM, beat=0.0 (the quantized grid value) would fire immediately
+    # at tick(0.0). The real onset is 0.421s in -- at 100% speed that's
+    # 0.421 * (120/60) = 0.842 beats, NOT beat 0.
+    trainer._tick_autoplay(0.0)
+    assert trainer.autoplay_sounding_notes == set(), "fired on the crude beat grid instead of the exact reference onset"
+    trainer._tick_autoplay(0.842)
+    assert trainer.autoplay_sounding_notes == {65}
+
+
+def test_exact_seconds_timing_scales_with_practice_speed():
+    """50% speed must take ~2x as long (in wall-clock beats-per-second
+    terms) to reach the same reference-derived onset as 100% speed --
+    proportional scaling via the existing tempo-map beat conversion."""
+    song = make_song_with_reference_timing()
+
+    trainer_full = SongTrainer(song, KeyboardMapping(), lambda e: None)
+    trainer_full.load_section("verse")
+    trainer_full.set_autoplay_layers(["melody"])
+    start_b_full, _ = trainer_full._effective_beat_range(song.sections[0].notes[0])
+
+    trainer_half = SongTrainer(song, KeyboardMapping(), lambda e: None)
+    trainer_half.load_section("verse")
+    trainer_half.set_speed_percent(50)
+    start_b_half, _ = trainer_half._effective_beat_range(song.sections[0].notes[0])
+
+    # The effective beat position itself doesn't change with speed (speed
+    # only affects how fast current_beat() advances through beats over
+    # wall-clock time) -- both should compute the same beat position...
+    assert start_b_full == start_b_half
+    # ...but reaching that beat position takes proportionally longer in
+    # wall-clock time at half speed, via PracticeClock.beats_to_seconds().
+    seconds_full = trainer_full.clock.beats_to_seconds(start_b_full)
+    seconds_half = trainer_half.clock.beats_to_seconds(start_b_half)
+    assert seconds_half == pytest.approx(seconds_full * 2, rel=0.01)
+
+
+def test_backward_compatibility_beat_only_events_still_schedule_correctly():
+    """An event with no start_seconds/duration_seconds (every pre-existing
+    song file, MIDI-imported or hand-authored) must schedule exactly as
+    before this pass."""
+    section = Section(id="verse", name="Verse", start_beat=0, end_beat=8, loop_default=True)
+    section.notes = [NoteEvent(beat=1.0, duration_beats=1.0, note=60, layer="melody")]  # start_seconds=None (the default)
+    song = Song(title="Beat Only", artist="?", tempo_map=TempoMap(events=None), sections=[section])
+    trainer = SongTrainer(song, KeyboardMapping(), lambda e: None)
+    trainer.load_section("verse")
+    trainer.set_mode(PracticeMode.AUTOPLAY)
+    trainer.set_autoplay_layers(["melody"])
+    trainer.start()
+    trainer._tick_autoplay(0.9)
+    assert trainer.autoplay_sounding_notes == set()
+    trainer._tick_autoplay(1.0)
+    assert trainer.autoplay_sounding_notes == {60}
+
+
+def test_reference_derived_events_never_silently_become_verified():
+    song = make_song_with_reference_timing()
+    event = song.sections[0].notes[0]
+    assert event.verification == NoteVerification.REFERENCE_DERIVED
+    assert event.verification != NoteVerification.VERIFIED
+    assert event.confidence == 0.82
+    assert event.source == "local_reference_audio"
+
+    # Round-trip through the loader (as tools/build_reference_song.py's
+    # output would be read back) must preserve this distinction too.
+    entries = notes_to_json_entries([event])
+    assert entries[0]["verification"] == "reference_derived"
+    assert entries[0]["verification"] != "verified"

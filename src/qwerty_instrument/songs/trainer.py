@@ -119,6 +119,17 @@ class SongTrainer:
         self.scoring = ScoringEngine(self.timing_windows, total_expected=len([e for e in section.notes if e.layer == layer]))
         return True
 
+    def has_playable_data(self, layers: list[str] | None = None) -> bool:
+        """False means 'REFERENCE TRANSCRIPTION NOT READY' -- the loaded
+        section has zero events for the requested layer(s) (spec: never
+        silently play/teach nothing as if it were something, and never let
+        Guided/Assist/Real quietly operate on an empty layer).
+        """
+        if self.current_section is None:
+            return False
+        check_layers = layers if layers is not None else [self._active_layer]
+        return any(e.layer in check_layers for e in self.current_section.notes)
+
     def set_speed_percent(self, percent: float) -> None:
         self.clock.set_speed_percent(percent)
 
@@ -144,10 +155,16 @@ class SongTrainer:
         self._last_metronome_beat_int = int(self._start_beat) - 1
 
         if self.mode == PracticeMode.AUTOPLAY:
-            self._autoplay_queue = sorted(
-                (e for e in self.current_section.notes if e.layer in self.autoplay_layers and e.beat >= self._start_beat),
-                key=lambda e: e.beat,
-            )
+            scheduled = []
+            for e in self.current_section.notes:
+                if e.layer not in self.autoplay_layers:
+                    continue
+                start_b, end_b = self._effective_beat_range(e)
+                if start_b < self._start_beat:
+                    continue
+                scheduled.append((start_b, end_b, e))
+            scheduled.sort(key=lambda t: t[0])
+            self._autoplay_queue = scheduled
         else:
             self._pending_events = sorted(
                 (e for e in self.current_section.notes if e.layer == self._active_layer and e.beat >= self._start_beat),
@@ -162,6 +179,23 @@ class SongTrainer:
         self._stop_autoplay_notes()
         self.playing = False
         self._start_perf_time = None
+
+    def _effective_beat_range(self, event: NoteEvent | ChordEvent) -> tuple[float, float]:
+        """Prefer exact reference-audio timing (start_seconds/duration_seconds)
+        over the quantized beat grid when present, converting seconds to a
+        beat position via the tempo map. Reusing beats as the internal
+        currency means practice-speed scaling (via current_beat()'s existing
+        speed-aware conversion) applies to reference timing automatically --
+        no separate seconds-based scheduler needed.
+        """
+        if event.start_seconds is not None:
+            start_b = self.clock.tempo_map.seconds_to_beats(event.start_seconds)
+            if event.duration_seconds is not None:
+                end_b = self.clock.tempo_map.seconds_to_beats(event.start_seconds + event.duration_seconds)
+            else:
+                end_b = start_b + event.duration_beats
+            return start_b, end_b
+        return event.beat, event.beat + event.duration_beats
 
     def current_beat(self) -> float:
         """Wall-clock elapsed time since start(), converted back to a beat
@@ -222,13 +256,13 @@ class SongTrainer:
                 still_active.append(entry)
         self._autoplay_active = still_active
 
-        while self._autoplay_queue and self._autoplay_queue[0].beat <= beat:
-            event = self._autoplay_queue.pop(0)
+        while self._autoplay_queue and self._autoplay_queue[0][0] <= beat:
+            start_b, end_b, event = self._autoplay_queue.pop(0)
             notes = list(event.notes) if isinstance(event, ChordEvent) else [event.note]
             velocity = event.velocity if isinstance(event, NoteEvent) else 0.75
             target_instrument = self.layer_routes.get(event.layer)
             ts = time.perf_counter_ns()
-            key_ids = [f"autoplay_{event.layer}_{event.beat}_{n}" for n in notes]
+            key_ids = [f"autoplay_{event.layer}_{start_b}_{n}" for n in notes]
             layer_set = self.autoplay_sounding_by_layer.setdefault(event.layer, set())
             for n, key_id in zip(notes, key_ids):
                 self.event_sink(
@@ -243,7 +277,7 @@ class SongTrainer:
                 )
                 self.autoplay_sounding_notes.add(n)
                 layer_set.add(n)
-            self._autoplay_active.append((event, event.beat + event.duration_beats, notes, key_ids))
+            self._autoplay_active.append((event, end_b, notes, key_ids))
 
     def _emit_autoplay_off(self, layer: str, notes: list[int], key_ids: list[str]) -> None:
         target_instrument = self.layer_routes.get(layer)

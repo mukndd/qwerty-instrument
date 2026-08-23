@@ -1,41 +1,53 @@
 # Daft Punk -- "Instant Crush" (feat. Julian Casablancas)
 #
-# STATUS: infrastructure only. No note-level transcription has been
-# verified for this song. Do not treat tempo_events, section boundaries,
-# or (absent) note data as accurate -- they are structural placeholders
-# so the practice engine has something to load, pending a real import.
+# STATUS (accuracy pass v3): tempo/section-timing are now MEASURED from the
+# user's local reference recording (tools/analyze_reference.py), not looked
+# up or guessed. Note-level content (melody/chords/bass) is NOT ready --
+# a full-mix (no stem separation) analysis pass was run and its pitch/chord
+# candidates were too low-confidence to responsibly teach (mean melody
+# confidence ~0.01, bass ~0.06, harmony ~0.32 -- see
+# songs/instant_crush/reference_analysis/reports/analysis_report.txt).
+# An earlier pass's invented chord/melody data has been archived (see
+# songs/instant_crush/archive/) and is NOT loaded here -- do not resurrect
+# it as canonical. Guided/Assist/Real/Autoplay will show "reference
+# transcription not ready" until real note data exists.
 #
-# To add verified data:
-#   1. Obtain a MIDI file or your own transcription LEGALLY (this project
-#      does not ship or download any copyrighted audio/MIDI).
-#   2. Run: .venv\Scripts\python.exe tools\import_midi.py <path-to-midi>
-#   3. Follow the prompts to inspect tracks/tempo and write notes.json.
-#   4. Correct tempo_events and section start_beat/end_beat below to match
-#      what the MIDI file actually reports.
+# To add real data:
+#   1. Preferred: obtain a MIDI file or your own transcription LEGALLY and
+#      run: .venv\Scripts\python.exe tools\import_midi.py <path-to-midi>
+#   2. Or: improve tools/analyze_reference.py's confidence (stem separation
+#      via Demucs was investigated but not installed here -- multi-GB torch
+#      dependency chain -- see docs/ARCHITECTURE.md) and re-run it, then
+#      tools/build_reference_song.py to promote candidates that clear a
+#      defensible confidence bar.
 #
-# See songs/instant_crush/NOTES_STATUS.md for a full breakdown of what is
-# and isn't verified right now.
+# See songs/instant_crush/NOTES_STATUS.md for the full breakdown.
 
 title: "Instant Crush"
 artist: "Daft Punk feat. Julian Casablancas"
 time_signature: [4, 4]
 
-# Working reference tempo: 110 BPM. Sourced from external song-metadata/
-# reference research, NOT measured against this project's own audio or a
-# verified MIDI file -- may be replaced once timing is checked against a
-# user-supplied local reference recording. Better than the old 120 BPM
-# generic placeholder, but still not "verified" in the notes.json sense.
+# MEASURED from the local reference recording (librosa beat-tracking +
+# tempogram, both methods agreed within 1 BPM -- see
+# songs/instant_crush/reference_analysis/beat_grid.json). This replaces
+# the earlier 110/120 BPM guesses. Bar-1/downbeat phase alignment is NOT
+# verified -- beat 0 here is audio time 0, not a confirmed downbeat.
 tempo_events:
   - beat: 0
-    bpm: 110.0
+    bpm: 112.35
 
 notes_disclaimer: >
-  The chorus section now has an APPROXIMATE / REFERENCE SKELETON chord+bass
-  progression (songs/instant_crush/notes.json) for the Autoplay development
-  benchmark -- it is a harmony/bass approximation from documented chord
-  changes, NOT a verified melody transcription, and should not be treated
-  as ground truth. The lead/electric-guitar section (~3:18) remains fully
-  unverified placeholder. Use tools/import_midi.py to import real data.
+  REFERENCE TRANSCRIPTION NOT READY. Tempo (112.35 BPM) and the chorus
+  section's timing are measured from the local reference recording with
+  reasonable confidence. Melody, chord, and bass CONTENT are not -- a
+  full-mix pitch/harmony analysis pass ran (no stem separation available
+  in this environment) and its output was too low-confidence to teach as
+  fact; see songs/instant_crush/reference_analysis/. A previous pass's
+  invented chord/melody data has been archived and removed from canonical
+  playback -- it will not be taught even though it existed before. The
+  lead/electric-guitar section (~3:18) remains fully unverified. Use
+  tools/import_midi.py to import real data, or improve the reference
+  pipeline (e.g. stem separation) and re-run tools/analyze_reference.py.
 
 knob_actions: []
   # Once the lead-guitar section's real start_beat is known, add e.g.:

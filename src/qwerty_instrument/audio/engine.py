@@ -209,13 +209,19 @@ class AudioEngine:
                 break
             self._process_event(event)
 
-        active_name = self.active_instrument_name
-        if active_name is None or active_name not in self.instruments:
-            outdata[:] = 0.0
-            return
-
-        audio = self.instruments[active_name].render(frames)
-        audio = self.limiter.process(audio)
+        # Every registered instrument is rendered and summed every block --
+        # not just whichever one is "active" for manual QWERTY playing.
+        # render() must run exactly once per block per instrument regardless
+        # (it advances voice envelopes/oscillator phase as a side effect),
+        # so this is also correctness-required, not just a mixing choice:
+        # a bass_synth voice with target_instrument routing would otherwise
+        # never be rendered at all while synth_lead is the manual-active
+        # instrument. Idle instruments return zeros cheaply (InstrumentBackend
+        # short-circuits when there are no active voices).
+        mix = np.zeros((frames, self.config.channels), dtype=np.float32)
+        for inst in self.instruments.values():
+            mix += inst.render(frames)
+        audio = self.limiter.process(mix)
         outdata[:] = audio
 
         if self._recording and self._record_queue is not None:
