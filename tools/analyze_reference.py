@@ -144,14 +144,47 @@ def find_repeated_section_candidate(y: "np.ndarray", sr: int, beat_times: list[f
 
     score, i, j = best
     start_beat_idx = min(i, j)  # report the earlier occurrence as "the chorus" to teach from
+    start_s = beat_times[start_beat_idx]
+    end_beat_idx = min(start_beat_idx + window_beats, len(beat_times) - 1)
+    end_s = beat_times[end_beat_idx]
+
+    # A single detected window is often just one repeat unit within a longer
+    # section (e.g. an 8-bar phrase that's actually sung twice in a row).
+    # Rather than guessing at a longer length, check the actual evidence:
+    # does the block immediately following repeat this same pattern too?
+    # Extend for as long as that stays true (capped, and never past the
+    # audio's end) -- this is how the 8-bar candidate below became a 16-bar
+    # one for Instant Crush (0.996 similarity on the very next repeat).
+    extend_threshold = 0.95
+    max_extensions = 3
+    base_chroma = chroma_slice(start_s, end_s)
+    window_seconds = end_s - start_s
+    extensions = 0
+    cur_end = end_s
+    while extensions < max_extensions and cur_end + window_seconds <= chroma_times[-1]:
+        next_chroma = chroma_slice(cur_end, cur_end + window_seconds)
+        next_sim = similarity(base_chroma, next_chroma)
+        if next_sim < extend_threshold:
+            break
+        cur_end += window_seconds
+        extensions += 1
+    end_s = cur_end
+
     return {
         "found": True,
         "similarity_score": round(score, 4),
         "confidence": "medium" if score > 0.85 else ("low" if score > 0.7 else "very low -- manually verify"),
-        "start_seconds": round(beat_times[start_beat_idx], 3),
-        "end_seconds": round(beat_times[min(start_beat_idx + window_beats, len(beat_times) - 1)], 3),
+        "start_seconds": round(start_s, 3),
+        "end_seconds": round(end_s, 3),
         "window_beats": window_beats,
-        "note": "heuristic repeated-section detection, not verified -- confirm by ear with tools/reference_inspect.py",
+        "repeat_units": 1 + extensions,
+        "note": (
+            "heuristic repeated-section detection, not verified -- confirm by ear with tools/reference_inspect.py. "
+            f"Extended {extensions}x beyond the base {window_beats}-beat window because the immediately following "
+            f"block(s) matched with similarity >= {extend_threshold} (real evidence of a repeat, not a guess)."
+            if extensions
+            else "heuristic repeated-section detection, not verified -- confirm by ear with tools/reference_inspect.py."
+        ),
     }
 
 
@@ -203,7 +236,7 @@ def pitch_track_pyin(y: "np.ndarray", sr: int, fmin: float, fmax: float, t0: flo
     return out
 
 
-# ---- harmony candidate (chroma template matching, per beat) -------------------
+# ---- harmony candidate (chroma template matching, sub-beat resolution) --------
 
 CHORD_TEMPLATES = {
     "maj": [1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0],
@@ -211,15 +244,35 @@ CHORD_TEMPLATES = {
 }
 PITCH_CLASSES = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"]
 
+HARMONY_SUBDIVISIONS_PER_BEAT = 2  # analysis grid resolution, not a claim about the song's actual harmonic rhythm
+
 
 def harmony_candidates(y: "np.ndarray", sr: int, beat_times: list[float], t0: float, t1: float) -> list[dict]:
+    """One chord estimate per sub-beat window (default: 2/beat, ~0.25-0.3s
+    at this song's tempo), not per whole beat. A single-beat grid measurably
+    smooths over real, faster-than-one-beat harmonic movement -- confirmed
+    by inspecting frame-level (not beat-quantized) chroma for this track,
+    where dominant pitch classes visibly shift within a beat at several
+    points. Sub-beat estimates get merged back into sustained spans
+    downstream (tools/build_reference_song.py) wherever they genuinely
+    agree, so this doesn't reintroduce the "stab every beat" problem --
+    it just stops erasing real sub-beat changes that were there.
+    """
     chroma = librosa.feature.chroma_cqt(y=y, sr=sr)
     chroma_times = librosa.frames_to_time(np.arange(chroma.shape[1]), sr=sr)
     beats_in_range = [b for b in beat_times if t0 <= b < t1]
-    out = []
+
+    grid: list[float] = []
     for i in range(len(beats_in_range) - 1):
         b0, b1 = beats_in_range[i], beats_in_range[i + 1]
-        idx = np.where((chroma_times >= b0) & (chroma_times < b1))[0]
+        step = (b1 - b0) / HARMONY_SUBDIVISIONS_PER_BEAT
+        grid.extend(b0 + k * step for k in range(HARMONY_SUBDIVISIONS_PER_BEAT))
+    grid.append(beats_in_range[-1] if beats_in_range else t1)
+
+    out = []
+    for i in range(len(grid) - 1):
+        w0, w1 = grid[i], grid[i + 1]
+        idx = np.where((chroma_times >= w0) & (chroma_times < w1))[0]
         if len(idx) == 0:
             continue
         vec = np.mean(chroma[:, idx], axis=1)
@@ -236,8 +289,8 @@ def harmony_candidates(y: "np.ndarray", sr: int, beat_times: list[float], t0: fl
         score, root, quality = best
         out.append(
             {
-                "start_seconds": round(b0, 3),
-                "end_seconds": round(b1, 3),
+                "start_seconds": round(w0, 3),
+                "end_seconds": round(w1, 3),
                 "root_pitch_class": PITCH_CLASSES[root],
                 "quality": quality,
                 "confidence": round(max(0.0, min(1.0, (score - 0.5) * 2)), 3),  # rough rescale, template match score is not a calibrated probability

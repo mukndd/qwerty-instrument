@@ -19,9 +19,10 @@ CHORUS SECTION CANDIDATE
   "similarity_score": 0.9992,
   "confidence": "medium",
   "start_seconds": 209.769,
-  "end_seconds": 227.23,
+  "end_seconds": 244.692,
   "window_beats": 32,
-  "note": "heuristic repeated-section detection, not verified -- confirm by ear with tools/reference_inspect.py"
+  "repeat_units": 2,
+  "note": "heuristic repeated-section detection, not verified -- confirm by ear with tools/reference_inspect.py. Extended 1x beyond the base 32-beat window because the immediately following block(s) matched with similarity >= 0.95 (real evidence of a repeat, not a guess)."
 }
 
 STEM SEPARATION
@@ -31,10 +32,10 @@ MELODY CANDIDATE (vocals_stem pyin)
   0 note candidates, mean confidence None
 
 BASS CANDIDATE (bass_stem pyin, low band)
-  49 note candidates, mean confidence 0.209
+  102 note candidates, mean confidence 0.208
 
 HARMONY CANDIDATE (other_stem, chroma template matching)
-  31 chord candidates, mean confidence 0.631
+  128 chord candidates, mean confidence 0.637
 
 LIMITATIONS
   - Melody/bass/harmony analysis quality depends entirely on whether

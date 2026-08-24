@@ -1,250 +1,1026 @@
 [
   {
     "start_seconds": 209.769,
+    "end_seconds": 210.036,
+    "root_pitch_class": "A#",
+    "quality": "min",
+    "confidence": 0.742,
+    "source_stem": "other_stem"
+  },
+  {
+    "start_seconds": 210.036,
     "end_seconds": 210.303,
     "root_pitch_class": "A#",
     "quality": "min",
-    "confidence": 0.776,
+    "confidence": 0.788,
     "source_stem": "other_stem"
   },
   {
     "start_seconds": 210.303,
+    "end_seconds": 210.582,
+    "root_pitch_class": "A#",
+    "quality": "min",
+    "confidence": 0.658,
+    "source_stem": "other_stem"
+  },
+  {
+    "start_seconds": 210.582,
     "end_seconds": 210.86,
     "root_pitch_class": "A#",
     "quality": "min",
-    "confidence": 0.637,
+    "confidence": 0.611,
     "source_stem": "other_stem"
   },
   {
     "start_seconds": 210.86,
-    "end_seconds": 211.394,
+    "end_seconds": 211.127,
     "root_pitch_class": "A#",
     "quality": "min",
-    "confidence": 0.682,
+    "confidence": 0.855,
+    "source_stem": "other_stem"
+  },
+  {
+    "start_seconds": 211.127,
+    "end_seconds": 211.394,
+    "root_pitch_class": "C#",
+    "quality": "maj",
+    "confidence": 0.498,
     "source_stem": "other_stem"
   },
   {
     "start_seconds": 211.394,
+    "end_seconds": 211.673,
+    "root_pitch_class": "C#",
+    "quality": "maj",
+    "confidence": 0.28,
+    "source_stem": "other_stem"
+  },
+  {
+    "start_seconds": 211.673,
     "end_seconds": 211.952,
     "root_pitch_class": "F#",
     "quality": "maj",
-    "confidence": 0.408,
+    "confidence": 0.814,
     "source_stem": "other_stem"
   },
   {
     "start_seconds": 211.952,
+    "end_seconds": 212.219,
+    "root_pitch_class": "F#",
+    "quality": "maj",
+    "confidence": 0.722,
+    "source_stem": "other_stem"
+  },
+  {
+    "start_seconds": 212.219,
     "end_seconds": 212.486,
     "root_pitch_class": "F#",
     "quality": "maj",
-    "confidence": 0.708,
+    "confidence": 0.687,
     "source_stem": "other_stem"
   },
   {
     "start_seconds": 212.486,
+    "end_seconds": 212.753,
+    "root_pitch_class": "F#",
+    "quality": "maj",
+    "confidence": 0.829,
+    "source_stem": "other_stem"
+  },
+  {
+    "start_seconds": 212.753,
     "end_seconds": 213.02,
     "root_pitch_class": "F#",
     "quality": "maj",
-    "confidence": 0.878,
+    "confidence": 0.839,
     "source_stem": "other_stem"
   },
   {
     "start_seconds": 213.02,
-    "end_seconds": 213.577,
+    "end_seconds": 213.299,
     "root_pitch_class": "F#",
     "quality": "maj",
-    "confidence": 0.653,
+    "confidence": 0.857,
     "source_stem": "other_stem"
   },
   {
-    "start_seconds": 213.577,
-    "end_seconds": 214.134,
-    "root_pitch_class": "D#",
+    "start_seconds": 213.299,
+    "end_seconds": 213.577,
+    "root_pitch_class": "A#",
     "quality": "min",
     "confidence": 0.541,
     "source_stem": "other_stem"
   },
   {
+    "start_seconds": 213.577,
+    "end_seconds": 213.856,
+    "root_pitch_class": "A#",
+    "quality": "maj",
+    "confidence": 0.43,
+    "source_stem": "other_stem"
+  },
+  {
+    "start_seconds": 213.856,
+    "end_seconds": 214.134,
+    "root_pitch_class": "D#",
+    "quality": "min",
+    "confidence": 0.672,
+    "source_stem": "other_stem"
+  },
+  {
     "start_seconds": 214.134,
+    "end_seconds": 214.401,
+    "root_pitch_class": "D#",
+    "quality": "maj",
+    "confidence": 0.58,
+    "source_stem": "other_stem"
+  },
+  {
+    "start_seconds": 214.401,
     "end_seconds": 214.668,
     "root_pitch_class": "D#",
     "quality": "maj",
-    "confidence": 0.556,
+    "confidence": 0.523,
     "source_stem": "other_stem"
   },
   {
     "start_seconds": 214.668,
+    "end_seconds": 214.936,
+    "root_pitch_class": "D#",
+    "quality": "min",
+    "confidence": 0.782,
+    "source_stem": "other_stem"
+  },
+  {
+    "start_seconds": 214.936,
     "end_seconds": 215.203,
     "root_pitch_class": "D#",
     "quality": "min",
-    "confidence": 0.748,
+    "confidence": 0.673,
     "source_stem": "other_stem"
   },
   {
     "start_seconds": 215.203,
-    "end_seconds": 215.76,
+    "end_seconds": 215.481,
     "root_pitch_class": "D#",
+    "quality": "maj",
+    "confidence": 0.532,
+    "source_stem": "other_stem"
+  },
+  {
+    "start_seconds": 215.481,
+    "end_seconds": 215.76,
+    "root_pitch_class": "A#",
     "quality": "min",
-    "confidence": 0.436,
+    "confidence": 0.488,
     "source_stem": "other_stem"
   },
   {
     "start_seconds": 215.76,
+    "end_seconds": 216.038,
+    "root_pitch_class": "A#",
+    "quality": "min",
+    "confidence": 0.541,
+    "source_stem": "other_stem"
+  },
+  {
+    "start_seconds": 216.038,
     "end_seconds": 216.317,
-    "root_pitch_class": "G#",
-    "quality": "maj",
-    "confidence": 0.288,
-    "source_stem": "other_stem"
-  },
-  {
-    "start_seconds": 216.317,
-    "end_seconds": 216.851,
-    "root_pitch_class": "G#",
-    "quality": "maj",
-    "confidence": 0.715,
-    "source_stem": "other_stem"
-  },
-  {
-    "start_seconds": 216.851,
-    "end_seconds": 217.385,
     "root_pitch_class": "G#",
     "quality": "maj",
     "confidence": 0.675,
     "source_stem": "other_stem"
   },
   {
+    "start_seconds": 216.317,
+    "end_seconds": 216.584,
+    "root_pitch_class": "G#",
+    "quality": "maj",
+    "confidence": 0.741,
+    "source_stem": "other_stem"
+  },
+  {
+    "start_seconds": 216.584,
+    "end_seconds": 216.851,
+    "root_pitch_class": "G#",
+    "quality": "maj",
+    "confidence": 0.682,
+    "source_stem": "other_stem"
+  },
+  {
+    "start_seconds": 216.851,
+    "end_seconds": 217.118,
+    "root_pitch_class": "G#",
+    "quality": "maj",
+    "confidence": 0.704,
+    "source_stem": "other_stem"
+  },
+  {
+    "start_seconds": 217.118,
+    "end_seconds": 217.385,
+    "root_pitch_class": "G#",
+    "quality": "maj",
+    "confidence": 0.634,
+    "source_stem": "other_stem"
+  },
+  {
     "start_seconds": 217.385,
-    "end_seconds": 217.942,
+    "end_seconds": 217.664,
     "root_pitch_class": "F",
     "quality": "min",
-    "confidence": 0.56,
+    "confidence": 0.539,
+    "source_stem": "other_stem"
+  },
+  {
+    "start_seconds": 217.664,
+    "end_seconds": 217.942,
+    "root_pitch_class": "C#",
+    "quality": "maj",
+    "confidence": 0.565,
     "source_stem": "other_stem"
   },
   {
     "start_seconds": 217.942,
+    "end_seconds": 218.221,
+    "root_pitch_class": "C#",
+    "quality": "maj",
+    "confidence": 0.481,
+    "source_stem": "other_stem"
+  },
+  {
+    "start_seconds": 218.221,
     "end_seconds": 218.5,
     "root_pitch_class": "C#",
     "quality": "maj",
-    "confidence": 0.462,
+    "confidence": 0.426,
     "source_stem": "other_stem"
   },
   {
     "start_seconds": 218.5,
+    "end_seconds": 218.767,
+    "root_pitch_class": "A#",
+    "quality": "min",
+    "confidence": 0.817,
+    "source_stem": "other_stem"
+  },
+  {
+    "start_seconds": 218.767,
     "end_seconds": 219.034,
     "root_pitch_class": "A#",
     "quality": "min",
-    "confidence": 0.87,
+    "confidence": 0.899,
     "source_stem": "other_stem"
   },
   {
     "start_seconds": 219.034,
+    "end_seconds": 219.312,
+    "root_pitch_class": "A#",
+    "quality": "min",
+    "confidence": 0.862,
+    "source_stem": "other_stem"
+  },
+  {
+    "start_seconds": 219.312,
     "end_seconds": 219.591,
     "root_pitch_class": "A#",
     "quality": "min",
-    "confidence": 0.808,
+    "confidence": 0.677,
     "source_stem": "other_stem"
   },
   {
     "start_seconds": 219.591,
+    "end_seconds": 219.858,
+    "root_pitch_class": "A#",
+    "quality": "min",
+    "confidence": 0.705,
+    "source_stem": "other_stem"
+  },
+  {
+    "start_seconds": 219.858,
     "end_seconds": 220.125,
     "root_pitch_class": "A#",
     "quality": "min",
-    "confidence": 0.567,
+    "confidence": 0.307,
     "source_stem": "other_stem"
   },
   {
     "start_seconds": 220.125,
+    "end_seconds": 220.404,
+    "root_pitch_class": "G",
+    "quality": "min",
+    "confidence": 0.324,
+    "source_stem": "other_stem"
+  },
+  {
+    "start_seconds": 220.404,
     "end_seconds": 220.682,
     "root_pitch_class": "F#",
     "quality": "maj",
-    "confidence": 0.674,
+    "confidence": 0.866,
     "source_stem": "other_stem"
   },
   {
     "start_seconds": 220.682,
+    "end_seconds": 220.949,
+    "root_pitch_class": "F#",
+    "quality": "maj",
+    "confidence": 0.893,
+    "source_stem": "other_stem"
+  },
+  {
+    "start_seconds": 220.949,
     "end_seconds": 221.217,
     "root_pitch_class": "F#",
     "quality": "maj",
-    "confidence": 0.885,
+    "confidence": 0.83,
     "source_stem": "other_stem"
   },
   {
     "start_seconds": 221.217,
-    "end_seconds": 221.751,
+    "end_seconds": 221.484,
     "root_pitch_class": "F#",
     "quality": "maj",
-    "confidence": 0.846,
+    "confidence": 0.944,
+    "source_stem": "other_stem"
+  },
+  {
+    "start_seconds": 221.484,
+    "end_seconds": 221.751,
+    "root_pitch_class": "A#",
+    "quality": "min",
+    "confidence": 0.687,
     "source_stem": "other_stem"
   },
   {
     "start_seconds": 221.751,
+    "end_seconds": 222.041,
+    "root_pitch_class": "F#",
+    "quality": "maj",
+    "confidence": 0.729,
+    "source_stem": "other_stem"
+  },
+  {
+    "start_seconds": 222.041,
     "end_seconds": 222.331,
     "root_pitch_class": "A#",
     "quality": "min",
-    "confidence": 0.603,
+    "confidence": 0.413,
     "source_stem": "other_stem"
   },
   {
     "start_seconds": 222.331,
+    "end_seconds": 222.598,
+    "root_pitch_class": "D#",
+    "quality": "maj",
+    "confidence": 0.23,
+    "source_stem": "other_stem"
+  },
+  {
+    "start_seconds": 222.598,
     "end_seconds": 222.865,
-    "root_pitch_class": "D#",
-    "quality": "maj",
-    "confidence": 0.439,
-    "source_stem": "other_stem"
-  },
-  {
-    "start_seconds": 222.865,
-    "end_seconds": 223.399,
-    "root_pitch_class": "D#",
-    "quality": "maj",
-    "confidence": 0.613,
-    "source_stem": "other_stem"
-  },
-  {
-    "start_seconds": 223.399,
-    "end_seconds": 223.933,
-    "root_pitch_class": "D#",
-    "quality": "min",
-    "confidence": 0.698,
-    "source_stem": "other_stem"
-  },
-  {
-    "start_seconds": 223.933,
-    "end_seconds": 224.491,
     "root_pitch_class": "D#",
     "quality": "min",
     "confidence": 0.572,
     "source_stem": "other_stem"
   },
   {
+    "start_seconds": 222.865,
+    "end_seconds": 223.132,
+    "root_pitch_class": "D#",
+    "quality": "maj",
+    "confidence": 0.564,
+    "source_stem": "other_stem"
+  },
+  {
+    "start_seconds": 223.132,
+    "end_seconds": 223.399,
+    "root_pitch_class": "D#",
+    "quality": "maj",
+    "confidence": 0.649,
+    "source_stem": "other_stem"
+  },
+  {
+    "start_seconds": 223.399,
+    "end_seconds": 223.666,
+    "root_pitch_class": "D#",
+    "quality": "min",
+    "confidence": 0.741,
+    "source_stem": "other_stem"
+  },
+  {
+    "start_seconds": 223.666,
+    "end_seconds": 223.933,
+    "root_pitch_class": "D#",
+    "quality": "min",
+    "confidence": 0.646,
+    "source_stem": "other_stem"
+  },
+  {
+    "start_seconds": 223.933,
+    "end_seconds": 224.212,
+    "root_pitch_class": "D#",
+    "quality": "min",
+    "confidence": 0.534,
+    "source_stem": "other_stem"
+  },
+  {
+    "start_seconds": 224.212,
+    "end_seconds": 224.491,
+    "root_pitch_class": "D#",
+    "quality": "min",
+    "confidence": 0.495,
+    "source_stem": "other_stem"
+  },
+  {
     "start_seconds": 224.491,
+    "end_seconds": 224.769,
+    "root_pitch_class": "D#",
+    "quality": "maj",
+    "confidence": 0.296,
+    "source_stem": "other_stem"
+  },
+  {
+    "start_seconds": 224.769,
     "end_seconds": 225.048,
     "root_pitch_class": "G#",
     "quality": "maj",
-    "confidence": 0.356,
+    "confidence": 0.694,
     "source_stem": "other_stem"
   },
   {
     "start_seconds": 225.048,
+    "end_seconds": 225.315,
+    "root_pitch_class": "G#",
+    "quality": "maj",
+    "confidence": 0.666,
+    "source_stem": "other_stem"
+  },
+  {
+    "start_seconds": 225.315,
     "end_seconds": 225.582,
     "root_pitch_class": "G#",
     "quality": "maj",
-    "confidence": 0.701,
+    "confidence": 0.694,
     "source_stem": "other_stem"
   },
   {
     "start_seconds": 225.582,
+    "end_seconds": 225.849,
+    "root_pitch_class": "G#",
+    "quality": "maj",
+    "confidence": 0.762,
+    "source_stem": "other_stem"
+  },
+  {
+    "start_seconds": 225.849,
     "end_seconds": 226.116,
     "root_pitch_class": "G#",
     "quality": "maj",
-    "confidence": 0.687,
+    "confidence": 0.582,
     "source_stem": "other_stem"
   },
   {
     "start_seconds": 226.116,
+    "end_seconds": 226.395,
+    "root_pitch_class": "F",
+    "quality": "min",
+    "confidence": 0.518,
+    "source_stem": "other_stem"
+  },
+  {
+    "start_seconds": 226.395,
     "end_seconds": 226.673,
     "root_pitch_class": "F",
     "quality": "min",
-    "confidence": 0.531,
+    "confidence": 0.537,
+    "source_stem": "other_stem"
+  },
+  {
+    "start_seconds": 226.673,
+    "end_seconds": 226.952,
+    "root_pitch_class": "C#",
+    "quality": "maj",
+    "confidence": 0.639,
+    "source_stem": "other_stem"
+  },
+  {
+    "start_seconds": 226.952,
+    "end_seconds": 227.23,
+    "root_pitch_class": "C#",
+    "quality": "maj",
+    "confidence": 0.619,
+    "source_stem": "other_stem"
+  },
+  {
+    "start_seconds": 227.23,
+    "end_seconds": 227.498,
+    "root_pitch_class": "A#",
+    "quality": "min",
+    "confidence": 0.81,
+    "source_stem": "other_stem"
+  },
+  {
+    "start_seconds": 227.498,
+    "end_seconds": 227.765,
+    "root_pitch_class": "A#",
+    "quality": "min",
+    "confidence": 0.874,
+    "source_stem": "other_stem"
+  },
+  {
+    "start_seconds": 227.765,
+    "end_seconds": 228.043,
+    "root_pitch_class": "A#",
+    "quality": "min",
+    "confidence": 0.866,
+    "source_stem": "other_stem"
+  },
+  {
+    "start_seconds": 228.043,
+    "end_seconds": 228.322,
+    "root_pitch_class": "A#",
+    "quality": "min",
+    "confidence": 0.598,
+    "source_stem": "other_stem"
+  },
+  {
+    "start_seconds": 228.322,
+    "end_seconds": 228.589,
+    "root_pitch_class": "A#",
+    "quality": "min",
+    "confidence": 0.855,
+    "source_stem": "other_stem"
+  },
+  {
+    "start_seconds": 228.589,
+    "end_seconds": 228.856,
+    "root_pitch_class": "C#",
+    "quality": "maj",
+    "confidence": 0.482,
+    "source_stem": "other_stem"
+  },
+  {
+    "start_seconds": 228.856,
+    "end_seconds": 229.135,
+    "root_pitch_class": "A#",
+    "quality": "maj",
+    "confidence": 0.495,
+    "source_stem": "other_stem"
+  },
+  {
+    "start_seconds": 229.135,
+    "end_seconds": 229.413,
+    "root_pitch_class": "F#",
+    "quality": "maj",
+    "confidence": 0.839,
+    "source_stem": "other_stem"
+  },
+  {
+    "start_seconds": 229.413,
+    "end_seconds": 229.68,
+    "root_pitch_class": "F#",
+    "quality": "maj",
+    "confidence": 0.775,
+    "source_stem": "other_stem"
+  },
+  {
+    "start_seconds": 229.68,
+    "end_seconds": 229.947,
+    "root_pitch_class": "F#",
+    "quality": "maj",
+    "confidence": 0.728,
+    "source_stem": "other_stem"
+  },
+  {
+    "start_seconds": 229.947,
+    "end_seconds": 230.214,
+    "root_pitch_class": "F#",
+    "quality": "maj",
+    "confidence": 0.842,
+    "source_stem": "other_stem"
+  },
+  {
+    "start_seconds": 230.214,
+    "end_seconds": 230.481,
+    "root_pitch_class": "F#",
+    "quality": "maj",
+    "confidence": 0.857,
+    "source_stem": "other_stem"
+  },
+  {
+    "start_seconds": 230.481,
+    "end_seconds": 230.76,
+    "root_pitch_class": "F#",
+    "quality": "maj",
+    "confidence": 0.872,
+    "source_stem": "other_stem"
+  },
+  {
+    "start_seconds": 230.76,
+    "end_seconds": 231.039,
+    "root_pitch_class": "A#",
+    "quality": "min",
+    "confidence": 0.552,
+    "source_stem": "other_stem"
+  },
+  {
+    "start_seconds": 231.039,
+    "end_seconds": 231.317,
+    "root_pitch_class": "A#",
+    "quality": "maj",
+    "confidence": 0.405,
+    "source_stem": "other_stem"
+  },
+  {
+    "start_seconds": 231.317,
+    "end_seconds": 231.596,
+    "root_pitch_class": "D#",
+    "quality": "min",
+    "confidence": 0.688,
+    "source_stem": "other_stem"
+  },
+  {
+    "start_seconds": 231.596,
+    "end_seconds": 231.863,
+    "root_pitch_class": "D#",
+    "quality": "maj",
+    "confidence": 0.576,
+    "source_stem": "other_stem"
+  },
+  {
+    "start_seconds": 231.863,
+    "end_seconds": 232.13,
+    "root_pitch_class": "D#",
+    "quality": "maj",
+    "confidence": 0.564,
+    "source_stem": "other_stem"
+  },
+  {
+    "start_seconds": 232.13,
+    "end_seconds": 232.397,
+    "root_pitch_class": "D#",
+    "quality": "min",
+    "confidence": 0.781,
+    "source_stem": "other_stem"
+  },
+  {
+    "start_seconds": 232.397,
+    "end_seconds": 232.664,
+    "root_pitch_class": "D#",
+    "quality": "min",
+    "confidence": 0.647,
+    "source_stem": "other_stem"
+  },
+  {
+    "start_seconds": 232.664,
+    "end_seconds": 232.943,
+    "root_pitch_class": "D#",
+    "quality": "maj",
+    "confidence": 0.554,
+    "source_stem": "other_stem"
+  },
+  {
+    "start_seconds": 232.943,
+    "end_seconds": 233.221,
+    "root_pitch_class": "A#",
+    "quality": "min",
+    "confidence": 0.535,
+    "source_stem": "other_stem"
+  },
+  {
+    "start_seconds": 233.221,
+    "end_seconds": 233.5,
+    "root_pitch_class": "A#",
+    "quality": "min",
+    "confidence": 0.545,
+    "source_stem": "other_stem"
+  },
+  {
+    "start_seconds": 233.5,
+    "end_seconds": 233.779,
+    "root_pitch_class": "G#",
+    "quality": "maj",
+    "confidence": 0.589,
+    "source_stem": "other_stem"
+  },
+  {
+    "start_seconds": 233.779,
+    "end_seconds": 234.046,
+    "root_pitch_class": "G#",
+    "quality": "maj",
+    "confidence": 0.338,
+    "source_stem": "other_stem"
+  },
+  {
+    "start_seconds": 234.046,
+    "end_seconds": 234.313,
+    "root_pitch_class": "F",
+    "quality": "min",
+    "confidence": 0.351,
+    "source_stem": "other_stem"
+  },
+  {
+    "start_seconds": 234.313,
+    "end_seconds": 234.58,
+    "root_pitch_class": "G#",
+    "quality": "maj",
+    "confidence": 0.633,
+    "source_stem": "other_stem"
+  },
+  {
+    "start_seconds": 234.58,
+    "end_seconds": 234.847,
+    "root_pitch_class": "G#",
+    "quality": "maj",
+    "confidence": 0.646,
+    "source_stem": "other_stem"
+  },
+  {
+    "start_seconds": 234.847,
+    "end_seconds": 235.125,
+    "root_pitch_class": "F",
+    "quality": "min",
+    "confidence": 0.553,
+    "source_stem": "other_stem"
+  },
+  {
+    "start_seconds": 235.125,
+    "end_seconds": 235.404,
+    "root_pitch_class": "C#",
+    "quality": "maj",
+    "confidence": 0.543,
+    "source_stem": "other_stem"
+  },
+  {
+    "start_seconds": 235.404,
+    "end_seconds": 235.683,
+    "root_pitch_class": "C#",
+    "quality": "maj",
+    "confidence": 0.488,
+    "source_stem": "other_stem"
+  },
+  {
+    "start_seconds": 235.683,
+    "end_seconds": 235.961,
+    "root_pitch_class": "C#",
+    "quality": "maj",
+    "confidence": 0.4,
+    "source_stem": "other_stem"
+  },
+  {
+    "start_seconds": 235.961,
+    "end_seconds": 236.228,
+    "root_pitch_class": "A#",
+    "quality": "min",
+    "confidence": 0.824,
+    "source_stem": "other_stem"
+  },
+  {
+    "start_seconds": 236.228,
+    "end_seconds": 236.495,
+    "root_pitch_class": "A#",
+    "quality": "min",
+    "confidence": 0.888,
+    "source_stem": "other_stem"
+  },
+  {
+    "start_seconds": 236.495,
+    "end_seconds": 236.774,
+    "root_pitch_class": "A#",
+    "quality": "min",
+    "confidence": 0.851,
+    "source_stem": "other_stem"
+  },
+  {
+    "start_seconds": 236.774,
+    "end_seconds": 237.053,
+    "root_pitch_class": "A#",
+    "quality": "min",
+    "confidence": 0.711,
+    "source_stem": "other_stem"
+  },
+  {
+    "start_seconds": 237.053,
+    "end_seconds": 237.331,
+    "root_pitch_class": "A#",
+    "quality": "min",
+    "confidence": 0.688,
+    "source_stem": "other_stem"
+  },
+  {
+    "start_seconds": 237.331,
+    "end_seconds": 237.61,
+    "root_pitch_class": "A#",
+    "quality": "min",
+    "confidence": 0.181,
+    "source_stem": "other_stem"
+  },
+  {
+    "start_seconds": 237.61,
+    "end_seconds": 237.877,
+    "root_pitch_class": "G",
+    "quality": "min",
+    "confidence": 0.389,
+    "source_stem": "other_stem"
+  },
+  {
+    "start_seconds": 237.877,
+    "end_seconds": 238.144,
+    "root_pitch_class": "F#",
+    "quality": "maj",
+    "confidence": 0.849,
+    "source_stem": "other_stem"
+  },
+  {
+    "start_seconds": 238.144,
+    "end_seconds": 238.411,
+    "root_pitch_class": "F#",
+    "quality": "maj",
+    "confidence": 0.848,
+    "source_stem": "other_stem"
+  },
+  {
+    "start_seconds": 238.411,
+    "end_seconds": 238.678,
+    "root_pitch_class": "F#",
+    "quality": "maj",
+    "confidence": 0.89,
+    "source_stem": "other_stem"
+  },
+  {
+    "start_seconds": 238.678,
+    "end_seconds": 238.945,
+    "root_pitch_class": "F#",
+    "quality": "maj",
+    "confidence": 0.938,
+    "source_stem": "other_stem"
+  },
+  {
+    "start_seconds": 238.945,
+    "end_seconds": 239.212,
+    "root_pitch_class": "A#",
+    "quality": "min",
+    "confidence": 0.72,
+    "source_stem": "other_stem"
+  },
+  {
+    "start_seconds": 239.212,
+    "end_seconds": 239.502,
+    "root_pitch_class": "F#",
+    "quality": "maj",
+    "confidence": 0.714,
+    "source_stem": "other_stem"
+  },
+  {
+    "start_seconds": 239.502,
+    "end_seconds": 239.792,
+    "root_pitch_class": "A#",
+    "quality": "min",
+    "confidence": 0.417,
+    "source_stem": "other_stem"
+  },
+  {
+    "start_seconds": 239.792,
+    "end_seconds": 240.06,
+    "root_pitch_class": "D#",
+    "quality": "maj",
+    "confidence": 0.321,
+    "source_stem": "other_stem"
+  },
+  {
+    "start_seconds": 240.06,
+    "end_seconds": 240.327,
+    "root_pitch_class": "D#",
+    "quality": "min",
+    "confidence": 0.614,
+    "source_stem": "other_stem"
+  },
+  {
+    "start_seconds": 240.327,
+    "end_seconds": 240.594,
+    "root_pitch_class": "D#",
+    "quality": "min",
+    "confidence": 0.599,
+    "source_stem": "other_stem"
+  },
+  {
+    "start_seconds": 240.594,
+    "end_seconds": 240.861,
+    "root_pitch_class": "D#",
+    "quality": "maj",
+    "confidence": 0.678,
+    "source_stem": "other_stem"
+  },
+  {
+    "start_seconds": 240.861,
+    "end_seconds": 241.128,
+    "root_pitch_class": "D#",
+    "quality": "min",
+    "confidence": 0.734,
+    "source_stem": "other_stem"
+  },
+  {
+    "start_seconds": 241.128,
+    "end_seconds": 241.395,
+    "root_pitch_class": "D#",
+    "quality": "min",
+    "confidence": 0.624,
+    "source_stem": "other_stem"
+  },
+  {
+    "start_seconds": 241.395,
+    "end_seconds": 241.673,
+    "root_pitch_class": "D#",
+    "quality": "min",
+    "confidence": 0.549,
+    "source_stem": "other_stem"
+  },
+  {
+    "start_seconds": 241.673,
+    "end_seconds": 241.952,
+    "root_pitch_class": "D#",
+    "quality": "min",
+    "confidence": 0.479,
+    "source_stem": "other_stem"
+  },
+  {
+    "start_seconds": 241.952,
+    "end_seconds": 242.231,
+    "root_pitch_class": "D#",
+    "quality": "maj",
+    "confidence": 0.334,
+    "source_stem": "other_stem"
+  },
+  {
+    "start_seconds": 242.231,
+    "end_seconds": 242.509,
+    "root_pitch_class": "G#",
+    "quality": "maj",
+    "confidence": 0.726,
+    "source_stem": "other_stem"
+  },
+  {
+    "start_seconds": 242.509,
+    "end_seconds": 242.776,
+    "root_pitch_class": "G#",
+    "quality": "maj",
+    "confidence": 0.71,
+    "source_stem": "other_stem"
+  },
+  {
+    "start_seconds": 242.776,
+    "end_seconds": 243.043,
+    "root_pitch_class": "G#",
+    "quality": "maj",
+    "confidence": 0.731,
+    "source_stem": "other_stem"
+  },
+  {
+    "start_seconds": 243.043,
+    "end_seconds": 243.31,
+    "root_pitch_class": "G#",
+    "quality": "maj",
+    "confidence": 0.779,
+    "source_stem": "other_stem"
+  },
+  {
+    "start_seconds": 243.31,
+    "end_seconds": 243.577,
+    "root_pitch_class": "G#",
+    "quality": "maj",
+    "confidence": 0.56,
+    "source_stem": "other_stem"
+  },
+  {
+    "start_seconds": 243.577,
+    "end_seconds": 243.856,
+    "root_pitch_class": "F",
+    "quality": "min",
+    "confidence": 0.498,
+    "source_stem": "other_stem"
+  },
+  {
+    "start_seconds": 243.856,
+    "end_seconds": 244.135,
+    "root_pitch_class": "F",
+    "quality": "min",
+    "confidence": 0.487,
+    "source_stem": "other_stem"
+  },
+  {
+    "start_seconds": 244.135,
+    "end_seconds": 244.413,
+    "root_pitch_class": "C#",
+    "quality": "maj",
+    "confidence": 0.622,
+    "source_stem": "other_stem"
+  },
+  {
+    "start_seconds": 244.413,
+    "end_seconds": 244.692,
+    "root_pitch_class": "C#",
+    "quality": "maj",
+    "confidence": 0.578,
     "source_stem": "other_stem"
   }
 ]

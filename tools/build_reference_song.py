@@ -195,10 +195,29 @@ def main() -> int:
             existing = json.loads(out_path.read_text(encoding="utf-8"))
         except Exception:
             pass
-    existing.setdefault("notes", []).extend(notes_entries)
-    existing.setdefault("chords", []).extend(chord_entries)
+
+    # Re-running promotion for the same section+layer(s) must REPLACE the
+    # previous promotion, not accumulate duplicates on top of it -- strip
+    # any existing reference_derived entries matching this run's
+    # section+layer before appending the fresh ones. Non-matching entries
+    # (other sections/layers, or hand-authored/verified data) are untouched.
+    replaced_layers = set(layers) & {"melody", "bass", "harmony"}
+    note_layers_replaced = replaced_layers & {"melody", "bass"}
+    chord_layers_replaced = {"chords"} if "harmony" in replaced_layers else set()
+
+    def keep_note(e: dict) -> bool:
+        return not (e.get("section") == args.section and e.get("layer") in note_layers_replaced and e.get("verification") == "reference_derived")
+
+    def keep_chord(e: dict) -> bool:
+        return not (e.get("section") == args.section and e.get("layer") in chord_layers_replaced and e.get("verification") == "reference_derived")
+
+    existing["notes"] = [e for e in existing.get("notes", []) if keep_note(e)]
+    existing["chords"] = [e for e in existing.get("chords", []) if keep_chord(e)]
+
+    existing["notes"].extend(notes_entries)
+    existing["chords"].extend(chord_entries)
     out_path.write_text(json.dumps(existing, indent=2), encoding="utf-8")
-    print(f"\nWrote {total} reference_derived events to {out_path}")
+    print(f"\nWrote {total} reference_derived events to {out_path} (replacing any prior promotion for this section+layer)")
     return 0
 
 

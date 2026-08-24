@@ -3,6 +3,6 @@
   "note": "instant_crush.mp3 itself is NEVER committed -- see .gitignore. This metadata contains no audio.",
   "duration_seconds": 340.66,
   "analysis_sample_rate": 22050,
-  "analyzed_at": "2026-08-24 12:57:28",
+  "analyzed_at": "2026-08-24 13:21:23",
   "demucs_stem_separation": "Demucs (htdemucs) stem separation WAS used -- melody from vocals.wav, bass from bass.wav, harmony from other.wav. Stems themselves are gitignored (never committed), only this JSON/text metadata is tracked. Available stems: ['bass', 'drums', 'other', 'vocals']."
 }

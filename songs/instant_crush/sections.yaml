@@ -1,12 +1,14 @@
 # Section boundaries for Instant Crush -- see NOTES_STATUS.md.
 #
-# `chorus` below is now derived from a MEASURED chroma-self-similarity
+# `chorus` below is derived from a MEASURED chroma-self-similarity
 # candidate against the local reference recording (similarity score 0.999
-# -- see songs/instant_crush/reference_analysis/sections.json), not an
-# arbitrary guess. This is still a heuristic ("the most self-repeating
-# 32-beat window in the song"), not a human-confirmed structural label --
-# confirm by ear with tools/reference_inspect.py --start 209.77 --end 227.23
-# before fully trusting it.
+# on the base 8-bar unit -- see songs/instant_crush/reference_analysis/sections.json),
+# not an arbitrary guess. The base 8-bar (209.77s-227.23s) window was
+# extended to 16 bars (209.77s-244.69s) because the immediately following
+# 8 bars matched it at 0.996 similarity too -- real evidence of a second
+# repeat, not a length guess. Still a heuristic, not a human-confirmed
+# structural label -- confirm by ear with
+# tools/reference_inspect.py --start 209.77 --end 244.69 before fully trusting it.
 #
 # `lead_guitar` remains the user-provided ~3:18 approximate timestamp,
 # recomputed at the now-measured 112.35 BPM (was computed against the old
@@ -18,9 +20,10 @@
 sections:
   - id: chorus
     name: "Chorus"
-    # Measured chroma-repeat candidate: 209.77s-227.23s at 112.35 BPM.
+    # Measured chroma-repeat candidate, extended by one confirmed repeat:
+    # 209.77s-244.69s (16 bars) at 112.35 BPM.
     start_beat: 392.79
-    end_beat: 425.49
+    end_beat: 458.19
     difficulty: medium
     loop_default: true
 

@@ -1,31 +1,39 @@
 # Instant Crush -- data verification status
 
 This file exists so it's never ambiguous what is and isn't real in this
-song profile. **Accuracy pass v3.1** added Demucs stem separation on top
-of v3's measurement pipeline -- read this before trusting anything below.
+song profile. **Accuracy pass v3.2** fixed two listening-feedback issues
+from v3.1 (chords quantized too coarsely, section too short) -- read this
+before trusting anything below.
 
 ## What's real (measured from the local reference recording)
 
 - **Tempo**: 112.35 BPM, measured via two independent librosa methods
   (beat-tracking + tempogram) that agreed within 1 BPM. See
   `reference_analysis/beat_grid.json`.
-- **Chorus section timing**: 209.77s-227.23s, found via chroma
-  self-similarity (0.999 match score -- the most self-repeating 32-beat
-  window in the song). A heuristic ("chorus-like" = "repeats"), not a
-  human-confirmed structural label. See `reference_analysis/sections.json`.
-- **Chorus CHORDS**: 14 events, `verification: "reference_derived"`,
-  confidence 0.53-0.80. Derived by separating the track with Demucs
-  (`htdemucs` model) and running chroma template matching against the
-  isolated **"other" stem** (synths/guitars -- no vocals/drums/bass to
-  muddy the chroma vector), then merging consecutive same-chord beats into
-  sustained spans (so it doesn't re-attack every beat -- see accuracy pass
-  v2's articulation fix for why that mattered). This measured a real,
-  repeating **A#m - F#maj - D#m - G#maj (- brief Fmin passing chord)**
+- **Chorus section timing**: 209.77s-244.69s (16 bars, 34.9s). The base
+  8-bar unit (209.77s-227.23s) was found via chroma self-similarity (0.999
+  match score); it was extended by one repeat because the immediately
+  following 8 bars matched it at 0.996 similarity too -- real evidence of
+  a second pass through the same material, not a length guess. Still a
+  heuristic ("chorus-like" = "repeats"), not a human-confirmed structural
+  label. See `reference_analysis/sections.json`.
+- **Chorus CHORDS**: 39 events, `verification: "reference_derived"`,
+  confidence 0.51-0.88, durations 0.27s-1.65s (mean 0.61s). Derived by
+  separating the track with Demucs (`htdemucs` model) and running chroma
+  template matching against the isolated **"other" stem** (synths/guitars
+  -- no vocals/drums/bass to muddy the chroma vector) at **2 analysis
+  windows per beat** (v3.1 used 1/beat, which measurably smoothed over
+  real faster harmonic movement -- confirmed by inspecting frame-level,
+  non-beat-quantized chroma and seeing genuine sub-beat chord shifts),
+  then merging consecutive same-estimate windows into sustained spans (so
+  it doesn't re-attack every window -- see accuracy pass v2's articulation
+  fix for why that mattered). This measured a real, repeating
+  **A#m - F#maj - D#m - G#maj (- brief Fmin, then C#maj passing chords)**
   progression -- notably, the same chord *letters* as the earlier archived
   v2 guess (Bbm-Gb-Ebm-Ab is enharmonically identical), now independently
-  confirmed from actual audio, though v2's rhythm/voicing/timing were
-  still invented and v3.1's aren't. See
-  `reference_analysis/candidates/harmony.json` for the raw per-beat data
+  confirmed from actual audio across two full repeats, though v2's
+  rhythm/voicing/timing were still invented and v3.2's aren't. See
+  `reference_analysis/candidates/harmony.json` for the raw sub-beat data
   before merging.
 - **Lead-guitar section**: still the user-provided ~3:18 approximate
   timestamp, recomputed at the corrected tempo; its end has been trimmed
@@ -43,9 +51,9 @@ of v3's measurement pipeline -- read this before trusting anything below.
   leaked into the "other" stem instead -- pyin found some content there
   too, but confidence stayed very low (mean 0.027, max 0.233), not usable.
 - **Bass**: improved with stem separation (full-mix mean confidence 0.06
-  -> bass-stem mean 0.21, max 0.53) but only **one single note** cleared
-  the 0.5 promotion threshold -- nowhere near enough coverage for a
-  coherent bass line, so nothing was promoted for this layer.
+  -> bass-stem mean 0.21, max 0.53) but only **2 of 102** candidates
+  cleared the 0.5 promotion threshold -- nowhere near enough coverage for
+  a coherent bass line, so nothing was promoted for this layer.
 - **A previous pass's fully-invented chord/melody data has been archived**
   (`archive/notes_v2_synthetic_reference.json`) and is **not loaded** as
   canonical data. It will not be resurrected.
