@@ -1,49 +1,51 @@
 # Daft Punk -- "Instant Crush" (feat. Julian Casablancas)
 #
-# STATUS (accuracy pass v3.2): tempo/section-timing are MEASURED from the
-# user's local reference recording (tools/analyze_reference.py). CHORDS for
-# the chorus are reference_derived (Demucs stem separation isolated the
-# harmonic "other" stem -- synths/guitars, no vocals/drums/bass -- then
-# chroma template matching against it at SUB-BEAT resolution, confidence
-# >= 0.5, consecutive same-estimate windows merged into sustained spans).
-# v3.2 fixed two listening-feedback issues from v3.1: (a) chords were
-# quantized one-per-beat, which measurably smoothed over real faster
-# harmonic movement (confirmed by inspecting frame-level, non-quantized
-# chroma) -- now analyzed at 2 windows/beat, so genuine short passing
-# chords (down to ~0.27s) are captured instead of erased; (b) the section
-# was only the base 8-bar repeat unit (17.5s) -- extended to 16 bars
-# (34.9s) because the immediately following 8 bars matched the same
-# pattern at 0.996 similarity, i.e. real evidence of a second repeat, not
-# a length guess. 39 chord events now, spanning 209.77s-244.69s.
+# STATUS (accuracy pass v3.3): CORRECTED A WRONG SECTION PICK. v3.1/v3.2's
+# chorus candidate (209.77s+) was found by taking the single best-matching
+# repeated window in the song -- but that turned out to be guitar-solo-
+# adjacent material, not the sung chorus (confirmed: it didn't cross-
+# validate against any other widely-separated part of the track, and the
+# song's actual energy contour shows it sits inside one long high-energy
+# block that also contains the ~3:18 guitar solo, with no clean boundary
+# between them). User feedback that it "doesn't sound like the song at
+# all" was correct.
 #
-# MELODY and BASS are still NOT ready: Demucs' vocal-isolation model
-# produced near-silent output for this track (RMS ~40x quieter than the
-# other stems -- Instant Crush's vocoded/processed vocal likely doesn't
-# match what the model was trained on), so melody confidence stayed ~0.01
-# (unusable). Bass-stem extraction improved (0.06 -> 0.21 mean confidence)
-# but only 2 notes (of 102 candidates) cleared the promotion bar -- not
-# enough for a coherent bass line.
+# Root-caused and fixed by requiring cross-validation instead of trusting
+# one best pair: computed the whole-song RMS energy contour (choruses are
+# almost always the loudest/fullest sections) to find genuinely isolated
+# candidate peaks, then searched for a chroma-similar match between two
+# widely-separated peaks (not just adjacent windows). Found chorus is the
+# 8-bar unit at 88.50s-105.50s, and -- critically -- it independently
+# matches THREE more widely-separated points in the track (237.00s,
+# 263.25s, 298.00s; similarity 0.87-0.91 each, all outside the solo
+# region), which the wrong candidate never did. tools/analyze_reference.py
+# now does this cross-validation automatically for any section
+# (find_all_occurrences) and averages chroma across all confirmed
+# occurrences before chord-matching (average_chroma_occurrences) --
+# cancels out per-occurrence noise, raising mean harmony confidence from
+# 0.32 (original, wrong section, full mix) to 0.67 (corrected section,
+# 4-occurrence average, isolated harmonic stem). 14 chord events, all
+# independently corroborated across 4 real recordings of the same 8 bars.
 #
-# An earlier pass's fully-invented chord/melody data has been archived (see
-# songs/instant_crush/archive/) and is NOT loaded here. The current chords
-# are real audio-derived data, not a resurrection of that -- but they are
-# still "reference_derived", never "verified": a generic close-position
-# triad was built from each measured root+quality, not the actual recorded
-# voicing. Guided/Assist/Real/Autoplay-melody/Autoplay-bass will still show
-# "reference transcription not ready"; Autoplay-chords (and Full Chorus,
-# which now has real chord content alongside empty bass/melody) will play.
+# MELODY and BASS remain NOT ready: Demucs' vocal-isolation model produced
+# near-silent output for this track (Instant Crush's vocoded/processed
+# vocal likely doesn't match what the model was trained on), and bass
+# isolation didn't clear the confidence bar on the corrected section
+# either. An earlier pass's fully-invented chord/melody data (built from a
+# documented chord-change sequence + a made-up melody, not audio) remains
+# archived and is not loaded -- the current chords are real audio-derived
+# data, not a resurrection of that, but are still "reference_derived",
+# never "verified": a generic close-position triad built from each
+# measured root+quality, not the actual recorded voicing.
 #
 # To improve further:
 #   1. Melody: try a different/newer Demucs model (--name argument), or a
 #      dedicated vocal-isolation model, since htdemucs' default vocals
 #      stem failed for this track's vocal processing.
-#   2. Bass: same idea, or accept the single high-confidence note as a
-#      partial data point and extend the promotion threshold once more of
-#      the line is checkable by ear.
-#   3. Preferred alternative: obtain a MIDI file or your own transcription
+#   2. Preferred alternative: obtain a MIDI file or your own transcription
 #      LEGALLY and run: .venv\Scripts\python.exe tools\import_midi.py <path>
 #
-# See songs/instant_crush/NOTES_STATUS.md for the full breakdown.
+# See songs/instant_crush/NOTES_STATUS.md for the full investigation.
 
 title: "Instant Crush"
 artist: "Daft Punk feat. Julian Casablancas"
@@ -51,26 +53,27 @@ time_signature: [4, 4]
 
 # MEASURED from the local reference recording (librosa beat-tracking +
 # tempogram, both methods agreed within 1 BPM -- see
-# songs/instant_crush/reference_analysis/beat_grid.json). This replaces
-# the earlier 110/120 BPM guesses. Bar-1/downbeat phase alignment is NOT
-# verified -- beat 0 here is audio time 0, not a confirmed downbeat.
+# songs/instant_crush/reference_analysis/beat_grid.json). Bar-1/downbeat
+# phase alignment is NOT verified -- beat 0 here is audio time 0, not a
+# confirmed downbeat.
 tempo_events:
   - beat: 0
     bpm: 112.35
 
 notes_disclaimer: >
   Chorus CHORDS are reference_derived (Demucs stem separation + sub-beat
-  chroma template matching against the isolated harmonic stem, confidence
-  >= 0.5, 39 events over a 16-bar/34.9s section) -- real measured audio
+  chroma template matching against the isolated harmonic stem, averaged
+  across 4 independently cross-validated occurrences of the chorus
+  throughout the track, confidence >= 0.5) -- real measured audio
   evidence, not invented, but still an algorithmic estimate with a generic
-  voicing, never "verified". Melody and bass are NOT ready: vocal
-  isolation failed for this track (near-silent output, likely due to
-  Instant Crush's processed/vocoder-style vocal), and bass isolation only
-  cleared the confidence bar for 2 of 102 candidate notes. A previous
-  pass's fully-invented chord/melody data remains archived and is not
-  loaded. The lead/electric-guitar section (~3:18) remains fully
-  unverified. See songs/instant_crush/reference_analysis/ for the full
-  candidate data and confidence numbers.
+  voicing, never "verified". An earlier chorus-section pick was found to
+  be wrong (guitar-solo-adjacent material) and has been corrected -- see
+  song.yaml's header comment and NOTES_STATUS.md for the investigation.
+  Melody and bass are NOT ready: vocal isolation failed for this track,
+  and bass isolation didn't clear the confidence bar. A previous pass's
+  fully-invented chord/melody data remains archived and is not loaded.
+  The lead/electric-guitar section (~3:18) remains fully unverified. See
+  songs/instant_crush/reference_analysis/ for the full candidate data.
 
 knob_actions: []
   # Once the lead-guitar section's real start_beat is known, add e.g.:

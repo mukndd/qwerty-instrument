@@ -1,12 +1,31 @@
 {
   "chorus_candidate": {
     "found": true,
-    "similarity_score": 0.9992,
-    "confidence": "medium",
-    "start_seconds": 209.769,
-    "end_seconds": 244.692,
-    "window_beats": 32,
-    "repeat_units": 2,
-    "note": "heuristic repeated-section detection, not verified -- confirm by ear with tools/reference_inspect.py. Extended 1x beyond the base 32-beat window because the immediately following block(s) matched with similarity >= 0.95 (real evidence of a repeat, not a guess)."
-  }
+    "start_seconds": 88.5,
+    "end_seconds": 105.5,
+    "confidence": "user_specified",
+    "note": "manually specified via --chorus-start/--chorus-end"
+  },
+  "cross_validated_occurrences": [
+    {
+      "start_seconds": 88.5,
+      "end_seconds": 105.5,
+      "similarity": 1.0
+    },
+    {
+      "start_seconds": 237.0,
+      "end_seconds": 254.0,
+      "similarity": 0.9022
+    },
+    {
+      "start_seconds": 263.25,
+      "end_seconds": 280.25,
+      "similarity": 0.873
+    },
+    {
+      "start_seconds": 298.0,
+      "end_seconds": 315.0,
+      "similarity": 0.9137
+    }
+  ]
 }

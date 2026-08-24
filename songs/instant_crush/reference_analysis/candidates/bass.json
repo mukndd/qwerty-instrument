@@ -1,520 +1,43 @@
 [
   {
-    "start_seconds": 209.769,
-    "end_seconds": 210.164,
-    "duration_seconds": 0.395,
-    "nearest_midi_note": 34,
-    "pitch_name": "A\u266f1",
-    "confidence": 0.34,
-    "source_stem": "bass_stem"
-  },
-  {
-    "start_seconds": 210.233,
-    "end_seconds": 210.349,
-    "duration_seconds": 0.116,
-    "nearest_midi_note": 44,
-    "pitch_name": "G\u266f2",
-    "confidence": 0.361,
-    "source_stem": "bass_stem"
-  },
-  {
-    "start_seconds": 210.373,
-    "end_seconds": 210.442,
-    "duration_seconds": 0.07,
-    "nearest_midi_note": 43,
-    "pitch_name": "G2",
-    "confidence": 0.011,
-    "source_stem": "bass_stem"
-  },
-  {
-    "start_seconds": 210.582,
-    "end_seconds": 210.767,
-    "duration_seconds": 0.186,
-    "nearest_midi_note": 41,
-    "pitch_name": "F2",
-    "confidence": 0.401,
-    "source_stem": "bass_stem"
-  },
-  {
-    "start_seconds": 210.837,
-    "end_seconds": 211.209,
+    "start_seconds": 88.593,
+    "end_seconds": 88.964,
     "duration_seconds": 0.372,
     "nearest_midi_note": 34,
     "pitch_name": "A\u266f1",
-    "confidence": 0.388,
+    "confidence": 0.386,
     "source_stem": "bass_stem"
   },
   {
-    "start_seconds": 211.209,
-    "end_seconds": 211.255,
+    "start_seconds": 88.964,
+    "end_seconds": 89.011,
     "duration_seconds": 0.046,
     "nearest_midi_note": 35,
     "pitch_name": "B1",
-    "confidence": 0.033,
+    "confidence": 0.059,
     "source_stem": "bass_stem"
   },
   {
-    "start_seconds": 211.255,
-    "end_seconds": 211.557,
+    "start_seconds": 89.011,
+    "end_seconds": 89.313,
     "duration_seconds": 0.302,
     "nearest_midi_note": 32,
     "pitch_name": "G\u266f1",
-    "confidence": 0.254,
+    "confidence": 0.2,
     "source_stem": "bass_stem"
   },
   {
-    "start_seconds": 211.65,
-    "end_seconds": 212.764,
+    "start_seconds": 89.406,
+    "end_seconds": 90.52,
     "duration_seconds": 1.115,
     "nearest_midi_note": 30,
     "pitch_name": "F\u266f1",
-    "confidence": 0.286,
+    "confidence": 0.289,
     "source_stem": "bass_stem"
   },
   {
-    "start_seconds": 212.834,
-    "end_seconds": 213.02,
-    "duration_seconds": 0.186,
-    "nearest_midi_note": 28,
-    "pitch_name": "E1",
-    "confidence": 0.068,
-    "source_stem": "bass_stem"
-  },
-  {
-    "start_seconds": 213.02,
-    "end_seconds": 213.066,
-    "duration_seconds": 0.046,
-    "nearest_midi_note": 29,
-    "pitch_name": "F1",
-    "confidence": 0.045,
-    "source_stem": "bass_stem"
-  },
-  {
-    "start_seconds": 213.066,
-    "end_seconds": 213.438,
-    "duration_seconds": 0.372,
-    "nearest_midi_note": 30,
-    "pitch_name": "F\u266f1",
-    "confidence": 0.245,
-    "source_stem": "bass_stem"
-  },
-  {
-    "start_seconds": 213.438,
-    "end_seconds": 213.832,
-    "duration_seconds": 0.395,
-    "nearest_midi_note": 29,
-    "pitch_name": "F1",
-    "confidence": 0.264,
-    "source_stem": "bass_stem"
-  },
-  {
-    "start_seconds": 213.856,
-    "end_seconds": 214.576,
-    "duration_seconds": 0.72,
-    "nearest_midi_note": 27,
-    "pitch_name": "D\u266f1",
-    "confidence": 0.182,
-    "source_stem": "bass_stem"
-  },
-  {
-    "start_seconds": 214.576,
-    "end_seconds": 214.692,
-    "duration_seconds": 0.116,
-    "nearest_midi_note": 26,
-    "pitch_name": "D1",
-    "confidence": 0.025,
-    "source_stem": "bass_stem"
-  },
-  {
-    "start_seconds": 214.692,
-    "end_seconds": 214.901,
-    "duration_seconds": 0.209,
-    "nearest_midi_note": 27,
-    "pitch_name": "D\u266f1",
-    "confidence": 0.156,
-    "source_stem": "bass_stem"
-  },
-  {
-    "start_seconds": 215.156,
-    "end_seconds": 215.202,
-    "duration_seconds": 0.046,
-    "nearest_midi_note": 28,
-    "pitch_name": "E1",
-    "confidence": 0.01,
-    "source_stem": "bass_stem"
-  },
-  {
-    "start_seconds": 215.272,
-    "end_seconds": 215.597,
-    "duration_seconds": 0.325,
-    "nearest_midi_note": 27,
-    "pitch_name": "D\u266f1",
-    "confidence": 0.201,
-    "source_stem": "bass_stem"
-  },
-  {
-    "start_seconds": 215.644,
-    "end_seconds": 215.806,
-    "duration_seconds": 0.163,
-    "nearest_midi_note": 34,
-    "pitch_name": "A\u266f1",
-    "confidence": 0.361,
-    "source_stem": "bass_stem"
-  },
-  {
-    "start_seconds": 215.806,
-    "end_seconds": 215.853,
-    "duration_seconds": 0.046,
-    "nearest_midi_note": 33,
-    "pitch_name": "A1",
-    "confidence": 0.029,
-    "source_stem": "bass_stem"
-  },
-  {
-    "start_seconds": 215.899,
-    "end_seconds": 215.946,
-    "duration_seconds": 0.046,
-    "nearest_midi_note": 24,
-    "pitch_name": "C1",
-    "confidence": 0.01,
-    "source_stem": "bass_stem"
-  },
-  {
-    "start_seconds": 216.038,
-    "end_seconds": 217.153,
-    "duration_seconds": 1.115,
-    "nearest_midi_note": 32,
-    "pitch_name": "G\u266f1",
-    "confidence": 0.255,
-    "source_stem": "bass_stem"
-  },
-  {
-    "start_seconds": 217.199,
-    "end_seconds": 217.385,
-    "duration_seconds": 0.186,
-    "nearest_midi_note": 27,
-    "pitch_name": "D\u266f1",
-    "confidence": 0.118,
-    "source_stem": "bass_stem"
-  },
-  {
-    "start_seconds": 217.408,
-    "end_seconds": 217.942,
-    "duration_seconds": 0.534,
-    "nearest_midi_note": 29,
-    "pitch_name": "F1",
-    "confidence": 0.256,
-    "source_stem": "bass_stem"
-  },
-  {
-    "start_seconds": 218.012,
-    "end_seconds": 218.5,
-    "duration_seconds": 0.488,
-    "nearest_midi_note": 41,
-    "pitch_name": "F2",
-    "confidence": 0.462,
-    "source_stem": "bass_stem"
-  },
-  {
-    "start_seconds": 218.546,
-    "end_seconds": 218.918,
-    "duration_seconds": 0.372,
-    "nearest_midi_note": 34,
-    "pitch_name": "A\u266f1",
-    "confidence": 0.391,
-    "source_stem": "bass_stem"
-  },
-  {
-    "start_seconds": 219.011,
-    "end_seconds": 219.057,
-    "duration_seconds": 0.046,
-    "nearest_midi_note": 45,
-    "pitch_name": "A2",
-    "confidence": 0.045,
-    "source_stem": "bass_stem"
-  },
-  {
-    "start_seconds": 219.057,
-    "end_seconds": 219.266,
-    "duration_seconds": 0.209,
-    "nearest_midi_note": 46,
-    "pitch_name": "A\u266f2",
-    "confidence": 0.42,
-    "source_stem": "bass_stem"
-  },
-  {
-    "start_seconds": 219.336,
-    "end_seconds": 219.498,
-    "duration_seconds": 0.163,
-    "nearest_midi_note": 41,
-    "pitch_name": "F2",
-    "confidence": 0.409,
-    "source_stem": "bass_stem"
-  },
-  {
-    "start_seconds": 219.568,
-    "end_seconds": 219.939,
-    "duration_seconds": 0.372,
-    "nearest_midi_note": 34,
-    "pitch_name": "A\u266f1",
-    "confidence": 0.402,
-    "source_stem": "bass_stem"
-  },
-  {
-    "start_seconds": 220.009,
-    "end_seconds": 220.241,
-    "duration_seconds": 0.232,
-    "nearest_midi_note": 32,
-    "pitch_name": "G\u266f1",
-    "confidence": 0.276,
-    "source_stem": "bass_stem"
-  },
-  {
-    "start_seconds": 220.288,
-    "end_seconds": 220.334,
-    "duration_seconds": 0.046,
-    "nearest_midi_note": 25,
-    "pitch_name": "C\u266f1",
-    "confidence": 0.013,
-    "source_stem": "bass_stem"
-  },
-  {
-    "start_seconds": 220.404,
-    "end_seconds": 221.611,
-    "duration_seconds": 1.207,
-    "nearest_midi_note": 30,
-    "pitch_name": "F\u266f1",
-    "confidence": 0.276,
-    "source_stem": "bass_stem"
-  },
-  {
-    "start_seconds": 221.634,
-    "end_seconds": 221.704,
-    "duration_seconds": 0.07,
-    "nearest_midi_note": 28,
-    "pitch_name": "E1",
-    "confidence": 0.064,
-    "source_stem": "bass_stem"
-  },
-  {
-    "start_seconds": 221.774,
-    "end_seconds": 222.145,
-    "duration_seconds": 0.372,
-    "nearest_midi_note": 30,
-    "pitch_name": "F\u266f1",
-    "confidence": 0.205,
-    "source_stem": "bass_stem"
-  },
-  {
-    "start_seconds": 222.168,
-    "end_seconds": 222.401,
-    "duration_seconds": 0.232,
-    "nearest_midi_note": 29,
-    "pitch_name": "F1",
-    "confidence": 0.162,
-    "source_stem": "bass_stem"
-  },
-  {
-    "start_seconds": 222.447,
-    "end_seconds": 222.494,
-    "duration_seconds": 0.046,
-    "nearest_midi_note": 28,
-    "pitch_name": "E1",
-    "confidence": 0.051,
-    "source_stem": "bass_stem"
-  },
-  {
-    "start_seconds": 222.586,
-    "end_seconds": 223.237,
-    "duration_seconds": 0.65,
-    "nearest_midi_note": 27,
-    "pitch_name": "D\u266f1",
-    "confidence": 0.202,
-    "source_stem": "bass_stem"
-  },
-  {
-    "start_seconds": 223.306,
-    "end_seconds": 223.399,
-    "duration_seconds": 0.093,
-    "nearest_midi_note": 38,
-    "pitch_name": "D2",
-    "confidence": 0.018,
-    "source_stem": "bass_stem"
-  },
-  {
-    "start_seconds": 223.399,
-    "end_seconds": 223.631,
-    "duration_seconds": 0.232,
-    "nearest_midi_note": 39,
-    "pitch_name": "D\u266f2",
-    "confidence": 0.38,
-    "source_stem": "bass_stem"
-  },
-  {
-    "start_seconds": 223.701,
-    "end_seconds": 223.933,
-    "duration_seconds": 0.232,
-    "nearest_midi_note": 27,
-    "pitch_name": "D\u266f1",
-    "confidence": 0.142,
-    "source_stem": "bass_stem"
-  },
-  {
-    "start_seconds": 223.956,
-    "end_seconds": 224.328,
-    "duration_seconds": 0.372,
-    "nearest_midi_note": 27,
-    "pitch_name": "D\u266f1",
-    "confidence": 0.207,
-    "source_stem": "bass_stem"
-  },
-  {
-    "start_seconds": 224.374,
-    "end_seconds": 224.56,
-    "duration_seconds": 0.186,
-    "nearest_midi_note": 34,
-    "pitch_name": "A\u266f1",
-    "confidence": 0.396,
-    "source_stem": "bass_stem"
-  },
-  {
-    "start_seconds": 224.769,
-    "end_seconds": 225.303,
-    "duration_seconds": 0.534,
-    "nearest_midi_note": 32,
-    "pitch_name": "G\u266f1",
-    "confidence": 0.343,
-    "source_stem": "bass_stem"
-  },
-  {
-    "start_seconds": 225.326,
-    "end_seconds": 225.86,
-    "duration_seconds": 0.534,
-    "nearest_midi_note": 32,
-    "pitch_name": "G\u266f1",
-    "confidence": 0.204,
-    "source_stem": "bass_stem"
-  },
-  {
-    "start_seconds": 225.907,
-    "end_seconds": 226.046,
-    "duration_seconds": 0.139,
-    "nearest_midi_note": 39,
-    "pitch_name": "D\u266f2",
-    "confidence": 0.081,
-    "source_stem": "bass_stem"
-  },
-  {
-    "start_seconds": 226.046,
-    "end_seconds": 226.116,
-    "duration_seconds": 0.07,
-    "nearest_midi_note": 40,
-    "pitch_name": "E2",
-    "confidence": 0.053,
-    "source_stem": "bass_stem"
-  },
-  {
-    "start_seconds": 226.116,
-    "end_seconds": 226.696,
-    "duration_seconds": 0.58,
-    "nearest_midi_note": 41,
-    "pitch_name": "F2",
-    "confidence": 0.531,
-    "source_stem": "bass_stem"
-  },
-  {
-    "start_seconds": 226.72,
-    "end_seconds": 227.021,
-    "duration_seconds": 0.302,
-    "nearest_midi_note": 44,
-    "pitch_name": "G\u266f2",
-    "confidence": 0.149,
-    "source_stem": "bass_stem"
-  },
-  {
-    "start_seconds": 227.068,
-    "end_seconds": 227.207,
-    "duration_seconds": 0.139,
-    "nearest_midi_note": 41,
-    "pitch_name": "F2",
-    "confidence": 0.084,
-    "source_stem": "bass_stem"
-  },
-  {
-    "start_seconds": 227.254,
-    "end_seconds": 227.648,
-    "duration_seconds": 0.395,
-    "nearest_midi_note": 34,
-    "pitch_name": "A\u266f1",
-    "confidence": 0.339,
-    "source_stem": "bass_stem"
-  },
-  {
-    "start_seconds": 227.648,
-    "end_seconds": 227.695,
-    "duration_seconds": 0.046,
-    "nearest_midi_note": 33,
-    "pitch_name": "A1",
-    "confidence": 0.01,
-    "source_stem": "bass_stem"
-  },
-  {
-    "start_seconds": 227.695,
-    "end_seconds": 227.788,
-    "duration_seconds": 0.093,
-    "nearest_midi_note": 32,
-    "pitch_name": "G\u266f1",
-    "confidence": 0.162,
-    "source_stem": "bass_stem"
-  },
-  {
-    "start_seconds": 227.811,
-    "end_seconds": 227.997,
-    "duration_seconds": 0.186,
-    "nearest_midi_note": 34,
-    "pitch_name": "A\u266f1",
-    "confidence": 0.356,
-    "source_stem": "bass_stem"
-  },
-  {
-    "start_seconds": 228.066,
-    "end_seconds": 228.229,
-    "duration_seconds": 0.163,
-    "nearest_midi_note": 41,
-    "pitch_name": "F2",
-    "confidence": 0.444,
-    "source_stem": "bass_stem"
-  },
-  {
-    "start_seconds": 228.299,
-    "end_seconds": 228.67,
-    "duration_seconds": 0.372,
-    "nearest_midi_note": 34,
-    "pitch_name": "A\u266f1",
-    "confidence": 0.401,
-    "source_stem": "bass_stem"
-  },
-  {
-    "start_seconds": 228.716,
-    "end_seconds": 228.995,
-    "duration_seconds": 0.279,
-    "nearest_midi_note": 32,
-    "pitch_name": "G\u266f1",
-    "confidence": 0.224,
-    "source_stem": "bass_stem"
-  },
-  {
-    "start_seconds": 229.111,
-    "end_seconds": 230.226,
-    "duration_seconds": 1.115,
-    "nearest_midi_note": 30,
-    "pitch_name": "F\u266f1",
-    "confidence": 0.283,
-    "source_stem": "bass_stem"
-  },
-  {
-    "start_seconds": 230.226,
-    "end_seconds": 230.272,
+    "start_seconds": 90.52,
+    "end_seconds": 90.567,
     "duration_seconds": 0.046,
     "nearest_midi_note": 31,
     "pitch_name": "G1",
@@ -522,305 +45,62 @@
     "source_stem": "bass_stem"
   },
   {
-    "start_seconds": 230.272,
-    "end_seconds": 230.319,
-    "duration_seconds": 0.046,
-    "nearest_midi_note": 30,
-    "pitch_name": "F\u266f1",
-    "confidence": 0.01,
-    "source_stem": "bass_stem"
-  },
-  {
-    "start_seconds": 230.319,
-    "end_seconds": 230.481,
+    "start_seconds": 90.613,
+    "end_seconds": 90.776,
     "duration_seconds": 0.163,
     "nearest_midi_note": 28,
     "pitch_name": "E1",
-    "confidence": 0.088,
+    "confidence": 0.11,
     "source_stem": "bass_stem"
   },
   {
-    "start_seconds": 230.481,
-    "end_seconds": 230.528,
+    "start_seconds": 90.776,
+    "end_seconds": 90.822,
     "duration_seconds": 0.046,
     "nearest_midi_note": 29,
     "pitch_name": "F1",
-    "confidence": 0.032,
+    "confidence": 0.041,
     "source_stem": "bass_stem"
   },
   {
-    "start_seconds": 230.528,
-    "end_seconds": 230.899,
+    "start_seconds": 90.822,
+    "end_seconds": 91.194,
     "duration_seconds": 0.372,
     "nearest_midi_note": 30,
     "pitch_name": "F\u266f1",
-    "confidence": 0.244,
+    "confidence": 0.252,
     "source_stem": "bass_stem"
   },
   {
-    "start_seconds": 230.899,
-    "end_seconds": 231.247,
-    "duration_seconds": 0.348,
+    "start_seconds": 91.194,
+    "end_seconds": 91.611,
+    "duration_seconds": 0.418,
     "nearest_midi_note": 29,
     "pitch_name": "F1",
-    "confidence": 0.264,
+    "confidence": 0.242,
     "source_stem": "bass_stem"
   },
   {
-    "start_seconds": 231.271,
-    "end_seconds": 231.317,
-    "duration_seconds": 0.046,
-    "nearest_midi_note": 29,
-    "pitch_name": "F1",
-    "confidence": 0.145,
-    "source_stem": "bass_stem"
-  },
-  {
-    "start_seconds": 231.317,
-    "end_seconds": 232.06,
+    "start_seconds": 91.611,
+    "end_seconds": 92.355,
     "duration_seconds": 0.743,
     "nearest_midi_note": 27,
     "pitch_name": "D\u266f1",
-    "confidence": 0.168,
+    "confidence": 0.172,
     "source_stem": "bass_stem"
   },
   {
-    "start_seconds": 232.153,
-    "end_seconds": 232.385,
-    "duration_seconds": 0.232,
-    "nearest_midi_note": 39,
-    "pitch_name": "D\u266f2",
-    "confidence": 0.158,
-    "source_stem": "bass_stem"
-  },
-  {
-    "start_seconds": 232.617,
-    "end_seconds": 232.664,
-    "duration_seconds": 0.046,
-    "nearest_midi_note": 28,
-    "pitch_name": "E1",
-    "confidence": 0.01,
-    "source_stem": "bass_stem"
-  },
-  {
-    "start_seconds": 232.687,
-    "end_seconds": 232.757,
-    "duration_seconds": 0.07,
-    "nearest_midi_note": 28,
-    "pitch_name": "E1",
-    "confidence": 0.105,
-    "source_stem": "bass_stem"
-  },
-  {
-    "start_seconds": 232.757,
-    "end_seconds": 233.059,
-    "duration_seconds": 0.302,
-    "nearest_midi_note": 27,
-    "pitch_name": "D\u266f1",
-    "confidence": 0.199,
-    "source_stem": "bass_stem"
-  },
-  {
-    "start_seconds": 233.105,
-    "end_seconds": 233.268,
-    "duration_seconds": 0.163,
-    "nearest_midi_note": 34,
-    "pitch_name": "A\u266f1",
-    "confidence": 0.366,
-    "source_stem": "bass_stem"
-  },
-  {
-    "start_seconds": 233.268,
-    "end_seconds": 233.314,
-    "duration_seconds": 0.046,
-    "nearest_midi_note": 33,
-    "pitch_name": "A1",
-    "confidence": 0.052,
-    "source_stem": "bass_stem"
-  },
-  {
-    "start_seconds": 233.5,
-    "end_seconds": 234.614,
-    "duration_seconds": 1.115,
-    "nearest_midi_note": 32,
-    "pitch_name": "G\u266f1",
-    "confidence": 0.258,
-    "source_stem": "bass_stem"
-  },
-  {
-    "start_seconds": 234.661,
-    "end_seconds": 234.847,
-    "duration_seconds": 0.186,
-    "nearest_midi_note": 27,
-    "pitch_name": "D\u266f1",
-    "confidence": 0.127,
-    "source_stem": "bass_stem"
-  },
-  {
-    "start_seconds": 234.847,
-    "end_seconds": 235.427,
-    "duration_seconds": 0.58,
-    "nearest_midi_note": 29,
-    "pitch_name": "F1",
-    "confidence": 0.234,
-    "source_stem": "bass_stem"
-  },
-  {
-    "start_seconds": 235.497,
-    "end_seconds": 235.729,
-    "duration_seconds": 0.232,
-    "nearest_midi_note": 41,
-    "pitch_name": "F2",
-    "confidence": 0.461,
-    "source_stem": "bass_stem"
-  },
-  {
-    "start_seconds": 235.752,
-    "end_seconds": 235.961,
-    "duration_seconds": 0.209,
-    "nearest_midi_note": 41,
-    "pitch_name": "F2",
-    "confidence": 0.482,
-    "source_stem": "bass_stem"
-  },
-  {
-    "start_seconds": 236.008,
-    "end_seconds": 236.379,
-    "duration_seconds": 0.372,
-    "nearest_midi_note": 34,
-    "pitch_name": "A\u266f1",
-    "confidence": 0.389,
-    "source_stem": "bass_stem"
-  },
-  {
-    "start_seconds": 236.449,
-    "end_seconds": 236.495,
-    "duration_seconds": 0.046,
-    "nearest_midi_note": 44,
-    "pitch_name": "G\u266f2",
-    "confidence": 0.074,
-    "source_stem": "bass_stem"
-  },
-  {
-    "start_seconds": 236.518,
-    "end_seconds": 236.727,
-    "duration_seconds": 0.209,
-    "nearest_midi_note": 46,
-    "pitch_name": "A\u266f2",
-    "confidence": 0.378,
-    "source_stem": "bass_stem"
-  },
-  {
-    "start_seconds": 236.797,
-    "end_seconds": 236.96,
-    "duration_seconds": 0.163,
-    "nearest_midi_note": 41,
-    "pitch_name": "F2",
-    "confidence": 0.409,
-    "source_stem": "bass_stem"
-  },
-  {
-    "start_seconds": 237.029,
-    "end_seconds": 237.401,
-    "duration_seconds": 0.372,
-    "nearest_midi_note": 34,
-    "pitch_name": "A\u266f1",
-    "confidence": 0.392,
-    "source_stem": "bass_stem"
-  },
-  {
-    "start_seconds": 237.47,
-    "end_seconds": 237.726,
-    "duration_seconds": 0.255,
-    "nearest_midi_note": 32,
-    "pitch_name": "G\u266f1",
-    "confidence": 0.265,
-    "source_stem": "bass_stem"
-  },
-  {
-    "start_seconds": 237.749,
-    "end_seconds": 237.795,
-    "duration_seconds": 0.046,
-    "nearest_midi_note": 25,
-    "pitch_name": "C\u266f1",
-    "confidence": 0.018,
-    "source_stem": "bass_stem"
-  },
-  {
-    "start_seconds": 237.865,
-    "end_seconds": 239.073,
-    "duration_seconds": 1.207,
-    "nearest_midi_note": 30,
-    "pitch_name": "F\u266f1",
-    "confidence": 0.278,
-    "source_stem": "bass_stem"
-  },
-  {
-    "start_seconds": 239.096,
-    "end_seconds": 239.165,
-    "duration_seconds": 0.07,
-    "nearest_midi_note": 28,
-    "pitch_name": "E1",
-    "confidence": 0.056,
-    "source_stem": "bass_stem"
-  },
-  {
-    "start_seconds": 239.165,
-    "end_seconds": 239.212,
-    "duration_seconds": 0.046,
-    "nearest_midi_note": 29,
-    "pitch_name": "F1",
-    "confidence": 0.01,
-    "source_stem": "bass_stem"
-  },
-  {
-    "start_seconds": 239.235,
-    "end_seconds": 239.607,
-    "duration_seconds": 0.372,
-    "nearest_midi_note": 30,
-    "pitch_name": "F\u266f1",
-    "confidence": 0.216,
-    "source_stem": "bass_stem"
-  },
-  {
-    "start_seconds": 239.63,
-    "end_seconds": 239.909,
-    "duration_seconds": 0.279,
-    "nearest_midi_note": 29,
-    "pitch_name": "F1",
-    "confidence": 0.151,
-    "source_stem": "bass_stem"
-  },
-  {
-    "start_seconds": 240.048,
-    "end_seconds": 240.698,
-    "duration_seconds": 0.65,
-    "nearest_midi_note": 27,
-    "pitch_name": "D\u266f1",
-    "confidence": 0.204,
-    "source_stem": "bass_stem"
-  },
-  {
-    "start_seconds": 240.768,
-    "end_seconds": 240.861,
+    "start_seconds": 92.355,
+    "end_seconds": 92.447,
     "duration_seconds": 0.093,
-    "nearest_midi_note": 38,
-    "pitch_name": "D2",
-    "confidence": 0.019,
+    "nearest_midi_note": 26,
+    "pitch_name": "D1",
+    "confidence": 0.038,
     "source_stem": "bass_stem"
   },
   {
-    "start_seconds": 240.861,
-    "end_seconds": 241.116,
-    "duration_seconds": 0.255,
-    "nearest_midi_note": 39,
-    "pitch_name": "D\u266f2",
-    "confidence": 0.207,
-    "source_stem": "bass_stem"
-  },
-  {
-    "start_seconds": 241.186,
-    "end_seconds": 241.395,
+    "start_seconds": 92.447,
+    "end_seconds": 92.656,
     "duration_seconds": 0.209,
     "nearest_midi_note": 27,
     "pitch_name": "D\u266f1",
@@ -828,35 +108,278 @@
     "source_stem": "bass_stem"
   },
   {
-    "start_seconds": 241.418,
-    "end_seconds": 241.789,
+    "start_seconds": 92.935,
+    "end_seconds": 92.981,
+    "duration_seconds": 0.046,
+    "nearest_midi_note": 29,
+    "pitch_name": "F1",
+    "confidence": 0.01,
+    "source_stem": "bass_stem"
+  },
+  {
+    "start_seconds": 93.005,
+    "end_seconds": 93.353,
+    "duration_seconds": 0.348,
+    "nearest_midi_note": 27,
+    "pitch_name": "D\u266f1",
+    "confidence": 0.189,
+    "source_stem": "bass_stem"
+  },
+  {
+    "start_seconds": 93.399,
+    "end_seconds": 93.585,
+    "duration_seconds": 0.186,
+    "nearest_midi_note": 34,
+    "pitch_name": "A\u266f1",
+    "confidence": 0.311,
+    "source_stem": "bass_stem"
+  },
+  {
+    "start_seconds": 93.794,
+    "end_seconds": 94.909,
+    "duration_seconds": 1.115,
+    "nearest_midi_note": 32,
+    "pitch_name": "G\u266f1",
+    "confidence": 0.246,
+    "source_stem": "bass_stem"
+  },
+  {
+    "start_seconds": 94.955,
+    "end_seconds": 95.141,
+    "duration_seconds": 0.186,
+    "nearest_midi_note": 27,
+    "pitch_name": "D\u266f1",
+    "confidence": 0.115,
+    "source_stem": "bass_stem"
+  },
+  {
+    "start_seconds": 95.164,
+    "end_seconds": 95.721,
+    "duration_seconds": 0.557,
+    "nearest_midi_note": 29,
+    "pitch_name": "F1",
+    "confidence": 0.245,
+    "source_stem": "bass_stem"
+  },
+  {
+    "start_seconds": 95.791,
+    "end_seconds": 96.255,
+    "duration_seconds": 0.464,
+    "nearest_midi_note": 41,
+    "pitch_name": "F2",
+    "confidence": 0.427,
+    "source_stem": "bass_stem"
+  },
+  {
+    "start_seconds": 96.302,
+    "end_seconds": 96.673,
+    "duration_seconds": 0.372,
+    "nearest_midi_note": 34,
+    "pitch_name": "A\u266f1",
+    "confidence": 0.361,
+    "source_stem": "bass_stem"
+  },
+  {
+    "start_seconds": 96.743,
+    "end_seconds": 96.79,
+    "duration_seconds": 0.046,
+    "nearest_midi_note": 44,
+    "pitch_name": "G\u266f2",
+    "confidence": 0.1,
+    "source_stem": "bass_stem"
+  },
+  {
+    "start_seconds": 96.813,
+    "end_seconds": 97.022,
+    "duration_seconds": 0.209,
+    "nearest_midi_note": 46,
+    "pitch_name": "A\u266f2",
+    "confidence": 0.307,
+    "source_stem": "bass_stem"
+  },
+  {
+    "start_seconds": 97.091,
+    "end_seconds": 97.254,
+    "duration_seconds": 0.163,
+    "nearest_midi_note": 41,
+    "pitch_name": "F2",
+    "confidence": 0.422,
+    "source_stem": "bass_stem"
+  },
+  {
+    "start_seconds": 97.324,
+    "end_seconds": 97.695,
+    "duration_seconds": 0.372,
+    "nearest_midi_note": 34,
+    "pitch_name": "A\u266f1",
+    "confidence": 0.401,
+    "source_stem": "bass_stem"
+  },
+  {
+    "start_seconds": 97.765,
+    "end_seconds": 98.02,
+    "duration_seconds": 0.255,
+    "nearest_midi_note": 32,
+    "pitch_name": "G\u266f1",
+    "confidence": 0.259,
+    "source_stem": "bass_stem"
+  },
+  {
+    "start_seconds": 98.183,
+    "end_seconds": 99.483,
+    "duration_seconds": 1.3,
+    "nearest_midi_note": 30,
+    "pitch_name": "F\u266f1",
+    "confidence": 0.253,
+    "source_stem": "bass_stem"
+  },
+  {
+    "start_seconds": 99.506,
+    "end_seconds": 99.785,
+    "duration_seconds": 0.279,
+    "nearest_midi_note": 30,
+    "pitch_name": "F\u266f1",
+    "confidence": 0.181,
+    "source_stem": "bass_stem"
+  },
+  {
+    "start_seconds": 99.785,
+    "end_seconds": 99.831,
+    "duration_seconds": 0.046,
+    "nearest_midi_note": 29,
+    "pitch_name": "F1",
+    "confidence": 0.013,
+    "source_stem": "bass_stem"
+  },
+  {
+    "start_seconds": 99.831,
+    "end_seconds": 99.901,
+    "duration_seconds": 0.07,
+    "nearest_midi_note": 30,
+    "pitch_name": "F\u266f1",
+    "confidence": 0.024,
+    "source_stem": "bass_stem"
+  },
+  {
+    "start_seconds": 99.924,
+    "end_seconds": 100.133,
+    "duration_seconds": 0.209,
+    "nearest_midi_note": 29,
+    "pitch_name": "F1",
+    "confidence": 0.247,
+    "source_stem": "bass_stem"
+  },
+  {
+    "start_seconds": 100.156,
+    "end_seconds": 100.273,
+    "duration_seconds": 0.116,
+    "nearest_midi_note": 29,
+    "pitch_name": "F1",
+    "confidence": 0.132,
+    "source_stem": "bass_stem"
+  },
+  {
+    "start_seconds": 100.342,
+    "end_seconds": 101.201,
+    "duration_seconds": 0.859,
+    "nearest_midi_note": 27,
+    "pitch_name": "D\u266f1",
+    "confidence": 0.232,
+    "source_stem": "bass_stem"
+  },
+  {
+    "start_seconds": 101.201,
+    "end_seconds": 101.248,
+    "duration_seconds": 0.046,
+    "nearest_midi_note": 28,
+    "pitch_name": "E1",
+    "confidence": 0.011,
+    "source_stem": "bass_stem"
+  },
+  {
+    "start_seconds": 101.294,
+    "end_seconds": 101.666,
     "duration_seconds": 0.372,
     "nearest_midi_note": 27,
     "pitch_name": "D\u266f1",
-    "confidence": 0.2,
+    "confidence": 0.131,
     "source_stem": "bass_stem"
   },
   {
-    "start_seconds": 241.836,
-    "end_seconds": 241.998,
+    "start_seconds": 101.689,
+    "end_seconds": 102.084,
+    "duration_seconds": 0.395,
+    "nearest_midi_note": 27,
+    "pitch_name": "D\u266f1",
+    "confidence": 0.201,
+    "source_stem": "bass_stem"
+  },
+  {
+    "start_seconds": 102.13,
+    "end_seconds": 102.293,
     "duration_seconds": 0.163,
     "nearest_midi_note": 34,
     "pitch_name": "A\u266f1",
-    "confidence": 0.469,
+    "confidence": 0.336,
     "source_stem": "bass_stem"
   },
   {
-    "start_seconds": 242.23,
-    "end_seconds": 242.765,
-    "duration_seconds": 0.534,
+    "start_seconds": 102.548,
+    "end_seconds": 103.872,
+    "duration_seconds": 1.324,
     "nearest_midi_note": 32,
     "pitch_name": "G\u266f1",
-    "confidence": 0.338,
+    "confidence": 0.39,
     "source_stem": "bass_stem"
   },
   {
-    "start_seconds": 242.765,
-    "end_seconds": 242.811,
+    "start_seconds": 103.872,
+    "end_seconds": 104.452,
+    "duration_seconds": 0.58,
+    "nearest_midi_note": 29,
+    "pitch_name": "F1",
+    "confidence": 0.217,
+    "source_stem": "bass_stem"
+  },
+  {
+    "start_seconds": 104.499,
+    "end_seconds": 104.87,
+    "duration_seconds": 0.372,
+    "nearest_midi_note": 32,
+    "pitch_name": "G\u266f1",
+    "confidence": 0.045,
+    "source_stem": "bass_stem"
+  },
+  {
+    "start_seconds": 104.87,
+    "end_seconds": 104.917,
+    "duration_seconds": 0.046,
+    "nearest_midi_note": 31,
+    "pitch_name": "G1",
+    "confidence": 0.348,
+    "source_stem": "bass_stem"
+  },
+  {
+    "start_seconds": 104.917,
+    "end_seconds": 104.963,
+    "duration_seconds": 0.046,
+    "nearest_midi_note": 30,
+    "pitch_name": "F\u266f1",
+    "confidence": 0.241,
+    "source_stem": "bass_stem"
+  },
+  {
+    "start_seconds": 104.986,
+    "end_seconds": 105.404,
+    "duration_seconds": 0.418,
+    "nearest_midi_note": 34,
+    "pitch_name": "A\u266f1",
+    "confidence": 0.311,
+    "source_stem": "bass_stem"
+  },
+  {
+    "start_seconds": 105.404,
+    "end_seconds": 105.451,
     "duration_seconds": 0.046,
     "nearest_midi_note": 33,
     "pitch_name": "A1",
@@ -864,57 +387,12 @@
     "source_stem": "bass_stem"
   },
   {
-    "start_seconds": 242.811,
-    "end_seconds": 243.322,
-    "duration_seconds": 0.511,
+    "start_seconds": 105.451,
+    "end_seconds": 105.497,
+    "duration_seconds": 0.046,
     "nearest_midi_note": 32,
     "pitch_name": "G\u266f1",
-    "confidence": 0.201,
-    "source_stem": "bass_stem"
-  },
-  {
-    "start_seconds": 243.368,
-    "end_seconds": 243.508,
-    "duration_seconds": 0.139,
-    "nearest_midi_note": 39,
-    "pitch_name": "D\u266f2",
-    "confidence": 0.095,
-    "source_stem": "bass_stem"
-  },
-  {
-    "start_seconds": 243.508,
-    "end_seconds": 243.577,
-    "duration_seconds": 0.07,
-    "nearest_midi_note": 40,
-    "pitch_name": "E2",
-    "confidence": 0.06,
-    "source_stem": "bass_stem"
-  },
-  {
-    "start_seconds": 243.577,
-    "end_seconds": 244.158,
-    "duration_seconds": 0.58,
-    "nearest_midi_note": 41,
-    "pitch_name": "F2",
-    "confidence": 0.511,
-    "source_stem": "bass_stem"
-  },
-  {
-    "start_seconds": 244.204,
-    "end_seconds": 244.483,
-    "duration_seconds": 0.279,
-    "nearest_midi_note": 44,
-    "pitch_name": "G\u266f2",
-    "confidence": 0.143,
-    "source_stem": "bass_stem"
-  },
-  {
-    "start_seconds": 244.529,
-    "end_seconds": 244.692,
-    "duration_seconds": 0.163,
-    "nearest_midi_note": 41,
-    "pitch_name": "F2",
-    "confidence": 0.069,
+    "confidence": 0.085,
     "source_stem": "bass_stem"
   }
 ]

@@ -1,38 +1,38 @@
 # Section boundaries for Instant Crush -- see NOTES_STATUS.md.
 #
-# `chorus` below is derived from a MEASURED chroma-self-similarity
-# candidate against the local reference recording (similarity score 0.999
-# on the base 8-bar unit -- see songs/instant_crush/reference_analysis/sections.json),
-# not an arbitrary guess. The base 8-bar (209.77s-227.23s) window was
-# extended to 16 bars (209.77s-244.69s) because the immediately following
-# 8 bars matched it at 0.996 similarity too -- real evidence of a second
-# repeat, not a length guess. Still a heuristic, not a human-confirmed
-# structural label -- confirm by ear with
-# tools/reference_inspect.py --start 209.77 --end 244.69 before fully trusting it.
+# CORRECTED (accuracy pass v3.3): the previous chorus pick (209.77s+) was
+# WRONG -- it turned out to be guitar-solo-adjacent material, not the sung
+# chorus. Found by cross-validating against the whole song rather than
+# trusting a single best-matching pair (see NOTES_STATUS.md for the full
+# investigation): `chorus` is now the 8-bar unit at 88.50s-105.50s,
+# confirmed by 3 additional independent occurrences elsewhere in the track
+# (237.00s, 263.25s, 298.00s -- similarity 0.87-0.91 each, all well
+# outside the guitar-solo region). Real evidence of a genuinely repeated
+# structural section, not a length/location guess. Still not a
+# human-confirmed structural label -- confirm by ear with
+# tools/reference_inspect.py --start 88.50 --end 105.50.
 #
 # `lead_guitar` remains the user-provided ~3:18 approximate timestamp,
-# recomputed at the now-measured 112.35 BPM (was computed against the old
-# 120 BPM guess). Its end_beat has been trimmed to where the measured
-# chorus candidate begins (they overlapped before the trim) -- this is an
-# INFERENCE (solo ends where the next chorus starts), not a verified
-# boundary; still needs confirmation by ear.
+# recomputed at the measured 112.35 BPM. Its end_beat is back to a plain
+# +32-beat placeholder (the earlier "trim to where the chorus begins" logic
+# no longer applies now that the chorus has moved earlier in the song and
+# no longer sits adjacent to this section) -- still unverified.
 
 sections:
   - id: chorus
     name: "Chorus"
-    # Measured chroma-repeat candidate, extended by one confirmed repeat:
-    # 209.77s-244.69s (16 bars) at 112.35 BPM.
-    start_beat: 392.79
-    end_beat: 458.19
+    # Measured + cross-validated (4 total occurrences, see reference_analysis/sections.json):
+    # 88.50s-105.50s at 112.35 BPM.
+    start_beat: 165.72
+    end_beat: 197.55
     difficulty: medium
     loop_default: true
 
   - id: lead_guitar
     name: "Lead / Electric Guitar (~3:18)"
-    # ~198s (user-provided) at the measured 112.35 BPM. end_beat trimmed to
-    # the measured chorus candidate's start (392.79) rather than an
-    # arbitrary +32-beat placeholder -- both boundaries still unverified.
+    # ~198s (user-provided) at the measured 112.35 BPM. end_beat is a plain
+    # +32-beat placeholder -- unverified, untouched by the chorus work above.
     start_beat: 370.75
-    end_beat: 392.79
+    end_beat: 402.75
     difficulty: hard
     loop_default: false

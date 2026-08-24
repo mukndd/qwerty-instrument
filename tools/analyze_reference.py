@@ -95,6 +95,112 @@ def measure_onsets(y: "np.ndarray", sr: int) -> list[float]:
     return librosa.frames_to_time(onset_frames, sr=sr).tolist()
 
 
+# ---- multi-occurrence cross-validation ---------------------------------------
+#
+# A single best-matching pair (find_repeated_section_candidate below) can be
+# fooled by a locally self-similar transition that isn't actually the
+# chorus -- this happened for Instant Crush: the original auto-detected
+# candidate turned out to include guitar-solo-adjacent material, not clean
+# chorus. The fix that actually worked: a real chorus in a pop song
+# repeats 3+ times across the whole track, often widely separated in time.
+# Requiring several independent, well-separated occurrences to all agree
+# (not just the single best pair) is a much stronger signal, and averaging
+# their chroma before chord-matching cancels out per-occurrence noise
+# (mix elements, dynamics, slight timing drift) that a single occurrence
+# can't.
+
+def find_all_occurrences(
+    chroma: "np.ndarray",
+    chroma_times: "np.ndarray",
+    seed_t0: float,
+    seed_t1: float,
+    min_similarity: float = 0.85,
+    min_gap_seconds: float = 20.0,
+    refine_radius: float = 2.5,
+    refine_step: float = 0.25,
+) -> list[dict]:
+    """Scan the whole track for other occurrences of the seed_t0-seed_t1
+    pattern. Coarse scan first, then a local fine-grained realignment
+    search around each candidate peak (phrase boundaries rarely land
+    exactly on the coarse scan's grid). Returns occurrences sorted by
+    start time, always including the seed itself as the first entry.
+    """
+
+    def chroma_slice(t0: float, t1: float) -> "np.ndarray":
+        idx = np.where((chroma_times >= t0) & (chroma_times < t1))[0]
+        if len(idx) == 0:
+            return np.zeros((12, 1))
+        return chroma[:, idx]
+
+    def similarity(a: "np.ndarray", b: "np.ndarray") -> float:
+        n = min(a.shape[1], b.shape[1])
+        if n < 4:
+            return 0.0
+        a2, b2 = a[:, :n], b[:, :n]
+        return float(np.sum(a2 * b2) / ((np.linalg.norm(a2) * np.linalg.norm(b2)) + 1e-9))
+
+    window_len = seed_t1 - seed_t0
+    base = chroma_slice(seed_t0, seed_t1)
+    duration = float(chroma_times[-1])
+
+    coarse_hits = []
+    t = 0.0
+    while t + window_len <= duration:
+        if abs(t - seed_t0) >= min_gap_seconds:
+            score = similarity(base, chroma_slice(t, t + window_len))
+            if score >= min_similarity:
+                coarse_hits.append((t, score))
+        t += 1.0
+
+    # deduplicate coarse hits that are close together (same underlying peak)
+    coarse_hits.sort(key=lambda x: -x[1])
+    peaks: list[float] = []
+    for t, score in coarse_hits:
+        if all(abs(t - p) >= min_gap_seconds for p in peaks):
+            peaks.append(t)
+
+    occurrences = [{"start_seconds": round(seed_t0, 3), "end_seconds": round(seed_t1, 3), "similarity": 1.0}]
+    for p in peaks:
+        best = None
+        for t in np.arange(max(0.0, p - refine_radius), p + refine_radius, refine_step):
+            score = similarity(base, chroma_slice(t, t + window_len))
+            if best is None or score > best[0]:
+                best = (score, t)
+        score, t = best
+        occurrences.append({"start_seconds": round(float(t), 3), "end_seconds": round(float(t + window_len), 3), "similarity": round(score, 4)})
+
+    occurrences.sort(key=lambda o: o["start_seconds"])
+    return occurrences
+
+
+def average_chroma_occurrences(chroma: "np.ndarray", chroma_times: "np.ndarray", occurrences: list[dict]) -> tuple["np.ndarray", "np.ndarray"]:
+    """Resample each occurrence's chroma to the same frame count (the
+    seed/first occurrence's) and average -- higher signal-to-noise than
+    any single occurrence alone, since transient noise/mix artifacts
+    unique to one repeat get averaged down while the consistent
+    underlying harmony reinforces.
+    """
+
+    def chroma_slice(t0: float, t1: float) -> "np.ndarray":
+        idx = np.where((chroma_times >= t0) & (chroma_times < t1))[0]
+        return chroma[:, idx]
+
+    ref_len = chroma_slice(occurrences[0]["start_seconds"], occurrences[0]["end_seconds"]).shape[1]
+    ref_len = max(ref_len, 4)
+    stacks = []
+    for occ in occurrences:
+        seg = chroma_slice(occ["start_seconds"], occ["end_seconds"])
+        if seg.shape[1] < 4:
+            continue
+        # linear-interpolate each pitch-class row onto the reference frame count
+        src_idx = np.linspace(0, seg.shape[1] - 1, ref_len)
+        resampled = np.stack([np.interp(src_idx, np.arange(seg.shape[1]), seg[pc, :]) for pc in range(12)])
+        stacks.append(resampled)
+    averaged = np.mean(stacks, axis=0)
+    avg_times = np.linspace(occurrences[0]["start_seconds"], occurrences[0]["end_seconds"], ref_len, endpoint=False)
+    return averaged, avg_times
+
+
 # ---- chorus-section candidate via chroma self-similarity ----------------------
 
 def find_repeated_section_candidate(y: "np.ndarray", sr: int, beat_times: list[float], window_beats: int = 32) -> dict:
@@ -260,8 +366,30 @@ def harmony_candidates(y: "np.ndarray", sr: int, beat_times: list[float], t0: fl
     """
     chroma = librosa.feature.chroma_cqt(y=y, sr=sr)
     chroma_times = librosa.frames_to_time(np.arange(chroma.shape[1]), sr=sr)
-    beats_in_range = [b for b in beat_times if t0 <= b < t1]
+    return chord_sequence_from_chroma(chroma, chroma_times, beat_times, t0, t1, source_label="full_mix")
 
+
+def _match_chord_template(vec: "np.ndarray") -> tuple[float, int, str]:
+    vec = vec / (np.linalg.norm(vec) + 1e-9)
+    best = None
+    for root in range(12):
+        for quality, template in CHORD_TEMPLATES.items():
+            rotated = np.roll(np.array(template, dtype=float), root)
+            rotated = rotated / (np.linalg.norm(rotated) + 1e-9)
+            score = float(np.dot(vec, rotated))
+            if best is None or score > best[0]:
+                best = (score, root, quality)
+    return best
+
+
+def chord_sequence_from_chroma(
+    chroma: "np.ndarray", chroma_times: "np.ndarray", beat_times: list[float], t0: float, t1: float, source_label: str
+) -> list[dict]:
+    """Shared by harmony_candidates() (fresh per-track chroma) and the
+    multi-occurrence averaged-chroma path in main() -- same sub-beat-grid
+    template matching either way, just fed a different chroma source.
+    """
+    beats_in_range = [b for b in beat_times if t0 <= b < t1]
     grid: list[float] = []
     for i in range(len(beats_in_range) - 1):
         b0, b1 = beats_in_range[i], beats_in_range[i + 1]
@@ -276,17 +404,7 @@ def harmony_candidates(y: "np.ndarray", sr: int, beat_times: list[float], t0: fl
         if len(idx) == 0:
             continue
         vec = np.mean(chroma[:, idx], axis=1)
-        vec = vec / (np.linalg.norm(vec) + 1e-9)
-        best = None
-        for root in range(12):
-            for quality, template in CHORD_TEMPLATES.items():
-                rotated = np.roll(template, root)
-                rotated = np.array(rotated, dtype=float)
-                rotated = rotated / (np.linalg.norm(rotated) + 1e-9)
-                score = float(np.dot(vec, rotated))
-                if best is None or score > best[0]:
-                    best = (score, root, quality)
-        score, root, quality = best
+        score, root, quality = _match_chord_template(vec)
         out.append(
             {
                 "start_seconds": round(w0, 3),
@@ -294,7 +412,7 @@ def harmony_candidates(y: "np.ndarray", sr: int, beat_times: list[float], t0: fl
                 "root_pitch_class": PITCH_CLASSES[root],
                 "quality": quality,
                 "confidence": round(max(0.0, min(1.0, (score - 0.5) * 2)), 3),  # rough rescale, template match score is not a calibrated probability
-                "source_stem": "full_mix",
+                "source_stem": source_label,
             }
         )
     return out
@@ -424,13 +542,28 @@ def main() -> int:
             harmony_source, harmony_label = y_other, "other_stem"
         else:
             harmony_source, harmony_label = y, "full_mix"
-        log(f"Extracting harmony candidate ({harmony_label}, chroma template matching)...")
-        # beat_times were measured on the full mix (reliable); harmony content is read from harmony_source
-        harmony = harmony_candidates(harmony_source, sr, tempo_info["beat_times_seconds"], t0, t1)
-        for h in harmony:
-            h["source_stem"] = harmony_label
-        log(f"  {len(harmony)} harmony candidates ({harmony_label})")
+
+        log("Cross-validating this section against the rest of the track (looking for well-separated repeats)...")
+        harmony_chroma = librosa.feature.chroma_cqt(y=harmony_source, sr=sr)
+        harmony_chroma_times = librosa.frames_to_time(np.arange(harmony_chroma.shape[1]), sr=sr)
+        occurrences = find_all_occurrences(harmony_chroma, harmony_chroma_times, t0, t1, min_similarity=0.85, min_gap_seconds=25.0)
+        distant_occurrences = [o for o in occurrences if o["start_seconds"] != round(t0, 3)]
+        for o in occurrences:
+            log(f"  occurrence: {o['start_seconds']:.2f}s-{o['end_seconds']:.2f}s  similarity={o['similarity']:.4f}")
+
+        if len(distant_occurrences) >= 1:
+            log(f"  {len(distant_occurrences)} well-separated repeat(s) found -- averaging chroma across all {len(occurrences)} occurrences for a higher-confidence chord read")
+            avg_chroma, avg_times = average_chroma_occurrences(harmony_chroma, harmony_chroma_times, occurrences)
+            harmony = chord_sequence_from_chroma(avg_chroma, avg_times, tempo_info["beat_times_seconds"], t0, t1, source_label=f"{harmony_label}_averaged_{len(occurrences)}x")
+        else:
+            log("  WARNING: no well-separated repeat of this section found elsewhere in the track -- this candidate may not actually be a repeated structural section (e.g. chorus). Treat its harmony with extra caution.")
+            harmony = harmony_candidates(harmony_source, sr, tempo_info["beat_times_seconds"], t0, t1)
+            for h in harmony:
+                h["source_stem"] = harmony_label
+
+        log(f"  {len(harmony)} harmony candidates")
         (OUT_DIR / "candidates" / "harmony.json").write_text(json.dumps(harmony, indent=2), encoding="utf-8")
+        (OUT_DIR / "sections.json").write_text(json.dumps({"chorus_candidate": section_info, "cross_validated_occurrences": occurrences}, indent=2), encoding="utf-8")
 
         mean_melody_conf = round(float(np.mean([m["confidence"] for m in melody])), 3) if melody else None
         mean_bass_conf = round(float(np.mean([b["confidence"] for b in bass])), 3) if bass else None
