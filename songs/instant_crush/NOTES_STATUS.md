@@ -53,13 +53,29 @@ that a single measurement can't).
   stem** (synths/guitars -- no vocals/drums/bass) at 2 windows/beat, using
   the chroma **averaged across all 4 confirmed occurrences**, then merging
   consecutive same-estimate windows into sustained spans. The measured
-  progression: **A#min - F#maj - D#min - (brief A#min) - G#maj - Fmin -
-  C#maj**, repeating twice within the 8-bar chorus (a clear 4-bar unit).
-  Notably the same chord *letters* as the original archived v2 guess
-  (Bbm-Gb-Ebm-Ab is enharmonically identical to A#m-F#-D#m-G#), now
-  independently confirmed from real audio across 4 separate recordings of
-  the same phrase, though v2's rhythm/voicing/timing were invented and
-  v3.3's aren't, and v3.3 adds real Fmin/C#maj passing chords v2 never had.
+  progression: **Bbmin - Gbmaj - Ebmin - (brief Bbmin) - Abmaj - Fmin -
+  Dbmaj**, repeating twice within the 8-bar chorus (a clear 4-bar unit).
+  Display names use the idiomatic flat spelling for Bb minor (the measured
+  pitch classes are unchanged -- MIDI note numbers don't depend on
+  spelling; `tools/build_reference_song.py::promote_harmony` respells
+  A#/F#/D#/G#/C# to Bb/Gb/Eb/Ab/Db for the `name` field only).
+
+  **Independent web corroboration (2026-08-24)**: a web search for the
+  publicly reported chord letters of this song's chorus returned the key
+  as Bb minor and the chorus progression as **Bbm-Gb-Ebm-Ab** (~111 BPM,
+  consistent with the measured 112.35 BPM), which is exactly the same 4
+  chords, in the same order, as the core of what was independently
+  measured from the local audio -- strong outside confirmation that the
+  audio-derived transcription is correct. Only the bare chord-letter names
+  and key/tempo facts were used (uncopyrightable musical facts, used here
+  for cross-validation only) -- no tab layout, rhythm notation, voicing, or
+  lyrics were copied from any source. The measured Fmin/Dbmaj passing
+  chords aren't mentioned in the simplified public chord charts, most
+  likely because those charts round off brief passing tones the audio
+  measurement can see. Sources consulted (chord-letter facts only):
+  chordify.net, hooktheory.com, e-chords.com, chordie.com,
+  tabs.ultimate-guitar.com, guitartuna.com, tab4u.com, gitagram.com,
+  chords-and-tabs.net, Wikipedia ("Instant Crush").
 - **Lead-guitar section**: still the user-provided ~3:18 approximate
   timestamp, recomputed at the corrected 112.35 BPM. No longer adjacent to
   the chorus (which moved much earlier in the song), so its end_beat is

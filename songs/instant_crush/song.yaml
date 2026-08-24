@@ -69,6 +69,10 @@ notes_disclaimer: >
   voicing, never "verified". An earlier chorus-section pick was found to
   be wrong (guitar-solo-adjacent material) and has been corrected -- see
   song.yaml's header comment and NOTES_STATUS.md for the investigation.
+  Progression (Bb minor): Bbmin-Gbmaj-Ebmin-Abmaj-Fmin-Dbmaj, independently
+  corroborated by publicly reported chord letters for this song's chorus
+  (bare chord-letter facts only, cross-checked, not copied from any tab --
+  see NOTES_STATUS.md "Independent web corroboration" for sources).
   Melody and bass are NOT ready: vocal isolation failed for this track,
   and bass isolation didn't clear the confidence bar. A previous pass's
   fully-invented chord/melody data remains archived and is not loaded.

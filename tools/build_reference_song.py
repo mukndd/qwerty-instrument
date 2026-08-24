@@ -98,6 +98,11 @@ def promote_harmony(candidates: list[dict], bpm: float, min_confidence: float) -
     a defensible generic close-position triad is built from root+quality,
     clearly still reference_derived/low-confidence, never "verified"."""
     pitch_class_to_semitone = {"C": 0, "C#": 1, "D": 2, "D#": 3, "E": 4, "F": 5, "F#": 6, "G": 7, "G#": 8, "A": 9, "A#": 10, "B": 11}
+    # Bb minor is the independently-confirmed key for this song's chorus (see
+    # NOTES_STATUS.md "Sources" -- public chord charts report Bbm-Gb-Ebm-Ab,
+    # enharmonically identical to what's measured here). Respell display names
+    # to idiomatic flats for that key; MIDI note numbers are unaffected either way.
+    flat_respelling = {"A#": "Bb", "F#": "Gb", "D#": "Eb", "G#": "Ab", "C#": "Db"}
     quality_intervals = {"maj": [0, 4, 7], "min": [0, 3, 7]}
     out = []
     for c in _merge_consecutive_same_chord(candidates):
@@ -108,11 +113,12 @@ def promote_harmony(candidates: list[dict], bpm: float, min_confidence: float) -
         notes = [base_note + iv for iv in quality_intervals[c["quality"]]]
         beat = c["start_seconds"] * bpm / 60.0
         duration_beats = (c["end_seconds"] - c["start_seconds"]) * bpm / 60.0
+        display_root = flat_respelling.get(c["root_pitch_class"], c["root_pitch_class"])
         out.append(
             {
                 "beat": round(beat, 4),
                 "duration_beats": round(max(0.01, duration_beats), 4),
-                "name": f"{c['root_pitch_class']}{c['quality']}",
+                "name": f"{display_root}{c['quality']}",
                 "notes": notes,
                 "layer": "chords",
                 "verification": "reference_derived",
