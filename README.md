@@ -143,6 +143,43 @@ transcription, a licensed file, etc.) and run:
 
 See `docs/ADDING_SONGS.md` for the full data format and workflow.
 
+## Reference-audio analysis pipeline (optional, offline)
+
+If you have a legally-obtained local audio file for a song (never
+downloaded by this project -- place it yourself, e.g. `instant_crush.mp3`
+in the repo root, which is gitignored), you can measure tempo/timing and
+derive candidate note data from it instead of guessing:
+
+```
+pip install -e ".[reference]"           # librosa + soundfile
+python tools\analyze_reference.py       # tempo, beat grid, onsets, section candidate, pitch/chord candidates
+python tools\reference_inspect.py your_file.mp3 --start 30 --end 45 --onsets
+```
+
+For much better melody/bass confidence, add stem separation (isolates
+vocals/bass before pitch-tracking -- full-mix pitch tracking is
+genuinely unreliable):
+
+```
+pip install -e ".[reference-stems]"     # pulls in demucs + torch, a few hundred MB
+python -m demucs -o songs\<song>\reference_analysis\stems your_file.mp3
+python tools\analyze_reference.py       # re-run -- automatically detects and uses the separated stems
+```
+
+Everything this pipeline produces is written to
+`songs/<song>/reference_analysis/` with a `confidence` value and
+`"verification": "reference_derived"` (never `"verified"`) on every
+event. Nothing gets promoted into the actual playable song data until you
+run:
+
+```
+python tools\build_reference_song.py --section <section_id> --min-confidence 0.5
+```
+
+which only writes events that clear the threshold. Generated audio
+(stems, decoded WAVs) is gitignored and never committed; the analysis
+JSON/text output (no audio) may be tracked for transparency.
+
 ## Testing
 
 ```

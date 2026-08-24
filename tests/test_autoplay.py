@@ -154,19 +154,31 @@ def test_instant_crush_tempo_loads_as_measured_112_35_bpm():
 def test_instant_crush_chorus_has_no_synthetic_placeholder_content():
     """Accuracy pass v3: the previous pass's invented chord/melody data was
     archived, not left in canonical playback data (spec: 'no hand-written
-    Claude melody should remain in canonical playback data')."""
+    Claude melody should remain in canonical playback data'). Accuracy
+    pass v3.1 promoted real reference_derived chord data (Demucs stem
+    separation + chroma template matching, confidence >= 0.5) -- every
+    event must carry that provenance, never the old synthetic "placeholder"
+    content and never silently relabeled "verified"."""
     song = load_song(Path("songs/instant_crush"))
     chorus = song.section_by_id("chorus")
     assert chorus is not None
-    assert chorus.notes == []  # honestly empty, not filled with a guess
+    assert len(chorus.notes) > 0
+    assert all(e.layer == "chords" for e in chorus.notes)  # melody/bass still not promoted (see NOTES_STATUS.md)
+    assert all(e.verification == NoteVerification.REFERENCE_DERIVED for e in chorus.notes)
+    assert all(e.confidence is not None and e.confidence >= 0.5 for e in chorus.notes)
+    assert all(e.source == "local_reference_audio" for e in chorus.notes)
 
 
-def test_instant_crush_has_playable_data_is_false_until_reference_derived_data_exists():
+def test_instant_crush_melody_and_bass_are_not_ready_but_chords_are():
     song = load_song(Path("songs/instant_crush"))
     trainer = SongTrainer(song, KeyboardMapping(), lambda e: None)
     trainer.load_section("chorus")
-    assert trainer.has_playable_data() is False
-    assert trainer.has_playable_data(["chords", "bass", "melody"]) is False
+    assert trainer.has_playable_data(["chords"]) is True
+    assert trainer.has_playable_data(["melody"]) is False
+    assert trainer.has_playable_data(["bass"]) is False
+    # Full Chorus (any() semantics): still starts, since chords alone is real
+    # content -- melody/bass layers simply schedule nothing rather than a guess.
+    assert trainer.has_playable_data(["chords", "bass", "melody"]) is True
 
 
 def make_song_with_melody():

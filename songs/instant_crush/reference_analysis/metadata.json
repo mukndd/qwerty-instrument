@@ -3,6 +3,6 @@
   "note": "instant_crush.mp3 itself is NEVER committed -- see .gitignore. This metadata contains no audio.",
   "duration_seconds": 340.66,
   "analysis_sample_rate": 22050,
-  "analyzed_at": "2026-08-24 01:24:32",
-  "demucs_stem_separation": "not attempted -- torch+demucs is a multi-GB dependency chain not installed in this environment; all pitch/harmony analysis below runs on the full mix and is honestly low-confidence as a result (see module docstring)."
+  "analyzed_at": "2026-08-24 12:57:28",
+  "demucs_stem_separation": "Demucs (htdemucs) stem separation WAS used -- melody from vocals.wav, bass from bass.wav, harmony from other.wav. Stems themselves are gitignored (never committed), only this JSON/text metadata is tracked. Available stems: ['bass', 'drums', 'other', 'vocals']."
 }

@@ -1,25 +1,36 @@
 # Daft Punk -- "Instant Crush" (feat. Julian Casablancas)
 #
-# STATUS (accuracy pass v3): tempo/section-timing are now MEASURED from the
-# user's local reference recording (tools/analyze_reference.py), not looked
-# up or guessed. Note-level content (melody/chords/bass) is NOT ready --
-# a full-mix (no stem separation) analysis pass was run and its pitch/chord
-# candidates were too low-confidence to responsibly teach (mean melody
-# confidence ~0.01, bass ~0.06, harmony ~0.32 -- see
-# songs/instant_crush/reference_analysis/reports/analysis_report.txt).
-# An earlier pass's invented chord/melody data has been archived (see
-# songs/instant_crush/archive/) and is NOT loaded here -- do not resurrect
-# it as canonical. Guided/Assist/Real/Autoplay will show "reference
-# transcription not ready" until real note data exists.
+# STATUS (accuracy pass v3.1): tempo/section-timing are MEASURED from the
+# user's local reference recording (tools/analyze_reference.py). CHORDS for
+# the chorus are now reference_derived (Demucs stem separation isolated the
+# harmonic "other" stem -- synths/guitars, no vocals/drums/bass -- then
+# chroma template matching against it, confidence >= 0.5, consecutive
+# same-chord beats merged into sustained spans). MELODY and BASS are still
+# NOT ready: Demucs' vocal-isolation model produced near-silent output for
+# this track (RMS ~40x quieter than the other stems -- Instant Crush's
+# vocoded/processed vocal likely doesn't match what the model was trained
+# on), so melody confidence stayed ~0.01 (unusable). Bass-stem extraction
+# improved (0.06 -> 0.21 mean confidence) but only 1 note cleared the
+# promotion bar -- not enough for a coherent bass line.
 #
-# To add real data:
-#   1. Preferred: obtain a MIDI file or your own transcription LEGALLY and
-#      run: .venv\Scripts\python.exe tools\import_midi.py <path-to-midi>
-#   2. Or: improve tools/analyze_reference.py's confidence (stem separation
-#      via Demucs was investigated but not installed here -- multi-GB torch
-#      dependency chain -- see docs/ARCHITECTURE.md) and re-run it, then
-#      tools/build_reference_song.py to promote candidates that clear a
-#      defensible confidence bar.
+# An earlier pass's fully-invented chord/melody data has been archived (see
+# songs/instant_crush/archive/) and is NOT loaded here. The current chords
+# are real audio-derived data, not a resurrection of that -- but they are
+# still "reference_derived", never "verified": a generic close-position
+# triad was built from each measured root+quality, not the actual recorded
+# voicing. Guided/Assist/Real/Autoplay-melody/Autoplay-bass will still show
+# "reference transcription not ready"; Autoplay-chords (and Full Chorus,
+# which now has real chord content alongside empty bass/melody) will play.
+#
+# To improve further:
+#   1. Melody: try a different/newer Demucs model (--name argument), or a
+#      dedicated vocal-isolation model, since htdemucs' default vocals
+#      stem failed for this track's vocal processing.
+#   2. Bass: same idea, or accept the single high-confidence note as a
+#      partial data point and extend the promotion threshold once more of
+#      the line is checkable by ear.
+#   3. Preferred alternative: obtain a MIDI file or your own transcription
+#      LEGALLY and run: .venv\Scripts\python.exe tools\import_midi.py <path>
 #
 # See songs/instant_crush/NOTES_STATUS.md for the full breakdown.
 
@@ -37,17 +48,17 @@ tempo_events:
     bpm: 112.35
 
 notes_disclaimer: >
-  REFERENCE TRANSCRIPTION NOT READY. Tempo (112.35 BPM) and the chorus
-  section's timing are measured from the local reference recording with
-  reasonable confidence. Melody, chord, and bass CONTENT are not -- a
-  full-mix pitch/harmony analysis pass ran (no stem separation available
-  in this environment) and its output was too low-confidence to teach as
-  fact; see songs/instant_crush/reference_analysis/. A previous pass's
-  invented chord/melody data has been archived and removed from canonical
-  playback -- it will not be taught even though it existed before. The
-  lead/electric-guitar section (~3:18) remains fully unverified. Use
-  tools/import_midi.py to import real data, or improve the reference
-  pipeline (e.g. stem separation) and re-run tools/analyze_reference.py.
+  Chorus CHORDS are reference_derived (Demucs stem separation + chroma
+  template matching against the isolated harmonic stem, confidence >= 0.5)
+  -- real measured audio evidence, not invented, but still an algorithmic
+  estimate with a generic voicing, never "verified". Melody and bass are
+  NOT ready: vocal isolation failed for this track (near-silent output,
+  likely due to Instant Crush's processed/vocoder-style vocal), and bass
+  isolation only cleared the confidence bar for a single note. A previous
+  pass's fully-invented chord/melody data remains archived and is not
+  loaded. The lead/electric-guitar section (~3:18) remains fully
+  unverified. See songs/instant_crush/reference_analysis/ for the full
+  candidate data and confidence numbers.
 
 knob_actions: []
   # Once the lead-guitar section's real start_beat is known, add e.g.:

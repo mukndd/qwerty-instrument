@@ -24,21 +24,27 @@ CHORUS SECTION CANDIDATE
   "note": "heuristic repeated-section detection, not verified -- confirm by ear with tools/reference_inspect.py"
 }
 
-MELODY CANDIDATE (full-mix pyin -- LOW CONFIDENCE, see limitations)
-  43 note candidates, mean confidence 0.01
+STEM SEPARATION
+  Demucs (htdemucs) stem separation WAS used -- melody from vocals.wav, bass from bass.wav, harmony from other.wav. Stems themselves are gitignored (never committed), only this JSON/text metadata is tracked. Available stems: ['bass', 'drums', 'other', 'vocals'].
 
-BASS CANDIDATE (full-mix pyin, low band -- LOW CONFIDENCE)
-  69 note candidates, mean confidence 0.061
+MELODY CANDIDATE (vocals_stem pyin)
+  0 note candidates, mean confidence None
 
-HARMONY CANDIDATE (chroma template matching -- LOW-MEDIUM CONFIDENCE)
-  31 chord candidates, mean confidence 0.321
+BASS CANDIDATE (bass_stem pyin, low band)
+  49 note candidates, mean confidence 0.209
+
+HARMONY CANDIDATE (other_stem, chroma template matching)
+  31 chord candidates, mean confidence 0.631
 
 LIMITATIONS
-  - No stem separation was performed (Demucs/torch not installed in
-    this environment -- documented, not silently skipped).
-  - Melody/bass/harmony analysis runs on the FULL MIX. Full-mix pitch
-    tracking is contaminated by every other instrument playing
+  - Melody/bass/harmony analysis quality depends entirely on whether
+    isolated stems were used (see STEM SEPARATION above) -- full-mix
+    pitch tracking is contaminated by every other instrument playing
     simultaneously and should be treated as a rough starting point
-    for manual correction, not a reliable transcription.
+    at best, not a reliable transcription.
+  - Even with stems, pyin/chroma-template extraction is heuristic --
+    still not a claim of ground truth. Compare confidence numbers
+    above against the pre-stem-separation baseline to judge how
+    much stems actually helped for this track.
   - Chorus section detection is a repeated-chroma heuristic, not a
     verified structural analysis -- confirm by ear.

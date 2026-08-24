@@ -247,11 +247,35 @@ def harmony_candidates(y: "np.ndarray", sr: int, beat_times: list[float], t0: fl
     return out
 
 
+def find_stems(audio_path: Path) -> dict[str, Path] | None:
+    """Locate Demucs output for `audio_path` under OUT_DIR/stems/<model>/<track>/.
+    Returns None (triggering the full-mix fallback) if not present -- stem
+    separation is an offline, opt-in step (tools/analyze_reference.py's
+    module docstring / README), never required for normal app startup.
+    """
+    stems_root = OUT_DIR / "stems"
+    if not stems_root.exists():
+        return None
+    track_name = audio_path.stem
+    for model_dir in stems_root.iterdir():
+        candidate = model_dir / track_name
+        if candidate.is_dir():
+            found = {}
+            for stem in ("vocals", "bass", "other", "drums"):
+                p = candidate / f"{stem}.wav"
+                if p.exists():
+                    found[stem] = p
+            if found:
+                return found
+    return None
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--audio", default="instant_crush.mp3")
     parser.add_argument("--chorus-start", type=float, default=None, help="seconds -- override auto-detected chorus start")
     parser.add_argument("--chorus-end", type=float, default=None, help="seconds -- override auto-detected chorus end")
+    parser.add_argument("--no-stems", action="store_true", help="force full-mix analysis even if separated stems are present")
     args = parser.parse_args()
 
     if not LIBROSA_AVAILABLE:
@@ -295,13 +319,21 @@ def main() -> int:
         else:
             log(f"  no candidate found: {section_info.get('reason')}")
 
+    stems = None if args.no_stems else find_stems(audio_path)
+    if stems:
+        log(f"Found separated stems: {sorted(stems.keys())} -- using them for melody/bass/harmony instead of the full mix")
+        stem_note = f"Demucs (htdemucs) stem separation WAS used -- melody from vocals.wav, bass from bass.wav, harmony from other.wav. Stems themselves are gitignored (never committed), only this JSON/text metadata is tracked. Available stems: {sorted(stems.keys())}."
+    else:
+        log("No separated stems found -- falling back to full-mix analysis (honestly low confidence, see module docstring)")
+        stem_note = "not used for this run -- all pitch/harmony analysis below runs on the full mix and is honestly low-confidence as a result (see module docstring). Run tools/analyze_reference.py again after 'python -m demucs -o songs/instant_crush/reference_analysis/stems instant_crush.mp3' to use isolated stems."
+
     metadata = {
         "source_file": str(audio_path),
         "note": "instant_crush.mp3 itself is NEVER committed -- see .gitignore. This metadata contains no audio.",
         "duration_seconds": round(duration_s, 3),
         "analysis_sample_rate": sr,
         "analyzed_at": time.strftime("%Y-%m-%d %H:%M:%S"),
-        "demucs_stem_separation": "not attempted -- torch+demucs is a multi-GB dependency chain not installed in this environment; all pitch/harmony analysis below runs on the full mix and is honestly low-confidence as a result (see module docstring).",
+        "demucs_stem_separation": stem_note,
     }
     (OUT_DIR / "metadata.json").write_text(json.dumps(metadata, indent=2), encoding="utf-8")
     (OUT_DIR / "beat_grid.json").write_text(json.dumps(tempo_info, indent=2), encoding="utf-8")
@@ -310,19 +342,41 @@ def main() -> int:
 
     if section_info.get("found"):
         t0, t1 = section_info["start_seconds"], section_info["end_seconds"]
-        log(f"Extracting melody candidate (full-mix pyin, {t0:.2f}s-{t1:.2f}s)...")
-        melody = pitch_track_pyin(y, sr, fmin=130.0, fmax=1046.0, t0=t0, t1=t1, source_label="full_mix")  # ~C3-C6, typical vocal-melody range
-        log(f"  {len(melody)} melody note candidates (full-mix, contamination expected)")
+
+        if stems and "vocals" in stems:
+            log(f"Loading vocals stem for melody extraction...")
+            y_vocals, _ = librosa.load(str(stems["vocals"]), sr=SR, mono=True)
+            melody_source, melody_label = y_vocals, "vocals_stem"
+        else:
+            melody_source, melody_label = y, "full_mix"
+        log(f"Extracting melody candidate ({melody_label} pyin, {t0:.2f}s-{t1:.2f}s)...")
+        melody = pitch_track_pyin(melody_source, sr, fmin=130.0, fmax=1046.0, t0=t0, t1=t1, source_label=melody_label)
+        log(f"  {len(melody)} melody note candidates ({melody_label})")
         (OUT_DIR / "candidates" / "melody.json").write_text(json.dumps(melody, indent=2), encoding="utf-8")
 
-        log("Extracting bass candidate (full-mix pyin, low band)...")
-        bass = pitch_track_pyin(y, sr, fmin=30.0, fmax=200.0, t0=t0, t1=t1, source_label="full_mix")  # ~Bb0-G3
-        log(f"  {len(bass)} bass note candidates (full-mix, contamination expected)")
+        if stems and "bass" in stems:
+            log(f"Loading bass stem for bass extraction...")
+            y_bass, _ = librosa.load(str(stems["bass"]), sr=SR, mono=True)
+            bass_source, bass_label = y_bass, "bass_stem"
+        else:
+            bass_source, bass_label = y, "full_mix"
+        log(f"Extracting bass candidate ({bass_label} pyin, low band)...")
+        bass = pitch_track_pyin(bass_source, sr, fmin=30.0, fmax=200.0, t0=t0, t1=t1, source_label=bass_label)  # ~Bb0-G3
+        log(f"  {len(bass)} bass note candidates ({bass_label})")
         (OUT_DIR / "candidates" / "bass.json").write_text(json.dumps(bass, indent=2), encoding="utf-8")
 
-        log("Extracting harmony candidate (chroma template matching)...")
-        harmony = harmony_candidates(y, sr, tempo_info["beat_times_seconds"], t0, t1)
-        log(f"  {len(harmony)} harmony candidates")
+        if stems and "other" in stems:
+            log(f"Loading 'other' stem (synths/guitars/harmonic bed) for harmony extraction...")
+            y_other, _ = librosa.load(str(stems["other"]), sr=SR, mono=True)
+            harmony_source, harmony_label = y_other, "other_stem"
+        else:
+            harmony_source, harmony_label = y, "full_mix"
+        log(f"Extracting harmony candidate ({harmony_label}, chroma template matching)...")
+        # beat_times were measured on the full mix (reliable); harmony content is read from harmony_source
+        harmony = harmony_candidates(harmony_source, sr, tempo_info["beat_times_seconds"], t0, t1)
+        for h in harmony:
+            h["source_stem"] = harmony_label
+        log(f"  {len(harmony)} harmony candidates ({harmony_label})")
         (OUT_DIR / "candidates" / "harmony.json").write_text(json.dumps(harmony, indent=2), encoding="utf-8")
 
         mean_melody_conf = round(float(np.mean([m["confidence"] for m in melody])), 3) if melody else None
@@ -351,22 +405,28 @@ def main() -> int:
         "CHORUS SECTION CANDIDATE",
         json.dumps(section_info, indent=2),
         "",
-        "MELODY CANDIDATE (full-mix pyin -- LOW CONFIDENCE, see limitations)",
+        "STEM SEPARATION",
+        f"  {stem_note}",
+        "",
+        f"MELODY CANDIDATE ({melody_label if section_info.get('found') else 'n/a'} pyin)",
         f"  {len(melody)} note candidates, mean confidence {mean_melody_conf}",
         "",
-        "BASS CANDIDATE (full-mix pyin, low band -- LOW CONFIDENCE)",
+        f"BASS CANDIDATE ({bass_label if section_info.get('found') else 'n/a'} pyin, low band)",
         f"  {len(bass)} note candidates, mean confidence {mean_bass_conf}",
         "",
-        "HARMONY CANDIDATE (chroma template matching -- LOW-MEDIUM CONFIDENCE)",
+        f"HARMONY CANDIDATE ({harmony_label if section_info.get('found') else 'n/a'}, chroma template matching)",
         f"  {len(harmony)} chord candidates, mean confidence {mean_harmony_conf}",
         "",
         "LIMITATIONS",
-        "  - No stem separation was performed (Demucs/torch not installed in",
-        "    this environment -- documented, not silently skipped).",
-        "  - Melody/bass/harmony analysis runs on the FULL MIX. Full-mix pitch",
-        "    tracking is contaminated by every other instrument playing",
+        "  - Melody/bass/harmony analysis quality depends entirely on whether",
+        "    isolated stems were used (see STEM SEPARATION above) -- full-mix",
+        "    pitch tracking is contaminated by every other instrument playing",
         "    simultaneously and should be treated as a rough starting point",
-        "    for manual correction, not a reliable transcription.",
+        "    at best, not a reliable transcription.",
+        "  - Even with stems, pyin/chroma-template extraction is heuristic --",
+        "    still not a claim of ground truth. Compare confidence numbers",
+        "    above against the pre-stem-separation baseline to judge how",
+        "    much stems actually helped for this track.",
         "  - Chorus section detection is a repeated-chroma heuristic, not a",
         "    verified structural analysis -- confirm by ear.",
     ]

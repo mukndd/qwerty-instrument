@@ -62,6 +62,37 @@ def promote_melody_or_bass(candidates: list[dict], layer: str, bpm: float, min_c
     return out
 
 
+def _merge_consecutive_same_chord(candidates: list[dict]) -> list[dict]:
+    """harmony_candidates() emits one estimate per beat (~0.5-0.6s each).
+    Promoting each of those individually would re-create exactly the
+    "choppy stab every beat" articulation bug fixed in accuracy pass v2 --
+    a real chord doesn't re-attack every beat just because we re-measured
+    it. Merge consecutive beats sharing the same root+quality into one
+    sustained span instead (spec Phase 16: prefer a sustained voice over a
+    new NOTE_ON when there's no actual evidence of a re-attack -- here the
+    evidence for continuity is that both neighboring beats' independent
+    chroma measurements agree). Confidence of the merged span is the mean
+    of its constituent beats.
+    """
+    if not candidates:
+        return []
+    ordered = sorted(candidates, key=lambda c: c["start_seconds"])
+    merged = [dict(ordered[0], _confidences=[ordered[0]["confidence"]])]
+    for c in ordered[1:]:
+        last = merged[-1]
+        same_chord = c["root_pitch_class"] == last["root_pitch_class"] and c["quality"] == last["quality"]
+        adjacent = abs(c["start_seconds"] - last["end_seconds"]) < 0.05
+        if same_chord and adjacent:
+            last["end_seconds"] = c["end_seconds"]
+            last["_confidences"].append(c["confidence"])
+        else:
+            merged.append(dict(c, _confidences=[c["confidence"]]))
+    for m in merged:
+        m["confidence"] = round(sum(m["_confidences"]) / len(m["_confidences"]), 3)
+        del m["_confidences"]
+    return merged
+
+
 def promote_harmony(candidates: list[dict], bpm: float, min_confidence: float) -> list[dict]:
     """Chord roots only have a root+quality label, not a specific voicing --
     a defensible generic close-position triad is built from root+quality,
@@ -69,7 +100,7 @@ def promote_harmony(candidates: list[dict], bpm: float, min_confidence: float) -
     pitch_class_to_semitone = {"C": 0, "C#": 1, "D": 2, "D#": 3, "E": 4, "F": 5, "F#": 6, "G": 7, "G#": 8, "A": 9, "A#": 10, "B": 11}
     quality_intervals = {"maj": [0, 4, 7], "min": [0, 3, 7]}
     out = []
-    for c in candidates:
+    for c in _merge_consecutive_same_chord(candidates):
         if c["confidence"] < min_confidence:
             continue
         root_semitone = pitch_class_to_semitone[c["root_pitch_class"]]

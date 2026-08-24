@@ -23,6 +23,7 @@ dependencies = [
 [project.optional-dependencies]
 vst = ["pedalboard>=0.9"]
 reference = ["soundfile>=0.12", "librosa>=0.10"]
+reference-stems = ["demucs>=4.0"]
 dev = ["pytest>=8.0"]
 
 [tool.setuptools.packages.find]
